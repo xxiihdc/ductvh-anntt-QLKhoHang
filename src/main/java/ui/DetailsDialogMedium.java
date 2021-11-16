@@ -4,10 +4,12 @@
  */
 package ui;
 
+import dao.StaffDAO;
 import entity.Staff;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import utils.Infomation;
+import utils.MsgBox;
 
 /**
  *
@@ -51,6 +53,11 @@ public class DetailsDialogMedium extends javax.swing.JDialog {
 
         jButton2.setIcon(new javax.swing.ImageIcon(getClass().getResource("/icon/save_20px.png"))); // NOI18N
         jButton2.setText("Lưu & Thoát");
+        jButton2.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton2ActionPerformed(evt);
+            }
+        });
 
         jButton3.setBackground(new java.awt.Color(255, 0, 51));
         jButton3.setIcon(new javax.swing.ImageIcon(getClass().getResource("/icon/delete_20px.png"))); // NOI18N
@@ -114,6 +121,24 @@ public class DetailsDialogMedium extends javax.swing.JDialog {
         // TODO add your handling code here:
         this.dispose();
     }//GEN-LAST:event_jButton3ActionPerformed
+
+    private void jButton2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton2ActionPerformed
+        // TODO add your handling code here:
+                JPanel p = (JPanel) mainPanel.getComponentAt(50, 50);
+        String name = p.getName();
+        switch (name){
+            case "staff":
+                Staff s = (Staff) Infomation.getInfo();
+                StaffDAO dao = new StaffDAO();
+                dao.insert(s);
+                MsgBox.alert(p, s.toString());
+                MsgBox.alert(null, "Insert done");
+                this.dispose();
+                break;
+            case "supplier":
+                JOptionPane.showMessageDialog(rootPane, "2");
+        }
+    }//GEN-LAST:event_jButton2ActionPerformed
 
     /**
      * @param args the command line arguments

@@ -4,6 +4,12 @@
  */
 package ui;
 
+import dao.StaffDAO;
+import entity.Staff;
+import java.util.List;
+import javax.swing.table.DefaultTableModel;
+import utils.Infomation;
+
 /**
  *
  * @author ductr
@@ -13,8 +19,12 @@ public class CategoryStaff extends javax.swing.JPanel {
     /**
      * Creates new form CategoryStaff
      */
+    int row;
+    StaffDAO dao;
+
     public CategoryStaff() {
         initComponents();
+        init();
     }
 
     /**
@@ -36,7 +46,7 @@ public class CategoryStaff extends javax.swing.JPanel {
         jToolBar2 = new javax.swing.JToolBar();
         jButton4 = new javax.swing.JButton();
         jButton5 = new javax.swing.JButton();
-        jLabel1 = new javax.swing.JLabel();
+        lblRecord = new javax.swing.JLabel();
         jButton6 = new javax.swing.JButton();
         jButton7 = new javax.swing.JButton();
 
@@ -50,10 +60,23 @@ public class CategoryStaff extends javax.swing.JPanel {
             new String [] {
                 "Mã NV", "Họ Tên", "Chức Vụ", "Điện Thoại", "Trạng Thái"
             }
-        ));
+        ) {
+            boolean[] canEdit = new boolean [] {
+                false, false, false, false, false
+            };
+
+            public boolean isCellEditable(int rowIndex, int columnIndex) {
+                return canEdit [columnIndex];
+            }
+        });
         tblStaff.setToolTipText("");
         tblStaff.setRowHeight(30);
         tblStaff.setRowMargin(5);
+        tblStaff.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mousePressed(java.awt.event.MouseEvent evt) {
+                tblStaffMousePressed(evt);
+            }
+        });
         jScrollPane1.setViewportView(tblStaff);
 
         jToolBar1.setRollover(true);
@@ -107,8 +130,8 @@ public class CategoryStaff extends javax.swing.JPanel {
         jButton5.setVerticalTextPosition(javax.swing.SwingConstants.BOTTOM);
         jToolBar2.add(jButton5);
 
-        jLabel1.setText("Hoai duc");
-        jToolBar2.add(jLabel1);
+        lblRecord.setText("Hoai duc");
+        jToolBar2.add(lblRecord);
 
         jButton6.setIcon(new javax.swing.ImageIcon(getClass().getResource("/icon/right_20px.png"))); // NOI18N
         jButton6.setToolTipText("Tiến");
@@ -148,12 +171,27 @@ public class CategoryStaff extends javax.swing.JPanel {
 
     private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
         // TODO add your handling code here:
-        DetailsDialogMedium m = new DetailsDialogMedium(null,true);
+        DetailsDialogMedium m = new DetailsDialogMedium(null, true);
         DetailsStaffPanel s = new DetailsStaffPanel();
-        
+
         m.selectPanel(s);
         m.setVisible(true);
     }//GEN-LAST:event_jButton1ActionPerformed
+
+    private void tblStaffMousePressed(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_tblStaffMousePressed
+        // TODO add your handling code here:
+        if (evt.getClickCount() == 2) {
+            row = tblStaff.getSelectedRow();
+            String id = (String) tblStaff.getValueAt(row, 0);
+            Staff s = dao.selectByID(id);
+            DetailsDialogMedium m = new DetailsDialogMedium(null, true);
+            DetailsStaffPanel ds = new DetailsStaffPanel();
+            ds.setForm(s);
+            m.selectPanel(ds);
+            m.setVisible(true);
+
+        }
+    }//GEN-LAST:event_tblStaffMousePressed
 
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
@@ -165,10 +203,29 @@ public class CategoryStaff extends javax.swing.JPanel {
     private javax.swing.JButton jButton6;
     private javax.swing.JButton jButton7;
     private javax.swing.JButton jButton8;
-    private javax.swing.JLabel jLabel1;
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JToolBar jToolBar1;
     private javax.swing.JToolBar jToolBar2;
+    private javax.swing.JLabel lblRecord;
     private javax.swing.JTable tblStaff;
     // End of variables declaration//GEN-END:variables
+void fillTable() {
+        DefaultTableModel model = (DefaultTableModel) tblStaff.getModel();
+        model.setRowCount(0);
+        List<Staff> lst = dao.selectAll();
+        for (Staff s : lst) {
+            Object[] row = new Object[]{
+                s.getId(), s.getName(), s.isRole() ? "Trưởng phòng" : "Nhân Viên",
+                s.getPhone(), s.isStatus() ? "Đang làm việc" : "Đã nghĩ việc"
+            };
+            model.addRow(row);
+        }
+        lblRecord.setText("0/"+tblStaff.getRowCount());
+    }
+
+    private void init() {
+        dao = new StaffDAO();
+        row = -1;
+        fillTable();
+    }
 }

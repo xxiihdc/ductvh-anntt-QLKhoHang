@@ -14,6 +14,7 @@ public class ToolbarPanel1 extends javax.swing.JPanel {
     /** Creates new form ToolbarPanel1 */
     public ToolbarPanel1() {
         initComponents();
+        init();
     }
 
     /** This method is called from within the constructor to
@@ -30,7 +31,7 @@ public class ToolbarPanel1 extends javax.swing.JPanel {
         jSeparator1 = new javax.swing.JToolBar.Separator();
         jButton2 = new javax.swing.JButton();
         jSeparator2 = new javax.swing.JToolBar.Separator();
-        jButton3 = new javax.swing.JButton();
+        btnSetting = new javax.swing.JButton();
         jSeparator3 = new javax.swing.JToolBar.Separator();
 
         jToolBar1.setRollover(true);
@@ -60,14 +61,14 @@ public class ToolbarPanel1 extends javax.swing.JPanel {
         jToolBar1.add(jButton2);
         jToolBar1.add(jSeparator2);
 
-        jButton3.setFont(new java.awt.Font("Tahoma", 0, 14)); // NOI18N
-        jButton3.setIcon(new javax.swing.ImageIcon(getClass().getResource("/icon/settings_64px.png"))); // NOI18N
-        jButton3.setText("Thiết Lập");
-        jButton3.setFocusable(false);
-        jButton3.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
-        jButton3.setMargin(new java.awt.Insets(5, 20, 5, 20));
-        jButton3.setVerticalTextPosition(javax.swing.SwingConstants.BOTTOM);
-        jToolBar1.add(jButton3);
+        btnSetting.setFont(new java.awt.Font("Tahoma", 0, 14)); // NOI18N
+        btnSetting.setIcon(new javax.swing.ImageIcon(getClass().getResource("/icon/settings_64px.png"))); // NOI18N
+        btnSetting.setText("Thiết Lập");
+        btnSetting.setFocusable(false);
+        btnSetting.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
+        btnSetting.setMargin(new java.awt.Insets(5, 20, 5, 20));
+        btnSetting.setVerticalTextPosition(javax.swing.SwingConstants.BOTTOM);
+        jToolBar1.add(btnSetting);
         jToolBar1.add(jSeparator3);
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(this);
@@ -92,13 +93,17 @@ public class ToolbarPanel1 extends javax.swing.JPanel {
 
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    public javax.swing.JButton btnSetting;
     private javax.swing.JButton jButton1;
     private javax.swing.JButton jButton2;
-    private javax.swing.JButton jButton3;
     private javax.swing.JToolBar.Separator jSeparator1;
     private javax.swing.JToolBar.Separator jSeparator2;
     private javax.swing.JToolBar.Separator jSeparator3;
     private javax.swing.JToolBar jToolBar1;
     // End of variables declaration//GEN-END:variables
+
+    private void init() {
+        btnSetting.setName("setting");
+    }
 
 }

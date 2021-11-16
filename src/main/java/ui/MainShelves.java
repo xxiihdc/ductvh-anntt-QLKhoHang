@@ -4,49 +4,79 @@
  */
 package ui;
 
-import java.awt.Color;
-import java.awt.GridLayout;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
+import java.io.FileReader;
+import java.util.Properties;
 import javax.swing.JButton;
-import javax.swing.JOptionPane;
-import javax.swing.JPanel;
-import javax.swing.JScrollBar;
-import javax.swing.JScrollPane;
-import javax.swing.ScrollPaneConstants;
+import utils.MsgBox;
 
 /**
  *
  * @author ductr
  */
 public class MainShelves extends javax.swing.JPanel {
+    int row,num,cols;
+
+    private boolean readConfig() {
+                try {
+            FileReader reader = new FileReader
+        ("src\\main\\resources\\config\\shelves.properties");
+            Properties properties = new Properties();
+        properties.load(reader);
+        String scols = properties.getProperty("cols");
+        String srow = properties.getProperty("row");
+        String snumber = properties.getProperty("number");
+        if(!scols.equals("0") && !srow.equals("0") && !snumber.equals("0")){
+            cols = Integer.parseInt(scols);
+            row = Integer.parseInt(srow);
+            num = Integer.parseInt(snumber);
+            return true;
+        }else{
+            return false;
+        }
+        } catch (Exception ex) {
+            ex.printStackTrace();
+            return false;
+        }
+    }
 
     /**
      * Creates new form MainShelves
      */
-        public class shevles extends JButton {
+    public class shevles extends JButton {
 
         public shevles(String name) {
             super(name);
         }
     }
+
     public MainShelves() {
         initComponents();
-        jPanel1.setLayout(new java.awt.GridLayout(5,5));
-        shevles [][] btn = new shevles[5][5];
-        int i =1;
-                for (int r = 0; r < btn.length; r++) {
+        if(readConfig()){
+            init();    
+        }else{
+            MsgBox.alert(null, "Vui lòng thiết lập kệ hàng");
+        }
+    }
+
+    void init() {
+        jPanel1.setLayout(new java.awt.GridLayout(cols, row));
+        shevles[][] btn = new shevles[cols][row];
+        int i = 1;
+        for (int r = 0; r < btn.length; r++) {
             for (int c = 0; c < btn[r].length; c++) {
-               
+
                 btn[r][c] = new shevles(i + "");
                 jPanel1.add(btn[r][c]);
                 i++;
                 btn[r][c].addMouseListener(new MouseListener() {
                     @Override
                     public void mouseClicked(MouseEvent e) {
-                        JButton s = (JButton) e.getComponent();
-                        DetailsDialogSmaill d = new DetailsDialogSmaill(null,true);
+                        shevles s = (shevles) e.getComponent();
+                        DetailsDialogSmaill d = new DetailsDialogSmaill(null, true);
                         d.selectPanel(new DetailsShelves());
+                        d.setVisible(true);
                     }
 
                     @Override

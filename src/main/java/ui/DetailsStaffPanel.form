@@ -285,9 +285,9 @@
           </Properties>
         </Component>
         <Component class="javax.swing.JLabel" name="lblImg">
-          <Properties>
-            <Property name="text" type="java.lang.String" value="jLabel8"/>
-          </Properties>
+          <Events>
+            <EventHandler event="mousePressed" listener="java.awt.event.MouseListener" parameters="java.awt.event.MouseEvent" handler="lblImgMousePressed"/>
+          </Events>
         </Component>
       </SubComponents>
     </Container>

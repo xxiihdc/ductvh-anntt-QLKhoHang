@@ -23,7 +23,7 @@ public class XImage {
         return new ImageIcon(url).getImage(); 
     }
     public static boolean saveImg(File src){
-        File dst = new File("src\\main\\resources\\com\\ductr\\logos",src.getName());
+        File dst = new File("src\\main\\resources\\portrait",src.getName());
         if(!dst.getParentFile().exists()){
             dst.getParentFile().mkdirs();//tao thu muc
         }
@@ -39,7 +39,7 @@ public class XImage {
     }
     public static ImageIcon readImg(String path){
         
-       File src = new File("src\\main\\resources\\com\\ductr\\logos",path);
+       File src = new File("src\\main\\resources\\portrait",path);
        ImageIcon icon = new ImageIcon(src.getAbsolutePath());
        return icon;
     }

@@ -5,7 +5,12 @@
 package ui;
 
 import entity.Staff;
+import java.io.File;
+import javax.swing.ImageIcon;
+import javax.swing.JFileChooser;
 import utils.Infomation;
+import utils.MsgBox;
+import utils.XImage;
 
 /**
  *
@@ -16,13 +21,21 @@ public class DetailsStaffPanel extends javax.swing.JPanel {
     /**
      * Creates new form StaffPanel
      */
+    final String DEFAULT_IMG = "fpl.png";
+
     public DetailsStaffPanel() {
         initComponents();
+        init();
+
+    }
+
+    void init() {
         this.setName("staff");
         btnGroupRole.add(rdoManager);
         btnGroupRole.add(rdoStaff);
         btnGroupStatus.add(rdoTrue);
         btnGroupStatus.add(rdoFalse);
+        lblImg.setName(DEFAULT_IMG);
     }
 
     /**
@@ -120,7 +133,11 @@ public class DetailsStaffPanel extends javax.swing.JPanel {
         jLabel7.setFont(new java.awt.Font("Tahoma", 0, 14)); // NOI18N
         jLabel7.setText("Hình Ảnh");
 
-        lblImg.setText("jLabel8");
+        lblImg.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mousePressed(java.awt.event.MouseEvent evt) {
+                lblImgMousePressed(evt);
+            }
+        });
 
         javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
         jPanel1.setLayout(jPanel1Layout);
@@ -219,23 +236,45 @@ public class DetailsStaffPanel extends javax.swing.JPanel {
 
     private void txtIDFocusLost(java.awt.event.FocusEvent evt) {//GEN-FIRST:event_txtIDFocusLost
         // TODO add your handling code here:
-        Infomation.o=getForm();
+        Infomation.o = getForm();
     }//GEN-LAST:event_txtIDFocusLost
 
     private void txtFullnameFocusLost(java.awt.event.FocusEvent evt) {//GEN-FIRST:event_txtFullnameFocusLost
         // TODO add your handling code here:
-        Infomation.o=getForm();
+        Infomation.o = getForm();
     }//GEN-LAST:event_txtFullnameFocusLost
 
     private void txtPhoneFocusLost(java.awt.event.FocusEvent evt) {//GEN-FIRST:event_txtPhoneFocusLost
         // TODO add your handling code here:
-        Infomation.o=getForm();
+        Infomation.o = getForm();
     }//GEN-LAST:event_txtPhoneFocusLost
 
     private void txtEmailFocusLost(java.awt.event.FocusEvent evt) {//GEN-FIRST:event_txtEmailFocusLost
         // TODO add your handling code here:
-        Infomation.o=getForm();
+        Infomation.o = getForm();
     }//GEN-LAST:event_txtEmailFocusLost
+
+    private void lblImgMousePressed(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_lblImgMousePressed
+        // TODO add your handling code here:
+        if (evt.getClickCount() == 2) {
+            JFileChooser open = new JFileChooser();
+            int option = open.showOpenDialog(null);
+            if (option != 1) {
+                File file = open.getSelectedFile();
+                XImage.saveImg(file);
+                ImageIcon icon;
+                try {
+                    icon = XImage.readImg(file.getName());
+                    lblImg.setIcon(icon);
+                    lblImg.setName(file.getName());
+                } catch (Exception ex) {
+                    MsgBox.alert(null, "Định dạng file không hợp lệ");
+                }
+
+                //MsgBox.alert(this, file.getName());
+            }
+        }
+    }//GEN-LAST:event_lblImgMousePressed
 
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
@@ -259,21 +298,43 @@ public class DetailsStaffPanel extends javax.swing.JPanel {
     private javax.swing.JTextField txtID;
     private javax.swing.JTextField txtPhone;
     // End of variables declaration//GEN-END:variables
-    public String isValidate(){
+    public String isValidate() {
         return "";
     }
-    public Staff getForm(){
+
+    public Staff getForm() {
         Staff s = new Staff();
         s.setId(txtID.getText());
         s.setName(txtFullname.getText());
-        s.setImage(lblImg.getToolTipText());
+        s.setImage(lblImg.getName());
         s.setPhone(txtPhone.getText());
         s.setEmail(txtEmail.getText());
         s.setRole(rdoStaff.isSelected());
         s.setStatus(rdoTrue.isSelected());
         return s;
     }
-    public void getForm(Staff s){
-        
+
+    public void setForm(Staff s) {
+        txtID.setText(s.getId());
+        txtFullname.setText(s.getName());
+        txtEmail.setText(s.getEmail());
+        txtPhone.setText(s.getPhone());
+        if (s.isRole()) {
+            rdoManager.setSelected(true);
+        } else {
+            rdoStaff.setSelected(true);
+        }
+        if (s.isStatus()) {
+            rdoTrue.setSelected(true);
+        } else {
+            rdoFalse.setSelected(true);
+        }
+        String img;
+        img = s.getImage() + "";
+        if (img.equalsIgnoreCase("null")) {
+            img = DEFAULT_IMG;
+        }
+        lblImg.setIcon(XImage.readImg(img));
+        lblImg.setName(img);
     }
 }
