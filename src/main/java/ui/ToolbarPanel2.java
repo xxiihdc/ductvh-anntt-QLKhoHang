@@ -23,6 +23,7 @@ public class ToolbarPanel2 extends javax.swing.JPanel {
     void init(){
         btnCategory.setName("category");
         btnDesk.setName("desk");
+        btnProduct.setName("product");
     }
 
     /**
@@ -39,7 +40,7 @@ public class ToolbarPanel2 extends javax.swing.JPanel {
         jSeparator1 = new javax.swing.JToolBar.Separator();
         btnCategory = new javax.swing.JButton();
         jSeparator2 = new javax.swing.JToolBar.Separator();
-        jButton3 = new javax.swing.JButton();
+        btnProduct = new javax.swing.JButton();
         jSeparator3 = new javax.swing.JToolBar.Separator();
         jButton4 = new javax.swing.JButton();
         jSeparator4 = new javax.swing.JToolBar.Separator();
@@ -50,7 +51,9 @@ public class ToolbarPanel2 extends javax.swing.JPanel {
 
         jToolBar1.setRollover(true);
 
-        btnDesk.setFont(new java.awt.Font("Tahoma", 0, 14)); // NOI18N
+        btnDesk.setBackground(new java.awt.Color(255, 204, 153));
+        btnDesk.setFont(new java.awt.Font("Segoe UI", 3, 16)); // NOI18N
+        btnDesk.setForeground(new java.awt.Color(255, 51, 0));
         btnDesk.setIcon(new javax.swing.ImageIcon(getClass().getResource("/icon/office_64px.png"))); // NOI18N
         btnDesk.setText("Bàn Làm Việc");
         btnDesk.setFocusable(false);
@@ -60,32 +63,33 @@ public class ToolbarPanel2 extends javax.swing.JPanel {
         jToolBar1.add(btnDesk);
         jToolBar1.add(jSeparator1);
 
-        btnCategory.setFont(new java.awt.Font("Tahoma", 0, 14)); // NOI18N
+        btnCategory.setBackground(new java.awt.Color(255, 153, 102));
+        btnCategory.setFont(new java.awt.Font("Segoe UI", 1, 16)); // NOI18N
+        btnCategory.setForeground(new java.awt.Color(255, 51, 0));
         btnCategory.setIcon(new javax.swing.ImageIcon(getClass().getResource("/icon/menu_64px.png"))); // NOI18N
         btnCategory.setText("Danh Mục");
         btnCategory.setFocusable(false);
         btnCategory.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
         btnCategory.setMargin(new java.awt.Insets(5, 20, 5, 20));
         btnCategory.setVerticalTextPosition(javax.swing.SwingConstants.BOTTOM);
-        btnCategory.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                btnCategoryActionPerformed(evt);
-            }
-        });
         jToolBar1.add(btnCategory);
         jToolBar1.add(jSeparator2);
 
-        jButton3.setFont(new java.awt.Font("Tahoma", 0, 14)); // NOI18N
-        jButton3.setIcon(new javax.swing.ImageIcon(getClass().getResource("/icon/product_64px.png"))); // NOI18N
-        jButton3.setText("Sản Phẩm");
-        jButton3.setFocusable(false);
-        jButton3.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
-        jButton3.setMargin(new java.awt.Insets(5, 20, 5, 20));
-        jButton3.setVerticalTextPosition(javax.swing.SwingConstants.BOTTOM);
-        jToolBar1.add(jButton3);
+        btnProduct.setBackground(new java.awt.Color(255, 153, 102));
+        btnProduct.setFont(new java.awt.Font("Segoe UI", 1, 16)); // NOI18N
+        btnProduct.setForeground(new java.awt.Color(255, 51, 0));
+        btnProduct.setIcon(new javax.swing.ImageIcon(getClass().getResource("/icon/product_64px.png"))); // NOI18N
+        btnProduct.setText("Sản Phẩm");
+        btnProduct.setFocusable(false);
+        btnProduct.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
+        btnProduct.setMargin(new java.awt.Insets(5, 20, 5, 20));
+        btnProduct.setVerticalTextPosition(javax.swing.SwingConstants.BOTTOM);
+        jToolBar1.add(btnProduct);
         jToolBar1.add(jSeparator3);
 
-        jButton4.setFont(new java.awt.Font("Tahoma", 0, 14)); // NOI18N
+        jButton4.setBackground(new java.awt.Color(255, 153, 102));
+        jButton4.setFont(new java.awt.Font("Segoe UI", 1, 16)); // NOI18N
+        jButton4.setForeground(new java.awt.Color(255, 51, 0));
         jButton4.setIcon(new javax.swing.ImageIcon(getClass().getResource("/icon/invoice_64px.png"))); // NOI18N
         jButton4.setText("Hóa Đơn");
         jButton4.setFocusable(false);
@@ -95,7 +99,9 @@ public class ToolbarPanel2 extends javax.swing.JPanel {
         jToolBar1.add(jButton4);
         jToolBar1.add(jSeparator4);
 
-        jButton5.setFont(new java.awt.Font("Tahoma", 0, 14)); // NOI18N
+        jButton5.setBackground(new java.awt.Color(255, 153, 102));
+        jButton5.setFont(new java.awt.Font("Segoe UI", 1, 16)); // NOI18N
+        jButton5.setForeground(new java.awt.Color(255, 51, 0));
         jButton5.setIcon(new javax.swing.ImageIcon(getClass().getResource("/icon/warehouse_64px.png"))); // NOI18N
         jButton5.setText("Xuất/Nhập Kho");
         jButton5.setFocusable(false);
@@ -105,7 +111,9 @@ public class ToolbarPanel2 extends javax.swing.JPanel {
         jToolBar1.add(jButton5);
         jToolBar1.add(jSeparator5);
 
-        jButton6.setFont(new java.awt.Font("Tahoma", 0, 14)); // NOI18N
+        jButton6.setBackground(new java.awt.Color(255, 153, 102));
+        jButton6.setFont(new java.awt.Font("Segoe UI", 1, 16)); // NOI18N
+        jButton6.setForeground(new java.awt.Color(255, 51, 0));
         jButton6.setIcon(new javax.swing.ImageIcon(getClass().getResource("/icon/Business Report_64px.png"))); // NOI18N
         jButton6.setText("Thống Kê");
         jButton6.setFocusable(false);
@@ -127,15 +135,11 @@ public class ToolbarPanel2 extends javax.swing.JPanel {
         );
     }// </editor-fold>//GEN-END:initComponents
 
-    private void btnCategoryActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnCategoryActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_btnCategoryActionPerformed
-
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     public javax.swing.JButton btnCategory;
     public javax.swing.JButton btnDesk;
-    private javax.swing.JButton jButton3;
+    public javax.swing.JButton btnProduct;
     private javax.swing.JButton jButton4;
     private javax.swing.JButton jButton5;
     private javax.swing.JButton jButton6;

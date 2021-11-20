@@ -13,6 +13,24 @@ public class Supplier {
     private int id;
     private String name;
     private String address, phone;
+    private String email;
+    private String STK;
+
+    public String getSTK() {
+        return STK;
+    }
+
+    public void setSTK(String STK) {
+        this.STK = STK;
+    }
+
+    public String getEmail() {
+        return email;
+    }
+
+    public void setEmail(String email) {
+        this.email = email;
+    }
 
     public Supplier() {
     }

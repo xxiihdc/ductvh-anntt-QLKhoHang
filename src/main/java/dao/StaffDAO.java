@@ -20,6 +20,9 @@ public class StaffDAO extends WarehouseDAO<Staff, String>{
             + "VALUES (?,?,?,?,?,?,?)";
     final String SELECT_ALL = "Select * from staff";
     final String SELECT_BY_ID = "Select * from staff where id = ?";
+    final String UPDATE = "UPDATE staff SET _name =?, image =?, phone =?, "
+            + "email =?, status =?, role =? where id = ?";
+    
 
     @Override
     public void insert(Staff entity) {
@@ -29,6 +32,8 @@ public class StaffDAO extends WarehouseDAO<Staff, String>{
 
     @Override
     public void update(Staff entity) {
+        XJdbc.update(UPDATE, entity.getName(),entity.getImage(),entity.getPhone(),
+        entity.getEmail(),entity.isStatus(),entity.isRole(),entity.getId());
     }
 
     @Override
@@ -66,6 +71,12 @@ public class StaffDAO extends WarehouseDAO<Staff, String>{
             throw new RuntimeException(e);
         }
         return lst;
+    }
+
+    public boolean hasID(String id) {
+        String query ="select id from staff where id = ?";
+        Object o = XJdbc.value(query, id);
+        return o!=null;
     }
     
 }

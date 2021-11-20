@@ -34,9 +34,11 @@ public class ToolbarPanel1 extends javax.swing.JPanel {
         btnSetting = new javax.swing.JButton();
         jSeparator3 = new javax.swing.JToolBar.Separator();
 
+        jToolBar1.setBackground(new java.awt.Color(255, 51, 204));
         jToolBar1.setRollover(true);
 
-        jButton1.setFont(new java.awt.Font("Tahoma", 0, 14)); // NOI18N
+        jButton1.setFont(new java.awt.Font("Segoe UI", 1, 16)); // NOI18N
+        jButton1.setForeground(new java.awt.Color(255, 51, 0));
         jButton1.setIcon(new javax.swing.ImageIcon(getClass().getResource("/icon/logout_rounded_left_64px.png"))); // NOI18N
         jButton1.setText("Đăng Xuất");
         jButton1.setFocusable(false);
@@ -51,7 +53,8 @@ public class ToolbarPanel1 extends javax.swing.JPanel {
         jToolBar1.add(jButton1);
         jToolBar1.add(jSeparator1);
 
-        jButton2.setFont(new java.awt.Font("Tahoma", 0, 14)); // NOI18N
+        jButton2.setFont(new java.awt.Font("Segoe UI", 1, 16)); // NOI18N
+        jButton2.setForeground(new java.awt.Color(255, 51, 0));
         jButton2.setIcon(new javax.swing.ImageIcon(getClass().getResource("/icon/icons8-user-64.png"))); // NOI18N
         jButton2.setText("Người Dùng");
         jButton2.setFocusable(false);
@@ -61,7 +64,8 @@ public class ToolbarPanel1 extends javax.swing.JPanel {
         jToolBar1.add(jButton2);
         jToolBar1.add(jSeparator2);
 
-        btnSetting.setFont(new java.awt.Font("Tahoma", 0, 14)); // NOI18N
+        btnSetting.setFont(new java.awt.Font("Segoe UI", 1, 16)); // NOI18N
+        btnSetting.setForeground(new java.awt.Color(255, 51, 0));
         btnSetting.setIcon(new javax.swing.ImageIcon(getClass().getResource("/icon/settings_64px.png"))); // NOI18N
         btnSetting.setText("Thiết Lập");
         btnSetting.setFocusable(false);
@@ -76,7 +80,7 @@ public class ToolbarPanel1 extends javax.swing.JPanel {
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
-                .addComponent(jToolBar1, javax.swing.GroupLayout.DEFAULT_SIZE, 390, Short.MAX_VALUE)
+                .addComponent(jToolBar1, javax.swing.GroupLayout.DEFAULT_SIZE, 395, Short.MAX_VALUE)
                 .addContainerGap())
         );
         layout.setVerticalGroup(

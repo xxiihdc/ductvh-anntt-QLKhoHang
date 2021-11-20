@@ -34,7 +34,8 @@ public class ToolbarPanel3 extends javax.swing.JPanel {
 
         jToolBar1.setRollover(true);
 
-        jButton1.setFont(new java.awt.Font("Tahoma", 0, 14)); // NOI18N
+        jButton1.setFont(new java.awt.Font("Segoe UI", 1, 16)); // NOI18N
+        jButton1.setForeground(new java.awt.Color(255, 51, 0));
         jButton1.setIcon(new javax.swing.ImageIcon(getClass().getResource("/icon/name_tag_64px.png"))); // NOI18N
         jButton1.setText("Giới Thiệu");
         jButton1.setFocusable(false);
@@ -49,7 +50,8 @@ public class ToolbarPanel3 extends javax.swing.JPanel {
         jToolBar1.add(jButton1);
         jToolBar1.add(jSeparator1);
 
-        jButton2.setFont(new java.awt.Font("Tahoma", 0, 14)); // NOI18N
+        jButton2.setFont(new java.awt.Font("Segoe UI", 1, 16)); // NOI18N
+        jButton2.setForeground(new java.awt.Color(255, 51, 0));
         jButton2.setIcon(new javax.swing.ImageIcon(getClass().getResource("/icon/help_64px.png"))); // NOI18N
         jButton2.setText("Trợ Giúp");
         jButton2.setFocusable(false);

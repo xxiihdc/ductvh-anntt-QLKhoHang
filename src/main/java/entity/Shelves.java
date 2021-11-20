@@ -59,6 +59,11 @@ public class Shelves {
     public void setNote(String note) {
         this.note = note;
     }
+
+    @Override
+    public String toString() {
+        return "Shelves{" + "id=" + id + ", status=" + status + ", c=" + c + ", note=" + note + '}';
+    }
     
     
 }

@@ -9,14 +9,17 @@ package entity;
  * @author ductr
  */
 public class Product {
-    private int id;
+    private int id,productGroupID,productTypeID,productUnitID;
     private String name,image,note;
     private boolean status;
 
     public Product() {
     }
 
-    public Product(String name, String image, String note, boolean status) {
+    public Product(int productGroupID, int productTypeID, int productUnitID, String name, String image, String note, boolean status) {
+        this.productGroupID = productGroupID;
+        this.productTypeID = productTypeID;
+        this.productUnitID = productUnitID;
         this.name = name;
         this.image = image;
         this.note = note;
@@ -29,6 +32,30 @@ public class Product {
 
     public void setId(int id) {
         this.id = id;
+    }
+
+    public int getProductGroupID() {
+        return productGroupID;
+    }
+
+    public void setProductGroupID(int productGroupID) {
+        this.productGroupID = productGroupID;
+    }
+
+    public int getProductTypeID() {
+        return productTypeID;
+    }
+
+    public void setProductTypeID(int productTypeID) {
+        this.productTypeID = productTypeID;
+    }
+
+    public int getProductUnitID() {
+        return productUnitID;
+    }
+
+    public void setProductUnitID(int productUnitID) {
+        this.productUnitID = productUnitID;
     }
 
     public String getName() {
@@ -63,4 +90,6 @@ public class Product {
         this.status = status;
     }
     
+
+ 
 }

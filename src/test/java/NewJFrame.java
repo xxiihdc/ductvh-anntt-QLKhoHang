@@ -1,5 +1,5 @@
 
-import ui.MainShelves;
+
 
 /*
  * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
@@ -17,7 +17,6 @@ public class NewJFrame extends javax.swing.JFrame {
      */
     public NewJFrame() {
         initComponents();
-        this.add(new MainShelves());
     }
 
     /**
