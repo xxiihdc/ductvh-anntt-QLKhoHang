@@ -4,9 +4,12 @@
  */
 package ui.main.category;
 
+import dao.VendorDAO;
+import entity.Supplier;
+import entity.Vendor;
+import java.util.List;
+import javax.swing.table.DefaultTableModel;
 import ui.dialog.VendorDialog;
-
-
 
 /**
  *
@@ -17,8 +20,16 @@ public class CategoryVendor extends javax.swing.JPanel {
     /**
      * Creates new form CategoryVendor
      */
+    VendorDAO dao;
+
     public CategoryVendor() {
         initComponents();
+        init();
+    }
+
+    void init() {
+        dao = new VendorDAO();
+        fillTable();
     }
 
     /**
@@ -31,7 +42,7 @@ public class CategoryVendor extends javax.swing.JPanel {
     private void initComponents() {
 
         jScrollPane1 = new javax.swing.JScrollPane();
-        jTable1 = new javax.swing.JTable();
+        tblVendor = new javax.swing.JTable();
         jToolBar1 = new javax.swing.JToolBar();
         jButton1 = new javax.swing.JButton();
         jButton2 = new javax.swing.JButton();
@@ -46,8 +57,9 @@ public class CategoryVendor extends javax.swing.JPanel {
 
         setBorder(javax.swing.BorderFactory.createTitledBorder(null, "Nhà Sản Xuất", javax.swing.border.TitledBorder.DEFAULT_JUSTIFICATION, javax.swing.border.TitledBorder.DEFAULT_POSITION, new java.awt.Font("Tahoma", 0, 18))); // NOI18N
 
-        jTable1.setFont(new java.awt.Font("Tahoma", 0, 18)); // NOI18N
-        jTable1.setModel(new javax.swing.table.DefaultTableModel(
+        tblVendor.setBackground(new java.awt.Color(255, 204, 153));
+        tblVendor.setFont(new java.awt.Font("Tahoma", 0, 18)); // NOI18N
+        tblVendor.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
 
             },
@@ -55,9 +67,9 @@ public class CategoryVendor extends javax.swing.JPanel {
                 "Mã Số", "Tên Nhà Sản Xuất", "Xuất Xứ"
             }
         ));
-        jTable1.setRowHeight(30);
-        jTable1.setRowMargin(5);
-        jScrollPane1.setViewportView(jTable1);
+        tblVendor.setRowHeight(30);
+        tblVendor.setRowMargin(5);
+        jScrollPane1.setViewportView(tblVendor);
 
         jToolBar1.setRollover(true);
         jToolBar1.setMargin(new java.awt.Insets(0, 5, 0, 5));
@@ -146,7 +158,7 @@ public class CategoryVendor extends javax.swing.JPanel {
         this.setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 636, Short.MAX_VALUE)
+            .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 806, Short.MAX_VALUE)
             .addGroup(layout.createSequentialGroup()
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addComponent(jToolBar1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
@@ -166,7 +178,7 @@ public class CategoryVendor extends javax.swing.JPanel {
 
     private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
         // TODO add your handling code here:
-        new VendorDialog(null,true).setVisible(true);
+        new VendorDialog(null, true).setVisible(true);
     }//GEN-LAST:event_jButton1ActionPerformed
 
     private void jButton8ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton8ActionPerformed
@@ -185,9 +197,22 @@ public class CategoryVendor extends javax.swing.JPanel {
     private javax.swing.JButton jButton7;
     private javax.swing.JButton jButton8;
     private javax.swing.JScrollPane jScrollPane1;
-    private javax.swing.JTable jTable1;
     private javax.swing.JToolBar jToolBar1;
     private javax.swing.JToolBar jToolBar2;
     private javax.swing.JLabel lblRecord;
+    private javax.swing.JTable tblVendor;
     // End of variables declaration//GEN-END:variables
+
+    private void fillTable() {
+        DefaultTableModel model = (DefaultTableModel) tblVendor.getModel();
+        model.setRowCount(0);
+        List<Vendor> lst = dao.selectAll();
+        for (Vendor s : lst) {
+            Object[] row = new Object[]{
+                s.getId(),s.getName(), s.getOrigin()
+            };
+            model.addRow(row);
+        }
+        lblRecord.setText("0/" + tblVendor.getRowCount());
+    }
 }

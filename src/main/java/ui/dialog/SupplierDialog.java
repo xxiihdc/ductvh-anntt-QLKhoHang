@@ -25,7 +25,6 @@ public class SupplierDialog extends javax.swing.JDialog {
     void init(){
         setLocationRelativeTo(null);
         dao = new SupplierDAO();
-        fillTable();
     }
     /**
      * This method is called from within the constructor to initialize the form.
@@ -68,6 +67,11 @@ public class SupplierDialog extends javax.swing.JDialog {
         jButton2.setFont(new java.awt.Font("Segoe UI", 1, 14)); // NOI18N
         jButton2.setIcon(new javax.swing.ImageIcon(getClass().getResource("/icon/pin_in_circle_30px.png"))); // NOI18N
         jButton2.setText("Lưu & Thoát");
+        jButton2.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton2ActionPerformed(evt);
+            }
+        });
 
         jButton1.setBackground(new java.awt.Color(255, 153, 51));
         jButton1.setFont(new java.awt.Font("Segoe UI", 1, 14)); // NOI18N
@@ -223,6 +227,20 @@ public class SupplierDialog extends javax.swing.JDialog {
         }
     }//GEN-LAST:event_jButton1ActionPerformed
 
+    private void jButton2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton2ActionPerformed
+        // TODO add your handling code here:
+                if (valid()) {
+            if (dao.hasID(txtName.getText())) {
+                update();
+               this.dispose();
+            } else {
+                insert();
+                this.dispose();
+            }
+
+        }
+    }//GEN-LAST:event_jButton2ActionPerformed
+
     /**
      * @param args the command line arguments
      */
@@ -284,7 +302,7 @@ public class SupplierDialog extends javax.swing.JDialog {
     // End of variables declaration//GEN-END:variables
 
     private boolean valid() {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+        return true;
     }
 
     private void update() {
@@ -297,10 +315,6 @@ public class SupplierDialog extends javax.swing.JDialog {
 
     private void insert() {
         dao.insert(getForm());
-    }
-
-    private void fillTable() {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
 
     private Supplier getForm() {
@@ -318,5 +332,6 @@ public class SupplierDialog extends javax.swing.JDialog {
         txtAddress.setText(s.getAddress());
         txtMail.setText(s.getEmail());
         txtSTK.setText(s.getSTK());
+        txtPhone.setText(s.getPhone());
     }
 }

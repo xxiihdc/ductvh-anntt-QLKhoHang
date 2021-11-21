@@ -350,7 +350,7 @@ public class StaffDialog extends javax.swing.JDialog {
                 try {
                     icon = XImage.readImg(file.getName());
                     lblImg.setIcon(icon);
-                    lblImg.setName(file.getName());
+                    lblImg.setToolTipText(file.getName());
                 } catch (Exception ex) {
                     MsgBox.alert(null, "Định dạng file không hợp lệ");
                 }
@@ -451,7 +451,7 @@ public class StaffDialog extends javax.swing.JDialog {
         Staff s = new Staff();
         s.setId(txtID.getText());
         s.setName(txtFullname.getText());
-        s.setImage(lblImg.getName());
+        s.setImage(lblImg.getToolTipText());
         s.setPhone(txtPhone.getText());
         s.setEmail(txtEmail.getText());
         s.setRole(rdoStaff.isSelected());
@@ -480,7 +480,7 @@ public class StaffDialog extends javax.swing.JDialog {
             img = DEFAULT_IMG;
         }
         lblImg.setIcon(XImage.readImg(img));
-        lblImg.setName(img);
+        lblImg.setToolTipText(img);
     }
 
     private void clearForm() {

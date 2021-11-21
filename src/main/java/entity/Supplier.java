@@ -73,4 +73,9 @@ public class Supplier {
         this.address = address;
     }
 
+    @Override
+    public String toString() {
+        return name;
+    }
+    
 }

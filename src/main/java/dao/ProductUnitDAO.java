@@ -5,17 +5,24 @@
 package dao;
 
 import entity.ProductUnit;
+import java.sql.ResultSet;
+import java.sql.SQLException;
+import java.util.ArrayList;
 import java.util.List;
+import utils.XJdbc;
 
 /**
  *
  * @author ductr
  */
-public class ProductUnitDAO extends WarehouseDAO<ProductUnit, String>{
+public class ProductUnitDAO extends WarehouseDAO<ProductUnit, String> {
 
+    final String INSERT = "INSERT INTO product_unit (id, name, description) VALUES (?,?,?)";
+    final String SELECT_ALL = "SELECT * FROM product_unit";
+    final String SELECT_BY_ID = "select * from product_unit where id = ?";
     @Override
     public void insert(ProductUnit entity) {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+        XJdbc.update(INSERT, entity.getId(), entity.getName(), entity.getDescription());
     }
 
     @Override
@@ -30,21 +37,38 @@ public class ProductUnitDAO extends WarehouseDAO<ProductUnit, String>{
 
     @Override
     public List<ProductUnit> selectAll() {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+        return selectBySql(SELECT_ALL);
     }
 
     @Override
     public ProductUnit selectByID(String id) {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+        List<ProductUnit> lst = selectBySql(SELECT_BY_ID, id);
+        if(lst.size()!=0) return lst.get(0);
+        else return null;
     }
 
     @Override
     public List<ProductUnit> selectBySql(String sql, Object... args) {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+        try {
+            List<ProductUnit> lst = new ArrayList<>();
+            ResultSet rs = XJdbc.query(sql, args);
+            while (rs.next()) {
+                ProductUnit s = new ProductUnit();
+                s.setName(rs.getString(2));
+                s.setId(rs.getString(1));
+                s.setDescription(rs.getString(3));
+                lst.add(s);
+            }
+            return lst;
+        } catch (SQLException ex) {
+            throw new RuntimeException(ex);
+        }
     }
 
     public boolean hasID(String text) {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+        String query = "select id from product_unit where id = ?";
+        Object o = XJdbc.value(query, text);
+        return o != null;
     }
-    
+
 }

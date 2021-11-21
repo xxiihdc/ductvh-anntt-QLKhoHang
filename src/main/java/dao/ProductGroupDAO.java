@@ -21,6 +21,7 @@ public class ProductGroupDAO extends WarehouseDAO<ProductGroup, String> {
 
     final String INSERT = "INSERT INTO product_group (name, descrpition) VALUES (?,?)";
     final String SELECT_ALL = "SELECT * FROM product_group";
+    final String SELECT_BY_ID = "SELECT * FROM product_group where id = ?";
     @Override
     public void insert(ProductGroup entity) {
         XJdbc.update(INSERT, entity.getName(), entity.getDescription());
@@ -43,7 +44,10 @@ public class ProductGroupDAO extends WarehouseDAO<ProductGroup, String> {
 
     @Override
     public ProductGroup selectByID(String id) {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+        List<ProductGroup> lst = selectBySql(SELECT_BY_ID, id);
+        if(lst.size()>0){
+            return lst.get(0);
+        }else return null;
     }
 
     @Override
@@ -52,7 +56,7 @@ public class ProductGroupDAO extends WarehouseDAO<ProductGroup, String> {
             List<ProductGroup> lst = new ArrayList<>();
             ResultSet rs = XJdbc.query(sql, args);
             while (rs.next()) {
-                ProductGroup p = new ProductGroup(rs.getString(2), rs.getString(3));
+                ProductGroup p = new ProductGroup(rs.getInt(1),rs.getString(2), rs.getString(3));
                 lst.add(p);
             }
             rs.getStatement().getConnection().close();

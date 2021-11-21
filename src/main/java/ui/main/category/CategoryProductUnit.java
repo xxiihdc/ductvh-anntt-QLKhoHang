@@ -4,6 +4,10 @@
  */
 package ui.main.category;
 
+import dao.ProductUnitDAO;
+import entity.ProductUnit;
+import java.util.List;
+import javax.swing.table.DefaultTableModel;
 import ui.dialog.ProductUnitDialog;
 
 
@@ -16,11 +20,15 @@ public class CategoryProductUnit extends javax.swing.JPanel {
     /**
      * Creates new form CategoryProductUnit
      */
+    ProductUnitDAO dao;
     public CategoryProductUnit() {
         initComponents();
-        this.setName("productUnit");
+        init();
     }
-
+    void init(){
+        dao = new ProductUnitDAO();
+        fillTable();
+    }
     /**
      * This method is called from within the constructor to initialize the form.
      * WARNING: Do NOT modify this code. The content of this method is always
@@ -31,7 +39,7 @@ public class CategoryProductUnit extends javax.swing.JPanel {
     private void initComponents() {
 
         jScrollPane1 = new javax.swing.JScrollPane();
-        jTable1 = new javax.swing.JTable();
+        tblProductUnit = new javax.swing.JTable();
         jToolBar1 = new javax.swing.JToolBar();
         jButton1 = new javax.swing.JButton();
         jButton2 = new javax.swing.JButton();
@@ -46,8 +54,9 @@ public class CategoryProductUnit extends javax.swing.JPanel {
 
         setBorder(javax.swing.BorderFactory.createTitledBorder(null, "Đơn Vị Tính", javax.swing.border.TitledBorder.DEFAULT_JUSTIFICATION, javax.swing.border.TitledBorder.DEFAULT_POSITION, new java.awt.Font("Tahoma", 0, 18))); // NOI18N
 
-        jTable1.setFont(new java.awt.Font("Tahoma", 0, 18)); // NOI18N
-        jTable1.setModel(new javax.swing.table.DefaultTableModel(
+        tblProductUnit.setBackground(new java.awt.Color(255, 204, 153));
+        tblProductUnit.setFont(new java.awt.Font("Tahoma", 0, 18)); // NOI18N
+        tblProductUnit.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
 
             },
@@ -55,9 +64,9 @@ public class CategoryProductUnit extends javax.swing.JPanel {
                 "Mã DVT", "Tên DVT", "Mô tả"
             }
         ));
-        jTable1.setRowHeight(30);
-        jTable1.setRowMargin(5);
-        jScrollPane1.setViewportView(jTable1);
+        tblProductUnit.setRowHeight(30);
+        tblProductUnit.setRowMargin(5);
+        jScrollPane1.setViewportView(tblProductUnit);
 
         jToolBar1.setRollover(true);
         jToolBar1.setMargin(new java.awt.Insets(0, 5, 0, 5));
@@ -141,7 +150,7 @@ public class CategoryProductUnit extends javax.swing.JPanel {
         this.setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 657, Short.MAX_VALUE)
+            .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 797, Short.MAX_VALUE)
             .addGroup(layout.createSequentialGroup()
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addComponent(jToolBar1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
@@ -153,7 +162,7 @@ public class CategoryProductUnit extends javax.swing.JPanel {
             .addGroup(layout.createSequentialGroup()
                 .addComponent(jToolBar1, javax.swing.GroupLayout.PREFERRED_SIZE, 49, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 290, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 394, Short.MAX_VALUE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(jToolBar2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
         );
@@ -175,9 +184,22 @@ public class CategoryProductUnit extends javax.swing.JPanel {
     private javax.swing.JButton jButton7;
     private javax.swing.JButton jButton8;
     private javax.swing.JScrollPane jScrollPane1;
-    private javax.swing.JTable jTable1;
     private javax.swing.JToolBar jToolBar1;
     private javax.swing.JToolBar jToolBar2;
     private javax.swing.JLabel lblRecord;
+    private javax.swing.JTable tblProductUnit;
     // End of variables declaration//GEN-END:variables
+
+    private void fillTable() {
+        DefaultTableModel model = (DefaultTableModel) tblProductUnit.getModel();
+        model.setRowCount(0);
+        List<ProductUnit> lst = dao.selectAll();
+        for (ProductUnit s : lst) {
+            Object[] row = new Object[]{
+                s.getId(),s.getName(), s.getDescription()
+            };
+            model.addRow(row);
+        }
+        lblRecord.setText("0/" + tblProductUnit.getRowCount());
+    }
 }

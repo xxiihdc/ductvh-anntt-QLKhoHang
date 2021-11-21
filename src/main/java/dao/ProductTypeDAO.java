@@ -20,6 +20,7 @@ import utils.XJdbc;
 public class ProductTypeDAO extends WarehouseDAO<ProductType, String>{
     final String INSERT = "INSERT INTO product_type (name,description) values (?,?)";
     final String SELECT_ALL = "SELECT * FROM product_type";
+    final String SELECT_BY_ID = "SELECT * FROM product_type where id = ?";
     @Override
     public void insert(ProductType entity) {
         XJdbc.update(INSERT, entity.getName(),entity.getDescription());
@@ -42,7 +43,10 @@ public class ProductTypeDAO extends WarehouseDAO<ProductType, String>{
 
     @Override
     public ProductType selectByID(String id) {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+        List<ProductType> lst =selectBySql(SELECT_BY_ID,id);
+        if(lst.size()>0){
+            return lst.get(0);
+        }else return null;
     }
 
     @Override
@@ -51,7 +55,7 @@ public class ProductTypeDAO extends WarehouseDAO<ProductType, String>{
             List<ProductType> lst = new ArrayList<>();
             ResultSet rs = XJdbc.query(sql, args);
             while(rs.next()){
-                ProductType p = new ProductType(rs.getString(2),rs.getString(3));
+                ProductType p = new ProductType(rs.getInt(1),rs.getString(2),rs.getString(3));
                 lst.add(p);
             }
             return lst;
