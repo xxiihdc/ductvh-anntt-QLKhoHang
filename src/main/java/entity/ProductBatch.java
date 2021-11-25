@@ -11,22 +11,29 @@ import java.util.Date;
  * @author ductr
  */
 public class ProductBatch {
-    private int id,productID,quantity,vendorID;
+    private int id,quantity,supplierID;
     private double price;
-    private String note;
-    private Date enteredDate,expiryDate;
-
+    private String note,productID;
+    private Date enteredDate;
+    private int unsortedProduct;
     public ProductBatch() {
     }
 
-    public ProductBatch(int productID, int quantity, int vendorID, double price, String note, Date enteredDate, Date expiryDate) {
+    public int getUnsortedProduct() {
+        return unsortedProduct;
+    }
+
+    public void setUnsortedProduct(int unsortedProduct) {
+        this.unsortedProduct = unsortedProduct;
+    }
+
+    public ProductBatch(String productID, int quantity, int supplierID, double price, String note, Date enteredDate) {
         this.productID = productID;
         this.quantity = quantity;
-        this.vendorID = vendorID;
+        this.supplierID = supplierID;
         this.price = price;
         this.note = note;
         this.enteredDate = enteredDate;
-        this.expiryDate = expiryDate;
     }
 
     public int getId() {
@@ -37,11 +44,11 @@ public class ProductBatch {
         this.id = id;
     }
 
-    public int getProductID() {
+    public String getProductID() {
         return productID;
     }
 
-    public void setProductID(int productID) {
+    public void setProductID(String productID) {
         this.productID = productID;
     }
 
@@ -53,12 +60,12 @@ public class ProductBatch {
         this.quantity = quantity;
     }
 
-    public int getVendorID() {
-        return vendorID;
+    public int getSupplierID() {
+        return supplierID;
     }
 
-    public void setVendorID(int vendorID) {
-        this.vendorID = vendorID;
+    public void setSupplierID(int supplierID) {
+        this.supplierID = supplierID;
     }
 
     public double getPrice() {
@@ -83,15 +90,5 @@ public class ProductBatch {
 
     public void setEnteredDate(Date enteredDate) {
         this.enteredDate = enteredDate;
-    }
-
-    public Date getExpiryDate() {
-        return expiryDate;
-    }
-
-    public void setExpiryDate(Date expiryDate) {
-        this.expiryDate = expiryDate;
-    }
-    
-    
+    }  
 }

@@ -11,15 +11,23 @@ import java.util.Date;
  * @author ductr
  */
 public class Invoice {
-    private int id,staffID;
+    private int id,supplierID;
     private double discount,amount,debt;
     private Date createDate,finalSettlement;
-    private String paymentMethod,note;
+    private String paymentMethod,note,staffID;
 
     public Invoice() {
     }
 
-    public Invoice(int staffID, double discount, double amount, double debt, Date createDate, Date finalSettlement, String paymentMethod, String note) {
+    public int getSupplierID() {
+        return supplierID;
+    }
+
+    public void setSupplierID(int supplierID) {
+        this.supplierID = supplierID;
+    }
+
+    public Invoice(String staffID, double discount, double amount, double debt, Date createDate, Date finalSettlement, String paymentMethod, String note) {
         this.staffID = staffID;
         this.discount = discount;
         this.amount = amount;
@@ -38,11 +46,11 @@ public class Invoice {
         this.id = id;
     }
 
-    public int getStaffID() {
+    public String getStaffID() {
         return staffID;
     }
 
-    public void setStaffID(int staffID) {
+    public void setStaffID(String staffID) {
         this.staffID = staffID;
     }
 

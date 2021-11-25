@@ -1,6 +1,8 @@
 
 import dao.ShelvesDAO;
+import entity.Invoice;
 import entity.Shelves;
+import java.util.Date;
 import javafx.scene.transform.Shear;
 
 /*
@@ -14,11 +16,8 @@ import javafx.scene.transform.Shear;
  */
 public class NewClass {
     public static void main(String[] args) {
-        Shelves s;// = new Shelves();
-        ShelvesDAO dao = new ShelvesDAO();
-        s= dao.selectByID(18+"");
-        if(s==null){
-            System.out.print("A");
-        }else System.out.print(s);
+       Invoice i = new Invoice();
+       Date d = i.getFinalSettlement();
+       if(d==null) System.out.print("A");
     }
 }

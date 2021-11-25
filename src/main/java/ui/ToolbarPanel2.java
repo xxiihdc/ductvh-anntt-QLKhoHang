@@ -24,6 +24,7 @@ public class ToolbarPanel2 extends javax.swing.JPanel {
         btnCategory.setName("category");
         btnDesk.setName("desk");
         btnProduct.setName("product");
+        btnInvoice.setName("invoice");
     }
 
     /**
@@ -42,7 +43,7 @@ public class ToolbarPanel2 extends javax.swing.JPanel {
         jSeparator2 = new javax.swing.JToolBar.Separator();
         btnProduct = new javax.swing.JButton();
         jSeparator3 = new javax.swing.JToolBar.Separator();
-        jButton4 = new javax.swing.JButton();
+        btnInvoice = new javax.swing.JButton();
         jSeparator4 = new javax.swing.JToolBar.Separator();
         jButton5 = new javax.swing.JButton();
         jSeparator5 = new javax.swing.JToolBar.Separator();
@@ -87,16 +88,16 @@ public class ToolbarPanel2 extends javax.swing.JPanel {
         jToolBar1.add(btnProduct);
         jToolBar1.add(jSeparator3);
 
-        jButton4.setBackground(new java.awt.Color(255, 153, 102));
-        jButton4.setFont(new java.awt.Font("Segoe UI", 1, 16)); // NOI18N
-        jButton4.setForeground(new java.awt.Color(255, 51, 0));
-        jButton4.setIcon(new javax.swing.ImageIcon(getClass().getResource("/icon/invoice_64px.png"))); // NOI18N
-        jButton4.setText("Hóa Đơn");
-        jButton4.setFocusable(false);
-        jButton4.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
-        jButton4.setMargin(new java.awt.Insets(5, 20, 5, 20));
-        jButton4.setVerticalTextPosition(javax.swing.SwingConstants.BOTTOM);
-        jToolBar1.add(jButton4);
+        btnInvoice.setBackground(new java.awt.Color(255, 153, 102));
+        btnInvoice.setFont(new java.awt.Font("Segoe UI", 1, 16)); // NOI18N
+        btnInvoice.setForeground(new java.awt.Color(255, 51, 0));
+        btnInvoice.setIcon(new javax.swing.ImageIcon(getClass().getResource("/icon/invoice_64px.png"))); // NOI18N
+        btnInvoice.setText("Hóa Đơn");
+        btnInvoice.setFocusable(false);
+        btnInvoice.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
+        btnInvoice.setMargin(new java.awt.Insets(5, 20, 5, 20));
+        btnInvoice.setVerticalTextPosition(javax.swing.SwingConstants.BOTTOM);
+        jToolBar1.add(btnInvoice);
         jToolBar1.add(jSeparator4);
 
         jButton5.setBackground(new java.awt.Color(255, 153, 102));
@@ -139,8 +140,8 @@ public class ToolbarPanel2 extends javax.swing.JPanel {
     // Variables declaration - do not modify//GEN-BEGIN:variables
     public javax.swing.JButton btnCategory;
     public javax.swing.JButton btnDesk;
+    public javax.swing.JButton btnInvoice;
     public javax.swing.JButton btnProduct;
-    private javax.swing.JButton jButton4;
     private javax.swing.JButton jButton5;
     private javax.swing.JButton jButton6;
     private javax.swing.JToolBar.Separator jSeparator1;

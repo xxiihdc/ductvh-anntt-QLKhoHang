@@ -18,16 +18,16 @@ import utils.XJdbc;
  * @author ductr
  */
 public class ProductDAO extends WarehouseDAO<Product, String>{
-    final String INSERT = "INSERT INTO product (_name, image, status, note, "
-            + "product_group, product_type, product_unit, vendors_id) "
-            + "VALUES (?,?,?,?,?,?,?,?)";
+    final String INSERT = "INSERT INTO product (id,_name, image, status, note, "
+            + "product_group, product_type, product_unit, vendors_id, price) "
+            + "VALUES (?,?,?,?,?,?,?,?,?,?)";
     final String SELECT_ALL = "SELECT * FROM product";
     final String SELECT_BY_ID = "SELECT * FROM product where id = ?";
     @Override
     public void insert(Product entity) {
-        XJdbc.update(INSERT, entity.getName(),entity.getImage(),entity.isStatus(),
+        XJdbc.update(INSERT,entity.getId(), entity.getName(),entity.getImage(),entity.isStatus(),
                 entity.getNote(),entity.getProductGroupID(),entity.getProductTypeID(),
-                entity.getProductUnitID(),entity.getVendorID());
+                entity.getProductUnitID(),entity.getVendorID(),entity.getPrice());
     }
 
     @Override
@@ -68,6 +68,7 @@ public class ProductDAO extends WarehouseDAO<Product, String>{
                 p.setProductTypeID(rs.getInt(7));
                 p.setProductUnitID(rs.getString(8));
                 p.setVendorID(rs.getString(9));
+                p.setPrice(rs.getDouble(10));
                 lst.add(p);
             }
             rs.getStatement().getConnection().close();
@@ -81,6 +82,10 @@ public class ProductDAO extends WarehouseDAO<Product, String>{
         String query ="select id from product where id = ?";
         Object o = XJdbc.value(query, text);
         return o!=null;
+    }
+    public Product selectLast(){
+        String sql = "select top 1 * from product new";
+        return selectBySql(sql).get(0);
     }
     
 }

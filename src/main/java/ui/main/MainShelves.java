@@ -196,7 +196,8 @@ MouseListener ml = new MouseListener() {
         @Override
         public void mouseClicked(MouseEvent e) {
             shevles s = (shevles) e.getComponent();
-            new DetailsShelvesDialog(null,true).setVisible(true);
+            MsgBox.alert(null, s.getText());
+            new DetailsShelvesDialog(null,true,Integer.parseInt(s.getText())).setVisible(true);
 
         }
 

@@ -29,7 +29,7 @@ public class ToolbarPanel1 extends javax.swing.JPanel {
         jToolBar1 = new javax.swing.JToolBar();
         jButton1 = new javax.swing.JButton();
         jSeparator1 = new javax.swing.JToolBar.Separator();
-        jButton2 = new javax.swing.JButton();
+        btnUser = new javax.swing.JButton();
         jSeparator2 = new javax.swing.JToolBar.Separator();
         btnSetting = new javax.swing.JButton();
         jSeparator3 = new javax.swing.JToolBar.Separator();
@@ -53,15 +53,15 @@ public class ToolbarPanel1 extends javax.swing.JPanel {
         jToolBar1.add(jButton1);
         jToolBar1.add(jSeparator1);
 
-        jButton2.setFont(new java.awt.Font("Segoe UI", 1, 16)); // NOI18N
-        jButton2.setForeground(new java.awt.Color(255, 51, 0));
-        jButton2.setIcon(new javax.swing.ImageIcon(getClass().getResource("/icon/icons8-user-64.png"))); // NOI18N
-        jButton2.setText("Người Dùng");
-        jButton2.setFocusable(false);
-        jButton2.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
-        jButton2.setMargin(new java.awt.Insets(5, 20, 5, 20));
-        jButton2.setVerticalTextPosition(javax.swing.SwingConstants.BOTTOM);
-        jToolBar1.add(jButton2);
+        btnUser.setFont(new java.awt.Font("Segoe UI", 1, 16)); // NOI18N
+        btnUser.setForeground(new java.awt.Color(255, 51, 0));
+        btnUser.setIcon(new javax.swing.ImageIcon(getClass().getResource("/icon/icons8-user-64.png"))); // NOI18N
+        btnUser.setText("Người Dùng");
+        btnUser.setFocusable(false);
+        btnUser.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
+        btnUser.setMargin(new java.awt.Insets(5, 20, 5, 20));
+        btnUser.setVerticalTextPosition(javax.swing.SwingConstants.BOTTOM);
+        jToolBar1.add(btnUser);
         jToolBar1.add(jSeparator2);
 
         btnSetting.setFont(new java.awt.Font("Segoe UI", 1, 16)); // NOI18N
@@ -98,8 +98,8 @@ public class ToolbarPanel1 extends javax.swing.JPanel {
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     public javax.swing.JButton btnSetting;
+    public javax.swing.JButton btnUser;
     private javax.swing.JButton jButton1;
-    private javax.swing.JButton jButton2;
     private javax.swing.JToolBar.Separator jSeparator1;
     private javax.swing.JToolBar.Separator jSeparator2;
     private javax.swing.JToolBar.Separator jSeparator3;
@@ -108,6 +108,7 @@ public class ToolbarPanel1 extends javax.swing.JPanel {
 
     private void init() {
         btnSetting.setName("setting");
+        btnUser.setName("user");
     }
 
 }

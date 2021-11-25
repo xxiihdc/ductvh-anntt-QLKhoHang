@@ -17,6 +17,9 @@ public class ShelvesDetails {
         this.quantity = quantity;
     }
 
+    public ShelvesDetails() {
+    }
+    
     public int getId() {
         return id;
     }

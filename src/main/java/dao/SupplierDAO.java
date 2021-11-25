@@ -53,6 +53,7 @@ public class SupplierDAO extends WarehouseDAO<Supplier, String>{
             ResultSet rs = XJdbc.query(sql, args);
             while(rs.next()){
                 Supplier s = new Supplier();
+                s.setId(rs.getInt(1));
                 s.setName(rs.getString(2));
                 s.setAddress(rs.getString(3));
                 s.setPhone(rs.getString(4));

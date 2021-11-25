@@ -10,17 +10,35 @@ package entity;
  */
 public class InvoiceDetails {
     private int id,invoiceID,productBatchID,quantity;
-    private String shelves;
-    private double price;
+    private double price,discount;
+    private String productID;
 
     public InvoiceDetails() {
     }
 
-    public InvoiceDetails(int invoiceID, int productBatchID, int quantity, String shelves, double price) {
+    public double getDiscount() {
+        return discount;
+    }
+
+    public void setDiscount(double discount) {
+        this.discount = discount;
+    }
+    
+    public InvoiceDetails(String proID) {
+        this.productID= proID;
+    }
+    public String getProductID() {
+        return productID;
+    }
+
+    public void setProductID(String productID) {
+        this.productID = productID;
+    }
+
+    public InvoiceDetails(int invoiceID, int productBatchID, int quantity, double price) {
         this.invoiceID = invoiceID;
         this.productBatchID = productBatchID;
         this.quantity = quantity;
-        this.shelves = shelves;
         this.price = price;
     }
 
@@ -55,15 +73,6 @@ public class InvoiceDetails {
     public void setQuantity(int quantity) {
         this.quantity = quantity;
     }
-
-    public String getShelves() {
-        return shelves;
-    }
-
-    public void setShelves(String shelves) {
-        this.shelves = shelves;
-    }
-
     public double getPrice() {
         return price;
     }

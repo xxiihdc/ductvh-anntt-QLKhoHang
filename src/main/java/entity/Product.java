@@ -4,6 +4,8 @@
  */
 package entity;
 
+import java.util.Objects;
+
 /**
  *
  * @author ductr
@@ -12,6 +14,14 @@ public class Product {
     private int productGroupID,productTypeID;
     private String id,name,image,note,productUnitID,vendorID;
     private boolean status;
+    private double price;
+    public double getPrice() {
+        return price;
+    }
+
+    public void setPrice(double price) {
+        this.price = price;
+    }
 
     public Product() {
     }
@@ -97,4 +107,71 @@ public class Product {
     public void setVendorID(String vendorID) {
         this.vendorID = vendorID;
     }
+
+    @Override
+    public String toString() {
+        return "ID: "+id +": " +name;
+    }
+
+    @Override
+    public int hashCode() {
+        int hash = 3;
+        hash = 97 * hash + this.productGroupID;
+        hash = 97 * hash + this.productTypeID;
+        hash = 97 * hash + Objects.hashCode(this.id);
+        hash = 97 * hash + Objects.hashCode(this.name);
+        hash = 97 * hash + Objects.hashCode(this.image);
+        hash = 97 * hash + Objects.hashCode(this.note);
+        hash = 97 * hash + Objects.hashCode(this.productUnitID);
+        hash = 97 * hash + Objects.hashCode(this.vendorID);
+        hash = 97 * hash + (this.status ? 1 : 0);
+        hash = 97 * hash + (int) (Double.doubleToLongBits(this.price) ^ (Double.doubleToLongBits(this.price) >>> 32));
+        return hash;
+    }
+
+    @Override
+    public boolean equals(Object obj) {
+        if (this == obj) {
+            return true;
+        }
+        if (obj == null) {
+            return false;
+        }
+        if (getClass() != obj.getClass()) {
+            return false;
+        }
+        final Product other = (Product) obj;
+        if (this.productGroupID != other.productGroupID) {
+            return false;
+        }
+        if (this.productTypeID != other.productTypeID) {
+            return false;
+        }
+        if (this.status != other.status) {
+            return false;
+        }
+        if (Double.doubleToLongBits(this.price) != Double.doubleToLongBits(other.price)) {
+            return false;
+        }
+        if (!Objects.equals(this.id, other.id)) {
+            return false;
+        }
+        if (!Objects.equals(this.name, other.name)) {
+            return false;
+        }
+        if (!Objects.equals(this.image, other.image)) {
+            return false;
+        }
+        if (!Objects.equals(this.note, other.note)) {
+            return false;
+        }
+        if (!Objects.equals(this.productUnitID, other.productUnitID)) {
+            return false;
+        }
+        if (!Objects.equals(this.vendorID, other.vendorID)) {
+            return false;
+        }
+        return true;
+    }
+    
 }

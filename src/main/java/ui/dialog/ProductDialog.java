@@ -83,6 +83,8 @@ public class ProductDialog extends javax.swing.JDialog {
         jButton8 = new javax.swing.JButton();
         cbxUnit = new javax.swing.JComboBox<>();
         jButton5 = new javax.swing.JButton();
+        jLabel5 = new javax.swing.JLabel();
+        txtPrice = new javax.swing.JTextField();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
         setTitle("Thông Tin Sản Phẩm");
@@ -180,6 +182,11 @@ public class ProductDialog extends javax.swing.JDialog {
         jButton7.setFont(new java.awt.Font("Segoe UI", 1, 14)); // NOI18N
         jButton7.setIcon(new javax.swing.ImageIcon(getClass().getResource("/icon/pin_in_circle_30px.png"))); // NOI18N
         jButton7.setText("Lưu & Thoát");
+        jButton7.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton7ActionPerformed(evt);
+            }
+        });
 
         jButton8.setBackground(new java.awt.Color(255, 51, 51));
         jButton8.setFont(new java.awt.Font("Segoe UI", 1, 14)); // NOI18N
@@ -201,13 +208,33 @@ public class ProductDialog extends javax.swing.JDialog {
             }
         });
 
+        jLabel5.setFont(new java.awt.Font("Segoe UI", 1, 14)); // NOI18N
+        jLabel5.setText("Đơn giá:");
+
+        txtPrice.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
+
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
+                .addGap(98, 98, 98)
+                .addComponent(jButton6)
+                .addGap(55, 55, 55)
+                .addComponent(jButton7)
+                .addGap(71, 71, 71)
+                .addComponent(jButton8)
+                .addGap(0, 0, Short.MAX_VALUE))
+            .addGroup(layout.createSequentialGroup()
                 .addGap(26, 26, 26)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(layout.createSequentialGroup()
+                        .addComponent(jLabel8)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 79, Short.MAX_VALUE)
+                        .addComponent(rdoDangKinhDoanh)
+                        .addGap(18, 18, 18)
+                        .addComponent(rdoDungKD)
+                        .addGap(282, 282, 282))
                     .addGroup(layout.createSequentialGroup()
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addComponent(jScrollPane1)
@@ -219,14 +246,10 @@ public class ProductDialog extends javax.swing.JDialog {
                                     .addComponent(jLabel4)
                                     .addComponent(jLabel6)
                                     .addComponent(jLabel7)
-                                    .addComponent(jLabel8))
+                                    .addComponent(jLabel5))
                                 .addGap(36, 36, 36)
                                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                    .addGroup(layout.createSequentialGroup()
-                                        .addComponent(rdoDangKinhDoanh)
-                                        .addGap(18, 18, 18)
-                                        .addComponent(rdoDungKD)
-                                        .addGap(0, 32, Short.MAX_VALUE))
+                                    .addComponent(txtPrice)
                                     .addGroup(layout.createSequentialGroup()
                                         .addComponent(cbxUnit, 0, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
@@ -246,7 +269,7 @@ public class ProductDialog extends javax.swing.JDialog {
                                         .addComponent(jButton2, javax.swing.GroupLayout.PREFERRED_SIZE, 45, javax.swing.GroupLayout.PREFERRED_SIZE))
                                     .addComponent(txtName)
                                     .addComponent(txtID))
-                                .addGap(18, 18, 18)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                                     .addComponent(lblImg, javax.swing.GroupLayout.PREFERRED_SIZE, 222, javax.swing.GroupLayout.PREFERRED_SIZE)
                                     .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
@@ -256,14 +279,6 @@ public class ProductDialog extends javax.swing.JDialog {
                     .addGroup(layout.createSequentialGroup()
                         .addComponent(jLabel10)
                         .addGap(0, 0, Short.MAX_VALUE))))
-            .addGroup(layout.createSequentialGroup()
-                .addGap(103, 103, 103)
-                .addComponent(jButton6)
-                .addGap(51, 51, 51)
-                .addComponent(jButton7)
-                .addGap(66, 66, 66)
-                .addComponent(jButton8)
-                .addGap(0, 0, Short.MAX_VALUE))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -305,22 +320,26 @@ public class ProductDialog extends javax.swing.JDialog {
                                         .addComponent(jLabel7)
                                         .addComponent(cbxUnit, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                                     .addComponent(jButton5, javax.swing.GroupLayout.PREFERRED_SIZE, 26, javax.swing.GroupLayout.PREFERRED_SIZE))
-                                .addGap(21, 21, 21)
+                                .addGap(18, 18, 18)
                                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                                    .addComponent(jLabel8)
-                                    .addComponent(rdoDangKinhDoanh)
-                                    .addComponent(rdoDungKD))))
-                        .addGap(18, 18, 18)
-                        .addComponent(jLabel10))
+                                    .addComponent(jLabel5)
+                                    .addComponent(txtPrice, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))))
                     .addComponent(lblImg, javax.swing.GroupLayout.PREFERRED_SIZE, 240, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addGap(18, 18, 18)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(rdoDungKD)
+                    .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                        .addComponent(rdoDangKinhDoanh)
+                        .addComponent(jLabel8)))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 33, Short.MAX_VALUE)
+                .addComponent(jLabel10)
+                .addGap(18, 18, 18)
                 .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 187, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(jButton6)
+                    .addComponent(jButton8)
                     .addComponent(jButton7)
-                    .addComponent(jButton8))
-                .addContainerGap(60, Short.MAX_VALUE))
+                    .addComponent(jButton6)))
         );
 
         pack();
@@ -391,6 +410,21 @@ public class ProductDialog extends javax.swing.JDialog {
         }
     }//GEN-LAST:event_lblImgMousePressed
 
+    private void jButton7ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton7ActionPerformed
+        // TODO add your handling code here:
+        ProductDAO dao = new ProductDAO();
+        if (valid()) {
+            if (dao.hasID(txtID.getText())) {
+                update();
+                clearForm();
+            } else {
+                insert();
+                clearForm();
+            }
+
+        }
+    }//GEN-LAST:event_jButton7ActionPerformed
+
     /**
      * @param args the command line arguments
      */
@@ -451,6 +485,7 @@ public class ProductDialog extends javax.swing.JDialog {
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel3;
     private javax.swing.JLabel jLabel4;
+    private javax.swing.JLabel jLabel5;
     private javax.swing.JLabel jLabel6;
     private javax.swing.JLabel jLabel7;
     private javax.swing.JLabel jLabel8;
@@ -462,6 +497,7 @@ public class ProductDialog extends javax.swing.JDialog {
     private javax.swing.JTextField txtID;
     private javax.swing.JTextField txtName;
     private javax.swing.JTextArea txtNote;
+    private javax.swing.JTextField txtPrice;
     // End of variables declaration//GEN-END:variables
 
     private void fillComboBox() {
@@ -539,7 +575,7 @@ public class ProductDialog extends javax.swing.JDialog {
     }
 
     private void setForm(Product p) {
-        txtID.setText(p.getId() + "");
+        txtID.setText(p.getId());
         txtName.setText(p.getName());
         cbxProductGroup.setSelectedItem(new ProductGroupDAO().selectByID(p.getProductGroupID() + ""));
         cbxPT.setSelectedItem(new ProductTypeDAO().selectByID(p.getProductTypeID() + ""));
@@ -558,6 +594,7 @@ public class ProductDialog extends javax.swing.JDialog {
         }
         lblImg.setIcon(XImage.readImg(img));
         lblImg.setToolTipText(img);
+        txtPrice.setText(p.getPrice() + "");
     }
 
     private Product getForm() {
@@ -575,6 +612,7 @@ public class ProductDialog extends javax.swing.JDialog {
         p.setStatus(rdoDangKinhDoanh.isSelected());
         Vendor v = (Vendor) cbxVendor.getSelectedItem();
         p.setVendorID(v.getId());
+        p.setPrice(Double.parseDouble(txtPrice.getText()));
         return p;
     }
 }
