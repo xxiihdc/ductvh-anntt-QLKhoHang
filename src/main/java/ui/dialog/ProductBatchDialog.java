@@ -7,10 +7,10 @@ package ui.dialog;
 import dao.ProductBatchDAO;
 import dao.ShelvesDetailsDAO;
 import entity.ProductBatch;
-import entity.ProductGroup;
 import entity.ShelvesDetails;
 import java.util.List;
 import javax.swing.table.DefaultTableModel;
+import utils.Currency;
 
 /**
  *
@@ -28,11 +28,12 @@ public class ProductBatchDialog extends javax.swing.JDialog {
         initComponents();
         init();
         this.shelves = s;
-        fillTable();
+        
     }
 
     void init() {
         setLocationRelativeTo(null);
+        fillTable();
     }
 
     /**
@@ -59,11 +60,11 @@ public class ProductBatchDialog extends javax.swing.JDialog {
 
             },
             new String [] {
-                "ID", "Sản Phẩm", "Lô Hàng", "Số Lượng"
+                "ID", "Sản Phẩm", "Lô Hàng", "Số Lượng", "Đơn Giá"
             }
         ) {
             boolean[] canEdit = new boolean [] {
-                false, false, false, true
+                false, false, false, true, true
             };
 
             public boolean isCellEditable(int rowIndex, int columnIndex) {
@@ -120,13 +121,11 @@ public class ProductBatchDialog extends javax.swing.JDialog {
         ProductBatchDAO dao = new ProductBatchDAO();
         int rows []= tblProduct.getSelectedRows();
         for(int i = 0;i<rows.length;i++){
-            String proID = tblProduct.getValueAt(rows[i],1)+"";
             int quantity = Integer.parseInt(tblProduct.getValueAt(rows[i], 3)+"");
             int id = Integer.parseInt(tblProduct.getValueAt(rows[i], 0)+"");
             ProductBatch b = new ProductBatch();
             b.setId(id);
-            b.setProductID(proID);
-            b.setUnsortedProduct(dao.getQuantity(id)-quantity);
+            b.setQuantity(0);
             dao.update(b);
             
             ShelvesDetails s = new ShelvesDetails();
@@ -136,53 +135,19 @@ public class ProductBatchDialog extends javax.swing.JDialog {
             s.setQuantity(quantity);
             ShelvesDetailsDAO sdao = new ShelvesDetailsDAO();
             sdao.insert(s);
+            
+            
+            ShelvesDetails ss = sdao.selectByBatch(0, id);
+            if(ss.getQuantity()==quantity){
+                sdao.deleteDefault(id);
+            }else{
+                sdao.updateDefault(id,ss.getQuantity()-quantity);
+            }
         }
         fillTable();
         
     }//GEN-LAST:event_jButton1ActionPerformed
 
-    /**
-     * @param args the command line arguments
-     */
-//    public static void main(String args[]) {
-//        /* Set the Nimbus look and feel */
-//        //<editor-fold defaultstate="collapsed" desc=" Look and feel setting code (optional) ">
-//        /* If Nimbus (introduced in Java SE 6) is not available, stay with the default look and feel.
-//         * For details see http://download.oracle.com/javase/tutorial/uiswing/lookandfeel/plaf.html 
-//         */
-//        try {
-//            for (javax.swing.UIManager.LookAndFeelInfo info : javax.swing.UIManager.getInstalledLookAndFeels()) {
-//                if ("Nimbus".equals(info.getName())) {
-//                    javax.swing.UIManager.setLookAndFeel(info.getClassName());
-//                    break;
-//                }
-//            }
-//        } catch (ClassNotFoundException ex) {
-//            java.util.logging.Logger.getLogger(ProductBatchDialog.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-//        } catch (InstantiationException ex) {
-//            java.util.logging.Logger.getLogger(ProductBatchDialog.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-//        } catch (IllegalAccessException ex) {
-//            java.util.logging.Logger.getLogger(ProductBatchDialog.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-//        } catch (javax.swing.UnsupportedLookAndFeelException ex) {
-//            java.util.logging.Logger.getLogger(ProductBatchDialog.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-//        }
-//        //</editor-fold>
-//        //</editor-fold>
-//
-//        /* Create and display the dialog */
-//        java.awt.EventQueue.invokeLater(new Runnable() {
-//            public void run() {
-//                ProductBatchDialog dialog = new ProductBatchDialog(new javax.swing.JFrame(), true);
-//                dialog.addWindowListener(new java.awt.event.WindowAdapter() {
-//                    @Override
-//                    public void windowClosing(java.awt.event.WindowEvent e) {
-//                        System.exit(0);
-//                    }
-//                });
-//                dialog.setVisible(true);
-//            }
-//        });
-//    }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton jButton1;
@@ -199,7 +164,8 @@ public class ProductBatchDialog extends javax.swing.JDialog {
         for (ProductBatch s : lst) {
             Object[] data = new Object[]{
                 s.getId(),
-                s.getProductID(), s.getEnteredDate(),s.getUnsortedProduct()
+                s.getProductName(), s.getEnteredDate(),s.getQuantity(),
+                Currency.getCurrency(s.getPrice())
             };
             model.addRow(data);
         }

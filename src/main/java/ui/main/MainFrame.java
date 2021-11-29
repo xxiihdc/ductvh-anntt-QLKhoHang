@@ -4,13 +4,18 @@
  */
 package ui.main;
 
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 import ui.main.category.Category;
 import ui.*;
 import ui.dialog.SettingDialog;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 import javax.swing.JButton;
 import javax.swing.JPanel;
+import javax.swing.Timer;
 import ui.dialog.LoginJDialog;
 import utils.Auth;
 import utils.XImage;
@@ -38,6 +43,14 @@ public class MainFrame extends javax.swing.JFrame {
         selectToolBarPanel(t1);
         openLogin();
         txtStaff.setText(Auth.user.getName());
+                    new Timer(1000, new ActionListener() {
+                SimpleDateFormat format = new SimpleDateFormat("hh:mm:ss a");
+                @Override
+                public void actionPerformed(ActionEvent e) {
+                    lblTime.setText(format.format(new Date()));
+                    
+                }
+            }).start();
     }
 
     /**
@@ -52,7 +65,7 @@ public class MainFrame extends javax.swing.JFrame {
         jMenuItem1 = new javax.swing.JMenuItem();
         jPanel1 = new javax.swing.JPanel();
         jLabel1 = new javax.swing.JLabel();
-        jLabel2 = new javax.swing.JLabel();
+        lblTime = new javax.swing.JLabel();
         mainPanel = new javax.swing.JPanel();
         jLabel3 = new javax.swing.JLabel();
         toolbarPanel = new javax.swing.JPanel();
@@ -72,7 +85,9 @@ public class MainFrame extends javax.swing.JFrame {
 
         jLabel1.setText("WAREHOUSE MANAGEMENT SYSTEM");
 
-        jLabel2.setText("jLabel2");
+        lblTime.setFont(new java.awt.Font("Tahoma", 0, 14)); // NOI18N
+        lblTime.setIcon(new javax.swing.ImageIcon(getClass().getResource("/icon/atime_20px.png"))); // NOI18N
+        lblTime.setText("jLabel2");
 
         javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
         jPanel1.setLayout(jPanel1Layout);
@@ -82,7 +97,7 @@ public class MainFrame extends javax.swing.JFrame {
                 .addContainerGap()
                 .addComponent(jLabel1)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                .addComponent(jLabel2)
+                .addComponent(lblTime)
                 .addGap(27, 27, 27))
         );
         jPanel1Layout.setVerticalGroup(
@@ -91,8 +106,8 @@ public class MainFrame extends javax.swing.JFrame {
                 .addContainerGap()
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel1)
-                    .addComponent(jLabel2))
-                .addContainerGap(15, Short.MAX_VALUE))
+                    .addComponent(lblTime))
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
 
         mainPanel.setBackground(new java.awt.Color(255, 102, 255));
@@ -168,7 +183,7 @@ public class MainFrame extends javax.swing.JFrame {
                     .addGroup(jPanel2Layout.createSequentialGroup()
                         .addGap(42, 42, 42)
                         .addComponent(txtStaff, javax.swing.GroupLayout.PREFERRED_SIZE, 235, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                .addContainerGap(37, Short.MAX_VALUE))
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
         jPanel2Layout.setVerticalGroup(
             jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -189,12 +204,12 @@ public class MainFrame extends javax.swing.JFrame {
                     .addComponent(jToolBar1, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                     .addComponent(jPanel1, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                     .addGroup(javax.swing.GroupLayout.Alignment.LEADING, layout.createSequentialGroup()
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
                             .addComponent(mainPanel, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                             .addGroup(javax.swing.GroupLayout.Alignment.LEADING, layout.createSequentialGroup()
                                 .addComponent(toolbarPanel, javax.swing.GroupLayout.PREFERRED_SIZE, 886, javax.swing.GroupLayout.PREFERRED_SIZE)
                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                                .addComponent(jPanel2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                                .addComponent(jPanel2, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)))
                         .addGap(0, 0, Short.MAX_VALUE)))
                 .addContainerGap())
         );
@@ -229,6 +244,7 @@ public class MainFrame extends javax.swing.JFrame {
         t2.btnDesk.addMouseListener(ml);
         t2.btnProduct.addMouseListener(ml);
         t2.btnInvoice.addMouseListener(ml);
+        t2.btnExport.addMouseListener(ml);
         selectToolBarPanel(t2);
     }//GEN-LAST:event_jButton2ActionPerformed
 
@@ -279,13 +295,13 @@ public class MainFrame extends javax.swing.JFrame {
     private javax.swing.JButton jButton2;
     private javax.swing.JButton jButton3;
     private javax.swing.JLabel jLabel1;
-    private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel3;
     private javax.swing.JLabel jLabel4;
     private javax.swing.JMenuItem jMenuItem1;
     private javax.swing.JPanel jPanel1;
     private javax.swing.JPanel jPanel2;
     private javax.swing.JToolBar jToolBar1;
+    private javax.swing.JLabel lblTime;
     private javax.swing.JPanel mainPanel;
     private javax.swing.JPanel toolbarPanel;
     private javax.swing.JLabel txtStaff;
@@ -316,7 +332,6 @@ public class MainFrame extends javax.swing.JFrame {
             switch (name) {
                 case "category":
                     selectMainPanel(new Category());
-                    //  c.selectPanel(new MainShelves());
                     break;
                 case "desk":
                     selectMainPanel(new MainShelves());
@@ -331,7 +346,9 @@ public class MainFrame extends javax.swing.JFrame {
                     selectMainPanel(new InvoicePanel());
                     break;
                 case "user":
-                    
+                    break;
+                case "export":
+                    selectMainPanel(new ExportPanel());
                     break;
             }
         }

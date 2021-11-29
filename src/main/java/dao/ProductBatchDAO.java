@@ -11,6 +11,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import javax.naming.spi.DirStateFactory;
 import utils.XJdbc;
 
 /**
@@ -19,19 +20,23 @@ import utils.XJdbc;
  */
 public class ProductBatchDAO extends WarehouseDAO<ProductBatch, String>{
     final String INSERT = "INSERT INTO product_batch (product_id, "
-            + "quantity, price, supplier_id,unsortedProduct,entered_date) VALUES (?,?,?,?,?,?)";
+            + "quantity, price, supplier_id,entered_date) VALUES (?,?,?,?,?)";
     final String SELECT_ALL = "select * from product_batch";
-    final String UPDATE = "UPDATE product_batch SET unsortedProduct = ? where id = ?";
+    final String UPDATE = "UPDATE product_batch SET "
+            + "quantity=? where id = ?";
+    final String SELECT_BY_ID ="select * from product_batch where id = ?";
     @Override
     public void insert(ProductBatch entity) {
         XJdbc.update(INSERT, entity.getProductID(),entity.getQuantity(),
-                entity.getPrice(),entity.getSupplierID(),entity.getUnsortedProduct(),
+                entity.getPrice(),entity.getSupplierID(),
                 entity.getEnteredDate());
     }
 
     @Override
     public void update(ProductBatch entity) {
-        XJdbc.update(UPDATE, entity.getUnsortedProduct(),entity.getId());
+        ProductBatch p = this.selectByID(entity.getId()+"");
+        XJdbc.update(UPDATE,
+                p.getQuantity()+entity.getQuantity(),entity.getId());
     }
 
     @Override
@@ -46,7 +51,7 @@ public class ProductBatchDAO extends WarehouseDAO<ProductBatch, String>{
 
     @Override
     public ProductBatch selectByID(String id) {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+        return selectBySql(SELECT_BY_ID, id).get(0);
     }
 
     @Override
@@ -63,7 +68,6 @@ public class ProductBatchDAO extends WarehouseDAO<ProductBatch, String>{
                 p.setSupplierID(rs.getInt(5));
                 p.setEnteredDate(rs.getDate(6));
                 p.setNote(rs.getString(7));
-                p.setUnsortedProduct(rs.getInt(8));
                 lst.add(p);
             }
             rs.getStatement().getConnection().close();
@@ -75,7 +79,8 @@ public class ProductBatchDAO extends WarehouseDAO<ProductBatch, String>{
     public int getBatch(){
         String query = "select top 1 id from product_batch order by id desc";
         Object o = XJdbc.value(query);
-        return (int) o;
+         if(o!=null )return (int) o;
+         return 1;
     }
     public int getQuantity(int id){
         String query = "select quantity from product_batch where id = ?";
@@ -83,7 +88,27 @@ public class ProductBatchDAO extends WarehouseDAO<ProductBatch, String>{
         return (int) o;
     }
     public List<ProductBatch> selectUnsorted(){
-        String query = "select * from product_batch where unsortedProduct > 0";
-        return selectBySql(query);
+        try {
+            List<ProductBatch> lst = new ArrayList<>();
+            String query = "select * from shelves_details where shelves_id = 0";
+            ResultSet rs = XJdbc.query(query);
+            while(rs.next()){
+                int batchID = rs.getInt(3);
+                ProductBatch p = selectByID(batchID+"");
+                p.setQuantity(rs.getInt(4));
+                lst.add(p);
+            }
+            return lst;
+        } catch (SQLException ex) {
+            throw new RuntimeException(ex);
+        }
+    }
+    public int hasBatch(ProductBatch b){
+        String query = "select * from product_batch where product_id = ? and price = ? and"
+                + " supplier_id = ? and entered_date =?";
+        Object o = XJdbc.value(query, b.getProductID(),b.getPrice(),
+                b.getSupplierID(),b.getEnteredDate());
+        if(o!=null) return (int) o;
+        return -1;
     }
 }

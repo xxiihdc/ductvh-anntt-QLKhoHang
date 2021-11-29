@@ -8,6 +8,7 @@ import dao.ShelvesDetailsDAO;
 import entity.ProductGroup;
 import entity.ShelvesDetails;
 import java.util.List;
+import java.util.Vector;
 import javax.swing.table.DefaultTableModel;
 import utils.MsgBox;
 
@@ -28,10 +29,12 @@ public class DetailsShelvesDialog extends javax.swing.JDialog {
         this.shelves = s;
         init();
     }
-    void init(){
+
+    void init() {
         setLocationRelativeTo(null);
         fillTable(shelves);
     }
+
     /**
      * This method is called from within the constructor to initialize the form.
      * WARNING: Do NOT modify this code. The content of this method is always
@@ -256,17 +259,21 @@ public class DetailsShelvesDialog extends javax.swing.JDialog {
     // End of variables declaration//GEN-END:variables
 
     private void fillTable(int shelves) {
-        MsgBox.alert(null, shelves+"A");
+//        ShelvesDetailsDAO dao = new ShelvesDetailsDAO();
+//        DefaultTableModel model = (DefaultTableModel) tblProduct.getModel();
+//        model.setRowCount(0);
+//        List<ShelvesDetails> lst = dao.selectByID(shelves);
+//        for (ShelvesDetails s : lst) {
+//            Object[] data = new Object[]{
+//                s.getShelvesID(),s.getProductBatchID(),"A",s.getQuantity()
+//            };
+//            model.addRow(data);
+//        }
+//        lblRecord.setText("0/" + tblProduct.getRowCount());
         ShelvesDetailsDAO dao = new ShelvesDetailsDAO();
-        DefaultTableModel model = (DefaultTableModel) tblProduct.getModel();
-        model.setRowCount(0);
-        List<ShelvesDetails> lst = dao.selectByID(shelves);
-        for (ShelvesDetails s : lst) {
-            Object[] data = new Object[]{
-                s.getShelvesID(),s.getProductBatchID(),"A",s.getQuantity()
-            };
-            model.addRow(data);
-        }
-        lblRecord.setText("0/" + tblProduct.getRowCount());
+        Vector<String> head = dao.getHead();
+        Vector data = dao.selectByKho(shelves);
+        DefaultTableModel model = new DefaultTableModel(data,head);
+        tblProduct.setModel(model);
     }
 }

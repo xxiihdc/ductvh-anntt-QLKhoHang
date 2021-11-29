@@ -8,11 +8,14 @@ import dao.InvoiceDAO;
 import dao.InvoiceDetailsDAO;
 import dao.ProductBatchDAO;
 import dao.ProductDAO;
+import dao.ShelvesDetailsDAO;
 import dao.SupplierDAO;
 import entity.Invoice;
 import entity.InvoiceDetails;
 import entity.Product;
 import entity.ProductBatch;
+import entity.ShelvesDetails;
+import entity.Staff;
 import entity.Supplier;
 import java.util.ArrayList;
 import java.util.Date;
@@ -23,6 +26,7 @@ import javax.swing.event.CaretEvent;
 import javax.swing.event.CaretListener;
 import javax.swing.table.DefaultTableModel;
 import utils.Auth;
+import utils.Currency;
 import utils.MsgBox;
 import utils.Xdate;
 
@@ -38,6 +42,7 @@ public class InvoiceDetailsDialog extends javax.swing.JDialog {
     DefaultTableModel model;
     InvoiceDAO dao;
     List<Product> lst;
+    boolean add;
 
     public InvoiceDetailsDialog(java.awt.Frame parent, boolean modal) {
         super(parent, modal);
@@ -46,6 +51,7 @@ public class InvoiceDetailsDialog extends javax.swing.JDialog {
     }
 
     void init() {
+        add = true;
         lst = new ArrayList<>();
         dao = new InvoiceDAO();
         model = (DefaultTableModel) tblDetails.getModel();
@@ -55,7 +61,7 @@ public class InvoiceDetailsDialog extends javax.swing.JDialog {
         Date date = new Date();
         String sDate = Xdate.toString(date, "dd-MM-yyyy");
         txtDate.setText(sDate);
-        txtID.setText(dao.getID() + "");
+        txtID.setText("(Phiếu mới)");
         txtStaff.setText(Auth.user.getId());
         addEvt();
     }
@@ -158,7 +164,7 @@ public class InvoiceDetailsDialog extends javax.swing.JDialog {
         jScrollPane1.setViewportView(txtNote);
 
         cbxThanhToan.setFont(new java.awt.Font("Tahoma", 0, 14)); // NOI18N
-        cbxThanhToan.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Thanh toán đầy đủ", "Thanh toán một phần", "Chưa thanh toán" }));
+        cbxThanhToan.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Chọn Phương Thức TT", "Thanh toán đầy đủ", "Thanh toán một phần", "Chưa thanh toán" }));
         cbxThanhToan.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 cbxThanhToanActionPerformed(evt);
@@ -171,7 +177,13 @@ public class InvoiceDetailsDialog extends javax.swing.JDialog {
         cbxPayment.setFont(new java.awt.Font("Tahoma", 0, 14)); // NOI18N
         cbxPayment.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Tiền mặt", "Ngân hàng", "Khác" }));
 
+        txtSoTienTT.setEditable(false);
         txtSoTienTT.setFont(new java.awt.Font("Tahoma", 0, 14)); // NOI18N
+        txtSoTienTT.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyTyped(java.awt.event.KeyEvent evt) {
+                txtSoTienTTKeyTyped(evt);
+            }
+        });
 
         jLabel11.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
         jLabel11.setText("Số tiền TT:");
@@ -179,6 +191,7 @@ public class InvoiceDetailsDialog extends javax.swing.JDialog {
         jLabel12.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
         jLabel12.setText("Số tiền nợ:");
 
+        txtNo.setEditable(false);
         txtNo.setFont(new java.awt.Font("Tahoma", 0, 14)); // NOI18N
 
         javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
@@ -230,7 +243,7 @@ public class InvoiceDetailsDialog extends javax.swing.JDialog {
                     .addGroup(jPanel1Layout.createSequentialGroup()
                         .addComponent(jLabel6)
                         .addGap(0, 0, Short.MAX_VALUE))
-                    .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 466, Short.MAX_VALUE))
+                    .addComponent(jScrollPane1))
                 .addContainerGap())
         );
         jPanel1Layout.setVerticalGroup(
@@ -267,7 +280,7 @@ public class InvoiceDetailsDialog extends javax.swing.JDialog {
                     .addGroup(jPanel1Layout.createSequentialGroup()
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 0, Short.MAX_VALUE)))
-                .addContainerGap(16, Short.MAX_VALUE))
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
 
         jList1.setSelectionMode(javax.swing.ListSelectionModel.SINGLE_SELECTION);
@@ -278,6 +291,7 @@ public class InvoiceDetailsDialog extends javax.swing.JDialog {
         });
         jScrollPane2.setViewportView(jList1);
 
+        jButton2.setIcon(new javax.swing.ImageIcon(getClass().getResource("/icon/Done_30px.png"))); // NOI18N
         jButton2.setText("THÊM VÀO HÓA ĐƠN");
         jButton2.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -285,7 +299,8 @@ public class InvoiceDetailsDialog extends javax.swing.JDialog {
             }
         });
 
-        jButton8.setText("THEM SP");
+        jButton8.setIcon(new javax.swing.ImageIcon(getClass().getResource("/icon/add_30px.png"))); // NOI18N
+        jButton8.setText("SP MỚI");
         jButton8.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 jButton8ActionPerformed(evt);
@@ -296,9 +311,9 @@ public class InvoiceDetailsDialog extends javax.swing.JDialog {
         jPanel2.setLayout(jPanel2Layout);
         jPanel2Layout.setHorizontalGroup(
             jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(jScrollPane2, javax.swing.GroupLayout.DEFAULT_SIZE, 297, Short.MAX_VALUE)
+            .addComponent(jScrollPane2, javax.swing.GroupLayout.DEFAULT_SIZE, 349, Short.MAX_VALUE)
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel2Layout.createSequentialGroup()
-                .addGap(24, 24, 24)
+                .addContainerGap()
                 .addComponent(jButton8)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                 .addComponent(jButton2)
@@ -400,7 +415,14 @@ public class InvoiceDetailsDialog extends javax.swing.JDialog {
         });
         jScrollPane3.setViewportView(tblDetails);
 
+        jButton3.setBackground(new java.awt.Color(255, 0, 0));
+        jButton3.setIcon(new javax.swing.ImageIcon(getClass().getResource("/icon/delete_30px.png"))); // NOI18N
         jButton3.setText("XÓA");
+        jButton3.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton3ActionPerformed(evt);
+            }
+        });
 
         javax.swing.GroupLayout jPanel4Layout = new javax.swing.GroupLayout(jPanel4);
         jPanel4.setLayout(jPanel4Layout);
@@ -420,11 +442,12 @@ public class InvoiceDetailsDialog extends javax.swing.JDialog {
                 .addComponent(jScrollPane3, javax.swing.GroupLayout.PREFERRED_SIZE, 410, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(18, 18, 18)
                 .addComponent(jButton3)
-                .addContainerGap(14, Short.MAX_VALUE))
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
 
         jPanel5.setBorder(new javax.swing.border.SoftBevelBorder(javax.swing.border.BevelBorder.RAISED));
 
+        jButton4.setIcon(new javax.swing.ImageIcon(getClass().getResource("/icon/save_30px.png"))); // NOI18N
         jButton4.setText("LƯU HÓA ĐƠN");
         jButton4.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -432,26 +455,34 @@ public class InvoiceDetailsDialog extends javax.swing.JDialog {
             }
         });
 
+        jButton5.setIcon(new javax.swing.ImageIcon(getClass().getResource("/icon/pay_30px.png"))); // NOI18N
         jButton5.setText("THANH TOÁN NỢ");
 
+        jButton6.setIcon(new javax.swing.ImageIcon(getClass().getResource("/icon/print_30px.png"))); // NOI18N
         jButton6.setText("IN");
 
+        jButton7.setIcon(new javax.swing.ImageIcon(getClass().getResource("/icon/refresh_30px.png"))); // NOI18N
         jButton7.setText("LÀM MỚI");
+        jButton7.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton7ActionPerformed(evt);
+            }
+        });
 
         javax.swing.GroupLayout jPanel5Layout = new javax.swing.GroupLayout(jPanel5);
         jPanel5.setLayout(jPanel5Layout);
         jPanel5Layout.setHorizontalGroup(
             jPanel5Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel5Layout.createSequentialGroup()
-                .addGap(53, 53, 53)
+                .addGap(23, 23, 23)
                 .addComponent(jButton4)
-                .addGap(62, 62, 62)
+                .addGap(32, 32, 32)
                 .addComponent(jButton5)
-                .addGap(44, 44, 44)
+                .addGap(38, 38, 38)
                 .addComponent(jButton6, javax.swing.GroupLayout.PREFERRED_SIZE, 91, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addGap(51, 51, 51)
                 .addComponent(jButton7)
-                .addGap(47, 47, 47))
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
         jPanel5Layout.setVerticalGroup(
             jPanel5Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -495,9 +526,9 @@ public class InvoiceDetailsDialog extends javax.swing.JDialog {
                     .addComponent(jPanel2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(jPanel4, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addGap(18, 18, 18)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(jPanel5, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(jPanel3, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                    .addComponent(jPanel5, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addComponent(jPanel3, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                 .addGap(27, 27, 27))
         );
 
@@ -528,19 +559,7 @@ public class InvoiceDetailsDialog extends javax.swing.JDialog {
                     tblDetails.setValueAt(0, row, 2);
                     return;
                 }
-                double totalPrice = Integer.parseInt(quantity)
-                        * Double.parseDouble(tblDetails.getValueAt(row, 3) + "");
-                tblDetails.setValueAt(totalPrice, row, 4);
-                double sum = 0;
-                double ck = 0;
-                for (int i = 0; i < tblDetails.getRowCount(); i++) {
-                    sum += Double.parseDouble(tblDetails.getValueAt(i, 4) + "");
-                    ck += Double.parseDouble(tblDetails.getValueAt(i, 4) + "")
-                            * Double.parseDouble(tblDetails.getValueAt(i, 5) + "") / 100;
-                }
-                txtTotalPrice.setText(sum + "");
-                txtCK.setText(ck + "");
-                txtThanhToan.setText(sum - ck + "");
+                fillDetails();
             }
         }
     }//GEN-LAST:event_tblDetailsPropertyChange
@@ -552,10 +571,10 @@ public class InvoiceDetailsDialog extends javax.swing.JDialog {
 
     private void jList1MousePressed(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jList1MousePressed
         // TODO add your handling code here:
-        if (evt.getClickCount()==2){
-        addProduct();    
+        if (evt.getClickCount() == 2) {
+            addProduct();
         }
-        
+
     }//GEN-LAST:event_jList1MousePressed
 
     private void jButton4ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton4ActionPerformed
@@ -563,12 +582,22 @@ public class InvoiceDetailsDialog extends javax.swing.JDialog {
         InvoiceDAO dao = new InvoiceDAO();
         dao.insert(getInvoice());
         getInvoiceDetails();
+        lst.clear();
+
     }//GEN-LAST:event_jButton4ActionPerformed
 
     private void cbxThanhToanActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_cbxThanhToanActionPerformed
         // TODO add your handling code here:
-        if (cbxThanhToan.getSelectedIndex() == 0) {
+        int i = cbxThanhToan.getSelectedIndex();
+        if (i == 1) {
             txtSoTienTT.setText(txtThanhToan.getText());
+            txtSoTienTT.setEditable(false);
+        } else if (i == 2) {
+            txtSoTienTT.setEditable(true);
+        } else if (i == 3) {
+            txtSoTienTT.setText("0");
+            txtNo.setText(txtThanhToan.getText());
+            txtSoTienTT.setEditable(false);
         }
     }//GEN-LAST:event_cbxThanhToanActionPerformed
 
@@ -579,6 +608,32 @@ public class InvoiceDetailsDialog extends javax.swing.JDialog {
         ProductDAO dao = new ProductDAO();
         fillList();
     }//GEN-LAST:event_jButton8ActionPerformed
+
+    private void txtSoTienTTKeyTyped(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_txtSoTienTTKeyTyped
+        // TODO add your handling code here:
+        char k = evt.getKeyChar();
+        if (!Character.isDigit(k)) {
+            evt.consume();
+        }
+    }//GEN-LAST:event_txtSoTienTTKeyTyped
+
+    private void jButton3ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton3ActionPerformed
+        // TODO add your handling code here:
+        if (!lst.isEmpty()) {
+            lst.remove(tblDetails.getSelectedRow());
+            DefaultTableModel model = (DefaultTableModel) tblDetails.getModel();
+            model.removeRow(tblDetails.getSelectedRow());
+            model.fireTableDataChanged();
+            fillDetails();
+        }
+    }//GEN-LAST:event_jButton3ActionPerformed
+
+    private void jButton7ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton7ActionPerformed
+        // TODO add your handling code here:
+        InvoiceDAO idao = new InvoiceDAO();
+        Invoice i = idao.selectByID(5 + "");
+        setForm(i);
+    }//GEN-LAST:event_jButton7ActionPerformed
 
     /**
      * @param args the command line arguments
@@ -691,9 +746,10 @@ public class InvoiceDetailsDialog extends javax.swing.JDialog {
     private Invoice getInvoice() {
         Invoice i = new Invoice();
         i.setCreateDate(new Date());
-        i.setAmount(Double.parseDouble(txtThanhToan.getText()));
-        i.setDebt(Double.parseDouble(txtNo.getText()));
-        i.setDiscount(Double.parseDouble(txtCK.getText()));
+        String tongTienHoaDon = txtThanhToan.getText();
+        i.setAmount(Currency.getDouble(tongTienHoaDon));
+        i.setDebt(Currency.getDouble(txtNo.getText()));
+        i.setDiscount(Currency.getDouble(txtCK.getText()));
         i.setNote(txtNote.getText());
         i.setPaymentMethod(cbxPayment.getSelectedItem() + "");
         i.setStaffID(txtStaff.getText());
@@ -706,35 +762,57 @@ public class InvoiceDetailsDialog extends javax.swing.JDialog {
         txtSoTienTT.addCaretListener(new CaretListener() {
             @Override
             public void caretUpdate(CaretEvent e) {
-                double tongThanhToan = Double.parseDouble(txtThanhToan.getText());
-                double soTienTT = Double.parseDouble(txtSoTienTT.getText());
-                txtNo.setText(tongThanhToan - soTienTT + "");
+                try {
+                    double tongThanhToan = Double.parseDouble(txtThanhToan.getText());
+                    double soTienTT = Double.parseDouble(txtSoTienTT.getText());
+                    txtNo.setText(tongThanhToan - soTienTT + "");
+                } catch (Exception ex) {
+
+                }
+
             }
         });
     }
 
     private void getInvoiceDetails() {
+        if (!valid()) {
+            return;
+        }
         InvoiceDetailsDAO iddao = new InvoiceDetailsDAO();
         ProductBatchDAO bdao = new ProductBatchDAO();
         InvoiceDAO idao = new InvoiceDAO();
+        ShelvesDetailsDAO sdao = new ShelvesDetailsDAO();
         for (int i = 0; i < tblDetails.getRowCount(); i++) {
-            
             ProductBatch pb = new ProductBatch();
             String date = txtDate.getText();
-            pb.setEnteredDate(Xdate.toDate(date,"dd-MM-yyyy"));
+            pb.setEnteredDate(Xdate.toDate(date, "dd-MM-yyyy"));
             pb.setNote("");
-            pb.setPrice(Double.parseDouble(tblDetails.getValueAt(i,3)+""));
+            double gia = Currency.getDouble(tblDetails.getValueAt(i, 3) + "");
+            double price = gia-gia*Double.parseDouble(tblDetails.getValueAt(i, 5) + "")/100;
+            //pb.setPrice(Curerency.getDouble(tblDetails.getValueAt(i, 3) + ""));
+            pb.setPrice(price);
             pb.setProductID(lst.get(i).getId());
-            pb.setQuantity(Integer.parseInt(tblDetails.getValueAt(i, 2)+""));
+            pb.setQuantity(Integer.parseInt(tblDetails.getValueAt(i, 2) + ""));
             Supplier s = (Supplier) cbxSupplier.getSelectedItem();
             pb.setSupplierID(s.getId());
-            pb.setUnsortedProduct(pb.getQuantity());
-            bdao.insert(pb);
-            
+            int batchId = bdao.hasBatch(pb);
+            if (batchId != -1) {
+                pb.setId(batchId);
+                bdao.update(pb);
+                sdao.updateDefault(batchId, pb.getQuantity());
+            } else {
+                bdao.insert(pb);
+                ShelvesDetails sd = new ShelvesDetails();
+                sd.setShelvesID(0);
+                sd.setProductBatchID(bdao.getBatch());
+                sd.setQuantity(pb.getQuantity());
+                sdao.insert(sd);
+            }
+
             InvoiceDetails iv = new InvoiceDetails();
-            iv.setDiscount(Double.parseDouble(tblDetails.getValueAt(i,5)+""));
+            iv.setDiscount(Double.parseDouble(tblDetails.getValueAt(i, 5) + ""));
             iv.setInvoiceID(idao.getLastID());
-            iv.setPrice(Double.parseDouble(tblDetails.getValueAt(i,3)+""));
+            iv.setPrice(Currency.getDouble(tblDetails.getValueAt(i, 3) + ""));
             iv.setProductBatchID(bdao.getBatch());
             iv.setQuantity(pb.getQuantity());
             iv.setProductID(lst.get(i).getId());
@@ -743,6 +821,10 @@ public class InvoiceDetailsDialog extends javax.swing.JDialog {
     }
 
     private void addProduct() {
+        if (!add) {
+            MsgBox.alert(null, "Ban khong the chinh sua hoa don");
+            return;
+        }
         Product p = jList1.getSelectedValue();
         if (p != null) {
             DefaultListModel modelList = (DefaultListModel) jList1.getModel();
@@ -752,10 +834,118 @@ public class InvoiceDetailsDialog extends javax.swing.JDialog {
             }
             InvoiceDetails iv = new InvoiceDetails(p.getId());
             Object[] row = new Object[]{
-                p.getName(), p.getProductUnitID(), 1, p.getPrice(), p.getPrice(), 0
+                p.getName(), p.getProductUnitID(), 1, Currency.getCurrency(p.getPrice()),
+                Currency.getCurrency(p.getPrice()), 0
             };
             model.addRow(row);
             lst.add(p);
+            fillDetails2();
+        }
+    }
+
+    private boolean valid() {
+        String msg = "";
+        int s = cbxThanhToan.getSelectedIndex();
+        if (s == 0) {
+            msg += "Chọn phương thức thanh toán";
+        }
+        return true;
+    }
+
+    private void fillDetails() {
+
+        double sum = 0;
+        double ck = 0;
+        for (int i = 0; i < tblDetails.getRowCount(); i++) {
+            String quantity = tblDetails.getValueAt(i, 2) + "";
+            double totalPrice = Integer.parseInt(quantity)
+                    * lst.get(i).getPrice();
+            tblDetails.setValueAt(Currency.getCurrency(totalPrice), i, 4);
+            double thanhTien = lst.get(i).getPrice()
+                    * Integer.parseInt(tblDetails.getValueAt(i, 2) + "");
+            sum += thanhTien;
+            ck += thanhTien
+                    * Double.parseDouble(tblDetails.getValueAt(i, 5) + "") / 100;
+        }
+        txtTotalPrice.setText(Currency.getCurrency(sum));
+        txtCK.setText(Currency.getCurrency(ck));
+        txtThanhToan.setText(Currency.getCurrency(sum - ck));
+    }
+
+    private void fillDetails2() {
+        if (lst.size() == 1) {
+            txtTotalPrice.setText(Currency.getCurrency(lst.get(0).getPrice()));
+            txtThanhToan.setText(txtTotalPrice.getText());
+        } else {
+            double totalPrice = Currency.getDouble(txtTotalPrice.getText());
+            Product p = lst.get(lst.size() - 1);
+            totalPrice += p.getPrice();
+            txtTotalPrice.setText(Currency.getCurrency(totalPrice));
+            double ck = Currency.getDouble(txtCK.getText());
+            txtThanhToan.setText(Currency.getCurrency(totalPrice - ck));
+        }
+        int i = cbxThanhToan.getSelectedIndex();
+        switch (i) {
+            case 1:
+                txtSoTienTT.setText(txtThanhToan.getText());
+                break;
+            case 2:
+                txtSoTienTT.setText("0");
+                txtNo.setText(txtThanhToan.getText());
+                break;
+            case 3:
+                txtSoTienTT.setText("0");
+                txtNo.setText(txtThanhToan.getText());
+                break;
+        }
+    }
+
+    public void setForm(Invoice i) {
+        txtID.setText(i.getId() + "");
+        txtStaff.setText(i.getStaffID());
+        String payment = i.getPaymentMethod();
+        if (payment.equalsIgnoreCase("Tiền mặt")) {
+            cbxPayment.setSelectedIndex(0);
+        } else if (payment.equalsIgnoreCase("Ngân hàng")) {
+            cbxPayment.setSelectedIndex(1);
+        } else {
+            cbxPayment.setSelectedIndex(2);
+        }
+        txtDate.setText(Xdate.toString(i.getCreateDate(), "dd-MM-yyyy"));
+        txtNo.setText(Currency.getCurrency(i.getDebt()));
+        txtSoTienTT.setText(Currency.getCurrency(i.getAmount() - i.getDebt()));
+        txtTotalPrice.setText(Currency.getCurrency(i.getAmount() + i.getDiscount()));
+        txtCK.setText(Currency.getCurrency(i.getDebt()));
+        txtThanhToan.setText(Currency.getCurrency(i.getAmount()));
+        add = false;
+        double no = i.getDebt();
+        if (no == 0) {
+            cbxThanhToan.setSelectedIndex(1);
+        } else if (no < i.getAmount()) {
+            cbxThanhToan.setSelectedIndex(2);
+        } else {
+            cbxThanhToan.setSelectedIndex(3);
+        }
+        fillTable(i.getId());
+    }
+
+    ;
+
+    private void fillTable(int id) {
+        InvoiceDetailsDAO iddao = new InvoiceDetailsDAO();
+        ProductDAO pdao = new ProductDAO();
+        DefaultTableModel model = (DefaultTableModel) tblDetails.getModel();
+        model.setRowCount(0);
+        List<InvoiceDetails> lst = iddao.selectByInvoice(id);
+        for (InvoiceDetails s : lst) {
+            Product p = pdao.selectByID(s.getProductID());
+            Object[] row = new Object[]{
+                p.getName(), p.getProductUnitID(),
+                s.getQuantity(), Currency.getCurrency(s.getPrice()),
+                Currency.getCurrency(s.getPrice() * s.getQuantity() - s.getDiscount()),
+                s.getDiscount()
+            };
+            model.addRow(row);
         }
     }
 }

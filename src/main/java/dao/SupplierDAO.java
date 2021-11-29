@@ -20,6 +20,7 @@ import utils.XJdbc;
 public class SupplierDAO extends WarehouseDAO<Supplier, String>{
     final String INSERT = "INSERT INTO supplier (name, address, phone, email, STK, status) VALUES (?,?,?,?,?,?)";
     final String SELECT_ALL = "SELECT * FROM supplier";
+    final String SELECT_BY_ID ="select * from supplier where id =?";
     @Override
     public void insert(Supplier s) {
         XJdbc.update(INSERT, s.getName(),s.getAddress(),s.getPhone(),
@@ -43,7 +44,7 @@ public class SupplierDAO extends WarehouseDAO<Supplier, String>{
 
     @Override
     public Supplier selectByID(String id) {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+        return selectBySql(SELECT_BY_ID, id).get(0);
     }
 
     @Override

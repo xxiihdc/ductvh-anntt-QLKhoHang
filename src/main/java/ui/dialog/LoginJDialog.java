@@ -143,7 +143,7 @@ public class LoginJDialog extends javax.swing.JDialog {
 
     private void btnExitActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnExitActionPerformed
         // TODO add your handling code here:
-        this.dispose();
+        System.exit(0);
           
     }//GEN-LAST:event_btnExitActionPerformed
 

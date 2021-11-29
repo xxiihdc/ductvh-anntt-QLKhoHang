@@ -24,7 +24,7 @@ public class InvoiceDAO extends WarehouseDAO<Invoice, String> {
             + "(staff_id, discount, amount, created_date, debt, final_settlement,"
             + " payment_method, note, supplier_id) VALUES (?,?,?,?,?,?,?,?,?)";
     final String SELECT_ALL = "SELECT * FROM INVOICE";
-
+    final String SELECT_BY_ID = "select * from invoice where id =?";
     @Override
     public void insert(Invoice entity) {
         Date d = entity.getFinalSettlement();
@@ -56,7 +56,7 @@ public class InvoiceDAO extends WarehouseDAO<Invoice, String> {
 
     @Override
     public Invoice selectByID(String id) {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+        return selectBySql(SELECT_BY_ID, id).get(0);
     }
 
     @Override
@@ -99,5 +99,9 @@ public class InvoiceDAO extends WarehouseDAO<Invoice, String> {
         String query = "select top 1 id from invoice order by id desc";
         Object o = XJdbc.value(query);
         return (int) o;
+    }
+    public List<Invoice> selectByDate(String from, String to){
+        String sql = "select * from invoice where created_date between ? and ?";
+        return selectBySql(sql,from,to);
     }
 }

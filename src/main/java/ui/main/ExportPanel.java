@@ -4,35 +4,19 @@
  */
 package ui.main;
 
-import dao.InvoiceDAO;
-import dao.SupplierDAO;
-import entity.Invoice;
-import java.util.Date;
-import java.util.List;
-import javax.swing.table.DefaultTableModel;
-import ui.dialog.InvoiceDetailsDialog;
-import utils.Currency;
-import utils.Xdate;
+import ui.dialog.ExportDialog;
 
 /**
  *
  * @author ductr
  */
-public class InvoicePanel extends javax.swing.JPanel {
+public class ExportPanel extends javax.swing.JPanel {
 
     /**
-     * Creates new form InvoicePanel
+     * Creates new form ExportPanel
      */
-    InvoiceDAO dao = new InvoiceDAO();
-    public InvoicePanel() {
+    public ExportPanel() {
         initComponents();
-        init();
-    }
-
-    void init() {
-        txtDateFrom.setDateFormatString("dd-MM-yyyy");
-        txtDateTo.setDateFormatString("dd-MM-yyyy");
-        fillTable();
     }
 
     /**
@@ -44,7 +28,6 @@ public class InvoicePanel extends javax.swing.JPanel {
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
 
-        jDateChooser2 = new com.toedter.calendar.JDateChooser();
         jToolBar2 = new javax.swing.JToolBar();
         jButton4 = new javax.swing.JButton();
         jButton5 = new javax.swing.JButton();
@@ -65,7 +48,7 @@ public class InvoicePanel extends javax.swing.JPanel {
         jButton8 = new javax.swing.JButton();
         jButton9 = new javax.swing.JButton();
 
-        setBorder(javax.swing.BorderFactory.createTitledBorder(null, "Quản Lý Hóa Đơn", javax.swing.border.TitledBorder.DEFAULT_JUSTIFICATION, javax.swing.border.TitledBorder.DEFAULT_POSITION, new java.awt.Font("Segoe UI", 0, 18))); // NOI18N
+        setBorder(javax.swing.BorderFactory.createTitledBorder(null, "Xuất Kho", javax.swing.border.TitledBorder.DEFAULT_JUSTIFICATION, javax.swing.border.TitledBorder.DEFAULT_POSITION, new java.awt.Font("Tahoma", 0, 18))); // NOI18N
 
         jToolBar2.setRollover(true);
 
@@ -247,33 +230,26 @@ public class InvoicePanel extends javax.swing.JPanel {
         );
     }// </editor-fold>//GEN-END:initComponents
 
-    private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
-        // TODO add your handling code here:
-        new InvoiceDetailsDialog(null, true).setVisible(true);
-
-    }//GEN-LAST:event_jButton1ActionPerformed
-
     private void tblInvoiceMousePressed(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_tblInvoiceMousePressed
         // TODO add your handling code here:
-        if(evt.getClickCount()==2){
-            String id = (tblInvoice.getValueAt(tblInvoice.getSelectedRow(), 0)+"");
-            InvoiceDetailsDialog i = new InvoiceDetailsDialog(null,true);
-            Invoice iv = dao.selectByID(id);
-            i.setForm(iv);
-            i.setVisible(true);
-        }
+
     }//GEN-LAST:event_tblInvoiceMousePressed
 
     private void jButton2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton2ActionPerformed
         // TODO add your handling code here:
-        fillTable();
+     
     }//GEN-LAST:event_jButton2ActionPerformed
+
+    private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
+        // TODO add your handling code here:
+        new ExportDialog(null,true).setVisible(true);
+    }//GEN-LAST:event_jButton1ActionPerformed
 
     private void jButton8ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton8ActionPerformed
         // TODO add your handling code here:
         txtDateFrom.setDate(null);
         txtDateTo.setDate(null);
-        fillTable();
+      
     }//GEN-LAST:event_jButton8ActionPerformed
 
 
@@ -287,7 +263,6 @@ public class InvoicePanel extends javax.swing.JPanel {
     private javax.swing.JButton jButton7;
     private javax.swing.JButton jButton8;
     private javax.swing.JButton jButton9;
-    private com.toedter.calendar.JDateChooser jDateChooser2;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JPanel jPanel1;
@@ -299,37 +274,4 @@ public class InvoicePanel extends javax.swing.JPanel {
     private com.toedter.calendar.JDateChooser txtDateFrom;
     private com.toedter.calendar.JDateChooser txtDateTo;
     // End of variables declaration//GEN-END:variables
-
-    private void fillTable() {
-        DefaultTableModel model = (DefaultTableModel) tblInvoice.getModel();
-        model.setRowCount(0);
-        List<Invoice> lst;
-        Date d1 = txtDateFrom.getDate();
-        Date d2 = txtDateTo.getDate();
-        if(d1==null && d2 == null){
-            lst = dao.selectAll();
-        }else{
-            String d1s,d2s;
-            if(d1!=null) d1s = Xdate.toString(d1, "yyyy-MM-dd");
-            else d1s = "1990-01-01";
-            if(d2!=null) d2s = Xdate.toString(d2, "yyyy-MM-dd");
-            else d2s = Xdate.toString(new Date(), "yyyy-MM-dd");
-            lst = dao.selectByDate(d1s, d2s);
-        }
-        SupplierDAO sdao = new SupplierDAO();
-        for (Invoice s : lst) {
-            int id = s.getSupplierID();
-            String name = sdao.selectByID(id + "").getName();
-            Object[] row = new Object[]{
-                s.getId(),
-                Xdate.toString(s.getCreateDate(), "dd-MM-yyyy"),
-                name,
-                Currency.getCurrency(s.getDiscount()),
-                Currency.getCurrency(s.getAmount()),
-                Currency.getCurrency(s.getDebt())
-            };
-            model.addRow(row);
-        }
-        lblRecord.setText("0/" + tblInvoice.getRowCount());
-    }
 }

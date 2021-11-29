@@ -4,7 +4,9 @@
  */
 package entity;
 
+import dao.ProductDAO;
 import java.util.Date;
+import utils.Xdate;
 
 /**
  *
@@ -15,16 +17,7 @@ public class ProductBatch {
     private double price;
     private String note,productID;
     private Date enteredDate;
-    private int unsortedProduct;
     public ProductBatch() {
-    }
-
-    public int getUnsortedProduct() {
-        return unsortedProduct;
-    }
-
-    public void setUnsortedProduct(int unsortedProduct) {
-        this.unsortedProduct = unsortedProduct;
     }
 
     public ProductBatch(String productID, int quantity, int supplierID, double price, String note, Date enteredDate) {
@@ -91,4 +84,14 @@ public class ProductBatch {
     public void setEnteredDate(Date enteredDate) {
         this.enteredDate = enteredDate;
     }  
+
+    @Override
+    public String toString() {
+        return getProductName()+" - "+ "("+Xdate.toString(enteredDate,"dd-MM-yyyy"+")");
+    }
+    public String getProductName(){
+        ProductDAO dao = new ProductDAO();
+        Product p = dao.selectByID(this.getProductID());
+        return p.getName();
+    }
 }
