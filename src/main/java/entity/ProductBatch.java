@@ -5,6 +5,7 @@
 package entity;
 
 import dao.ProductDAO;
+import dao.SupplierDAO;
 import java.util.Date;
 import utils.Xdate;
 
@@ -93,5 +94,9 @@ public class ProductBatch {
         ProductDAO dao = new ProductDAO();
         Product p = dao.selectByID(this.getProductID());
         return p.getName();
+    }
+    public String getSupplierName(){
+        SupplierDAO dao = new SupplierDAO();
+        return dao.selectByID(this.supplierID+"").getName();
     }
 }

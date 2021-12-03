@@ -6,10 +6,12 @@
 package ui.dialog;
 
 import dao.StaffDAO;
+import dao.UserDAO;
 import entity.Staff;
+import entity.User;
+import java.awt.Color;
 import utils.Auth;
 import utils.MsgBox;
-
 
 /**
  *
@@ -25,9 +27,12 @@ public class LoginJDialog extends javax.swing.JDialog {
         initComponents();
         init();
     }
-    void init(){
+
+    void init() {
         setLocationRelativeTo(null);
         txtPassword.setText("123456");
+        setTitle("Đăng nhập hệ thống");
+        txtUserName.setForeground(new Color(58, 65, 65));
     }
 
     /**
@@ -47,17 +52,27 @@ public class LoginJDialog extends javax.swing.JDialog {
         btnLogin = new javax.swing.JButton();
         btnExit = new javax.swing.JButton();
         cbSaveLogin = new javax.swing.JCheckBox();
+        jLabel3 = new javax.swing.JLabel();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DO_NOTHING_ON_CLOSE);
 
-        jLabel1.setFont(new java.awt.Font("Segoe UI", 0, 18)); // NOI18N
+        jLabel1.setFont(new java.awt.Font("Segoe UI", 1, 18)); // NOI18N
         jLabel1.setText("Tên đăng nhập:");
 
-        txtUserName.setText("admin");
+        txtUserName.setText("Tên đăng nhập");
+        txtUserName.addFocusListener(new java.awt.event.FocusAdapter() {
+            public void focusGained(java.awt.event.FocusEvent evt) {
+                txtUserNameFocusGained(evt);
+            }
+            public void focusLost(java.awt.event.FocusEvent evt) {
+                txtUserNameFocusLost(evt);
+            }
+        });
 
-        jLabel2.setFont(new java.awt.Font("Segoe UI", 0, 18)); // NOI18N
+        jLabel2.setFont(new java.awt.Font("Segoe UI", 1, 18)); // NOI18N
         jLabel2.setText("Mật khẩu:");
 
+        txtPassword.setText("123456");
         txtPassword.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 txtPasswordActionPerformed(evt);
@@ -74,7 +89,8 @@ public class LoginJDialog extends javax.swing.JDialog {
             }
         });
 
-        btnExit.setIcon(new javax.swing.ImageIcon(getClass().getResource("/icon/add_30px.png"))); // NOI18N
+        btnExit.setBackground(new java.awt.Color(255, 0, 0));
+        btnExit.setIcon(new javax.swing.ImageIcon(getClass().getResource("/icon/delete_30px.png"))); // NOI18N
         btnExit.setText("THOÁT");
         btnExit.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
         btnExit.setVerticalTextPosition(javax.swing.SwingConstants.BOTTOM);
@@ -85,6 +101,8 @@ public class LoginJDialog extends javax.swing.JDialog {
         });
 
         cbSaveLogin.setText("Ghi nhớ đăng nhập");
+
+        jLabel3.setIcon(new javax.swing.ImageIcon(getClass().getResource("/icon/Secure.png"))); // NOI18N
 
         javax.swing.GroupLayout pnlFormLayout = new javax.swing.GroupLayout(pnlForm);
         pnlForm.setLayout(pnlFormLayout);
@@ -107,28 +125,35 @@ public class LoginJDialog extends javax.swing.JDialog {
                         .addGroup(pnlFormLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addComponent(jLabel1)
                             .addComponent(txtUserName, javax.swing.GroupLayout.PREFERRED_SIZE, 335, javax.swing.GroupLayout.PREFERRED_SIZE))))
-                .addContainerGap(271, Short.MAX_VALUE))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(jLabel3, javax.swing.GroupLayout.PREFERRED_SIZE, 263, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
         pnlFormLayout.setVerticalGroup(
             pnlFormLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(pnlFormLayout.createSequentialGroup()
-                .addGap(39, 39, 39)
-                .addComponent(jLabel1)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                .addComponent(txtUserName, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGroup(pnlFormLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, pnlFormLayout.createSequentialGroup()
+                .addGroup(pnlFormLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
                     .addGroup(pnlFormLayout.createSequentialGroup()
-                        .addGap(24, 24, 24)
-                        .addComponent(jLabel2)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                        .addComponent(txtPassword, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 32, Short.MAX_VALUE)
-                        .addComponent(cbSaveLogin)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                        .addComponent(btnLogin, javax.swing.GroupLayout.PREFERRED_SIZE, 70, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                        .addComponent(jLabel3, javax.swing.GroupLayout.PREFERRED_SIZE, 296, javax.swing.GroupLayout.PREFERRED_SIZE))
                     .addGroup(pnlFormLayout.createSequentialGroup()
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                        .addComponent(btnExit, javax.swing.GroupLayout.PREFERRED_SIZE, 70, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                        .addGap(39, 39, 39)
+                        .addComponent(jLabel1)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                        .addComponent(txtUserName, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGroup(pnlFormLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addGroup(pnlFormLayout.createSequentialGroup()
+                                .addGap(24, 24, 24)
+                                .addComponent(jLabel2)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                                .addComponent(txtPassword, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 32, Short.MAX_VALUE)
+                                .addComponent(cbSaveLogin)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                                .addComponent(btnLogin, javax.swing.GroupLayout.PREFERRED_SIZE, 70, javax.swing.GroupLayout.PREFERRED_SIZE))
+                            .addGroup(pnlFormLayout.createSequentialGroup()
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                .addComponent(btnExit, javax.swing.GroupLayout.PREFERRED_SIZE, 70, javax.swing.GroupLayout.PREFERRED_SIZE)))))
                 .addGap(15, 15, 15))
         );
 
@@ -144,13 +169,30 @@ public class LoginJDialog extends javax.swing.JDialog {
     private void btnExitActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnExitActionPerformed
         // TODO add your handling code here:
         System.exit(0);
-          
+
     }//GEN-LAST:event_btnExitActionPerformed
 
     private void btnLoginActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnLoginActionPerformed
         // TODO add your handling code here:
         login();
     }//GEN-LAST:event_btnLoginActionPerformed
+
+    private void txtUserNameFocusGained(java.awt.event.FocusEvent evt) {//GEN-FIRST:event_txtUserNameFocusGained
+        // TODO add your handling code here:
+        if (txtUserName.getText().equalsIgnoreCase("Tên đăng nhập")) {
+            txtUserName.setText("");
+            txtUserName.setForeground(Color.BLACK);
+        }
+    }//GEN-LAST:event_txtUserNameFocusGained
+
+    private void txtUserNameFocusLost(java.awt.event.FocusEvent evt) {//GEN-FIRST:event_txtUserNameFocusLost
+        // TODO add your handling code here:
+        if (txtUserName.getText().trim().equals("")
+                || txtUserName.getText().trim().equalsIgnoreCase("Tên đăng nhập")) {
+            txtUserName.setText("Tên đăng nhập");
+            txtUserName.setForeground(new Color(58, 65, 65));
+        }
+    }//GEN-LAST:event_txtUserNameFocusLost
 
     /**
      * @param args the command line arguments
@@ -189,7 +231,7 @@ public class LoginJDialog extends javax.swing.JDialog {
                         System.exit(0);
                     }
                 });
-                
+
                 dialog.setVisible(true);
             }
         });
@@ -201,6 +243,7 @@ public class LoginJDialog extends javax.swing.JDialog {
     private javax.swing.JCheckBox cbSaveLogin;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
+    private javax.swing.JLabel jLabel3;
     private javax.swing.JPanel pnlForm;
     private javax.swing.JPasswordField txtPassword;
     private javax.swing.JTextField txtUserName;
@@ -210,11 +253,24 @@ public class LoginJDialog extends javax.swing.JDialog {
         StaffDAO dao = new StaffDAO();
         String id = txtUserName.getText();
         String pass = new String(txtPassword.getPassword());
-        if(id.equals("admin") && pass.equals("123456")) {
+        if (id.equals("admin") && pass.equals("123456")) {
             this.dispose();
             Staff s = dao.selectByID("NV001");
-            Auth.user=s;
+            Auth.user = s;
         }
-        else MsgBox.alert(null, "Login failed!");
+        UserDAO udao = new UserDAO();
+        User u = udao.selectByID(txtUserName.getText());
+        if (u == null) {
+            MsgBox.alert(null, "Tên đăng nhập không đúng");
+            return;
+        }
+        if (!u.getPassword().equalsIgnoreCase(pass)) {
+            MsgBox.alert(null, "Mật khẩu không đúng");
+            return;
+        }
+        this.dispose();
+        Staff s = dao.selectByID(u.getId());
+        Auth.user = s;
+
     }
 }

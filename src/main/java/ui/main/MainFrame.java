@@ -40,6 +40,8 @@ public class MainFrame extends javax.swing.JFrame {
         setTitle("WAREHOUSE MANAGEMENT SYSTEM");
         ToolbarPanel1 t1 = new ToolbarPanel1();
         t1.btnSetting.addMouseListener(ml);
+        t1.btnUser.addMouseListener(ml);
+        t1.btnLogOut.addMouseListener(ml);
         selectToolBarPanel(t1);
         openLogin();
         txtStaff.setText(Auth.user.getName());
@@ -245,6 +247,7 @@ public class MainFrame extends javax.swing.JFrame {
         t2.btnProduct.addMouseListener(ml);
         t2.btnInvoice.addMouseListener(ml);
         t2.btnExport.addMouseListener(ml);
+        t2.btnReport.addMouseListener(ml);
         selectToolBarPanel(t2);
     }//GEN-LAST:event_jButton2ActionPerformed
 
@@ -350,6 +353,12 @@ public class MainFrame extends javax.swing.JFrame {
                 case "export":
                     selectMainPanel(new ExportPanel());
                     break;
+                case "report":
+                    selectMainPanel(new ReportPanel());
+                    break;
+                case "logOut":
+                    logOut();
+                    break;
             }
         }
 
@@ -365,6 +374,13 @@ public class MainFrame extends javax.swing.JFrame {
         @Override
         public void mouseExited(MouseEvent e) {
 
+        }
+
+        private void logOut() {
+            Auth.user = null;
+            txtStaff.setText("Chưa đăng nhập");
+            new LoginJDialog(null,true).setVisible(true);
+            txtStaff.setText(Auth.user.getName());
         }
 
     };

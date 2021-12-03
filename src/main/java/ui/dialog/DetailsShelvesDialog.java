@@ -5,12 +5,8 @@
 package ui.dialog;
 
 import dao.ShelvesDetailsDAO;
-import entity.ProductGroup;
-import entity.ShelvesDetails;
-import java.util.List;
 import java.util.Vector;
 import javax.swing.table.DefaultTableModel;
-import utils.MsgBox;
 
 /**
  *
@@ -21,12 +17,13 @@ public class DetailsShelvesDialog extends javax.swing.JDialog {
     /**
      * Creates new form DetailsShelvesDialog
      */
-    int shelves;
+    int shelves,color;
 
-    public DetailsShelvesDialog(java.awt.Frame parent, boolean modal, int s) {
+    public DetailsShelvesDialog(java.awt.Frame parent, boolean modal, int s,int color) {
         super(parent, modal);
         initComponents();
         this.shelves = s;
+        this.color=color;
         init();
     }
 
@@ -60,6 +57,7 @@ public class DetailsShelvesDialog extends javax.swing.JDialog {
         jButton9 = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
+        setTitle("Chi Tiết Kệ Hàng Hàng");
 
         jToolBar1.setRollover(true);
         jToolBar1.setMargin(new java.awt.Insets(0, 5, 0, 5));
@@ -197,6 +195,7 @@ public class DetailsShelvesDialog extends javax.swing.JDialog {
 
     private void jButton9ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton9ActionPerformed
         // TODO add your handling code here:
+        new ShelvesDialog(null, true, shelves,color).setVisible(true);
     }//GEN-LAST:event_jButton9ActionPerformed
 
     /**

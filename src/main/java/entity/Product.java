@@ -4,6 +4,8 @@
  */
 package entity;
 
+import dao.ProductGroupDAO;
+import dao.ProductTypeDAO;
 import java.util.Objects;
 
 /**
@@ -172,6 +174,14 @@ public class Product {
             return false;
         }
         return true;
+    }
+    public String getGroupName(){
+        ProductGroupDAO dao = new ProductGroupDAO();
+        return dao.selectByID(productGroupID+"").getName();
+    }
+    public String getProductTypeName(){
+        ProductTypeDAO dao = new ProductTypeDAO();
+        return dao.selectByID(productTypeID+"").getName();
     }
     
 }

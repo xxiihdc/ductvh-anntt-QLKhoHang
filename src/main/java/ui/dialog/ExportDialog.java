@@ -1,10 +1,15 @@
-
 package ui.dialog;
 
+import dao.ExportDAO;
+import dao.ExportDetailsDAO;
 import dao.ProductBatchDAO;
-import entity.InvoiceDetails;
-import entity.Product;
+import dao.ShelvesDetailsDAO;
+import entity.Export;
+import entity.ExportDetails;
 import entity.ProductBatch;
+import entity.ShelvesDetails;
+import entity.Staff;
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 import javax.swing.DefaultListModel;
@@ -25,12 +30,18 @@ public class ExportDialog extends javax.swing.JDialog {
      */
     boolean add = true;
     DefaultTableModel model;
+    List<ProductBatch> lst;
+    ExportDAO dao = new ExportDAO();
+    ProductBatchDAO bdao = new ProductBatchDAO();
+    ShelvesDetailsDAO sdao = new ShelvesDetailsDAO();
+
     public ExportDialog(java.awt.Frame parent, boolean modal) {
         super(parent, modal);
         initComponents();
         init();
     }
-    void init(){
+
+    void init() {
         setTitle("Quản lý xuất kho");
         setLocationRelativeTo(null);
         fillList();
@@ -40,7 +51,9 @@ public class ExportDialog extends javax.swing.JDialog {
         txtDate.setText(sDate);
         txtStaff.setText(Auth.user.getId());
         model = (DefaultTableModel) tblProduct.getModel();
+        lst = new ArrayList<>();
     }
+
     @SuppressWarnings("unchecked")
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
@@ -56,9 +69,9 @@ public class ExportDialog extends javax.swing.JDialog {
         jLabel6 = new javax.swing.JLabel();
         jScrollPane1 = new javax.swing.JScrollPane();
         txtNote = new javax.swing.JTextArea();
-        txtSoTienTT = new javax.swing.JTextField();
+        txtSoSP = new javax.swing.JTextField();
         jLabel12 = new javax.swing.JLabel();
-        txtNo = new javax.swing.JTextField();
+        txtSum = new javax.swing.JTextField();
         jLabel8 = new javax.swing.JLabel();
         jPanel2 = new javax.swing.JPanel();
         jPanel3 = new javax.swing.JPanel();
@@ -68,6 +81,7 @@ public class ExportDialog extends javax.swing.JDialog {
         jPanel5 = new javax.swing.JPanel();
         jScrollPane3 = new javax.swing.JScrollPane();
         tblProduct = new javax.swing.JTable();
+        jButton6 = new javax.swing.JButton();
         jButton1 = new javax.swing.JButton();
         jButton2 = new javax.swing.JButton();
         jButton3 = new javax.swing.JButton();
@@ -113,19 +127,19 @@ public class ExportDialog extends javax.swing.JDialog {
         txtNote.setRows(5);
         jScrollPane1.setViewportView(txtNote);
 
-        txtSoTienTT.setEditable(false);
-        txtSoTienTT.setFont(new java.awt.Font("Tahoma", 0, 14)); // NOI18N
-        txtSoTienTT.addKeyListener(new java.awt.event.KeyAdapter() {
+        txtSoSP.setEditable(false);
+        txtSoSP.setFont(new java.awt.Font("Tahoma", 0, 14)); // NOI18N
+        txtSoSP.addKeyListener(new java.awt.event.KeyAdapter() {
             public void keyTyped(java.awt.event.KeyEvent evt) {
-                txtSoTienTTKeyTyped(evt);
+                txtSoSPKeyTyped(evt);
             }
         });
 
         jLabel12.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
         jLabel12.setText("Tổng Số Lượng");
 
-        txtNo.setEditable(false);
-        txtNo.setFont(new java.awt.Font("Tahoma", 0, 14)); // NOI18N
+        txtSum.setEditable(false);
+        txtSum.setFont(new java.awt.Font("Tahoma", 0, 14)); // NOI18N
 
         jLabel8.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
         jLabel8.setText("Số sản phẩm");
@@ -149,7 +163,7 @@ public class ExportDialog extends javax.swing.JDialog {
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)))
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
                     .addComponent(txtID, javax.swing.GroupLayout.DEFAULT_SIZE, 172, Short.MAX_VALUE)
-                    .addComponent(txtSoTienTT)
+                    .addComponent(txtSoSP)
                     .addComponent(txtStaff))
                 .addGap(18, 18, 18)
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -161,7 +175,7 @@ public class ExportDialog extends javax.swing.JDialog {
                         .addComponent(txtDate, javax.swing.GroupLayout.PREFERRED_SIZE, 184, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addGap(35, 35, 35)
                         .addComponent(jLabel6))
-                    .addComponent(txtNo, javax.swing.GroupLayout.PREFERRED_SIZE, 184, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(txtSum, javax.swing.GroupLayout.PREFERRED_SIZE, 184, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 337, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
@@ -182,9 +196,9 @@ public class ExportDialog extends javax.swing.JDialog {
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                         .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                             .addComponent(jLabel12)
-                            .addComponent(txtNo, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(txtSum, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                             .addComponent(jLabel8)
-                            .addComponent(txtSoTienTT, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                            .addComponent(txtSoSP, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                         .addGap(18, 18, 18)
                         .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                             .addComponent(txtStaff, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
@@ -231,12 +245,27 @@ public class ExportDialog extends javax.swing.JDialog {
 
             },
             new String [] {
-                "Sản Phẩm", "Ngày Nhập Kho", "Số Lượng"
+                "Sản Phẩm", "Ngày Nhập Kho", "Số Lượng", "Đơn Giá Nhập"
             }
-        ));
+        ) {
+            boolean[] canEdit = new boolean [] {
+                false, false, true, false
+            };
+
+            public boolean isCellEditable(int rowIndex, int columnIndex) {
+                return canEdit [columnIndex];
+            }
+        });
         tblProduct.setRowHeight(30);
         tblProduct.setRowMargin(5);
+        tblProduct.addPropertyChangeListener(new java.beans.PropertyChangeListener() {
+            public void propertyChange(java.beans.PropertyChangeEvent evt) {
+                tblProductPropertyChange(evt);
+            }
+        });
         jScrollPane3.setViewportView(tblProduct);
+
+        jButton6.setText("XOAS");
 
         javax.swing.GroupLayout jPanel5Layout = new javax.swing.GroupLayout(jPanel5);
         jPanel5.setLayout(jPanel5Layout);
@@ -246,12 +275,18 @@ public class ExportDialog extends javax.swing.JDialog {
                 .addContainerGap()
                 .addComponent(jScrollPane3, javax.swing.GroupLayout.PREFERRED_SIZE, 678, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel5Layout.createSequentialGroup()
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addComponent(jButton6)
+                .addGap(290, 290, 290))
         );
         jPanel5Layout.setVerticalGroup(
             jPanel5Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel5Layout.createSequentialGroup()
                 .addComponent(jScrollPane3, javax.swing.GroupLayout.PREFERRED_SIZE, 362, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(0, 61, Short.MAX_VALUE))
+                .addGap(18, 18, 18)
+                .addComponent(jButton6)
+                .addGap(0, 18, Short.MAX_VALUE))
         );
 
         javax.swing.GroupLayout jPanel2Layout = new javax.swing.GroupLayout(jPanel2);
@@ -271,6 +306,11 @@ public class ExportDialog extends javax.swing.JDialog {
         );
 
         jButton1.setText("LƯU DỮ LIỆU");
+        jButton1.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton1ActionPerformed(evt);
+            }
+        });
 
         jButton2.setText("IN");
 
@@ -306,25 +346,26 @@ public class ExportDialog extends javax.swing.JDialog {
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addComponent(jPanel2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(30, 30, 30)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(jButton1)
-                    .addComponent(jButton2)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                         .addComponent(jButton4)
-                        .addComponent(jButton3)))
+                        .addComponent(jButton3))
+                    .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                        .addComponent(jButton1)
+                        .addComponent(jButton2)))
                 .addContainerGap(31, Short.MAX_VALUE))
         );
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
-    private void txtSoTienTTKeyTyped(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_txtSoTienTTKeyTyped
+    private void txtSoSPKeyTyped(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_txtSoSPKeyTyped
         // TODO add your handling code here:
         char k = evt.getKeyChar();
         if (!Character.isDigit(k)) {
             evt.consume();
         }
-    }//GEN-LAST:event_txtSoTienTTKeyTyped
+    }//GEN-LAST:event_txtSoSPKeyTyped
 
     private void jButton5ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton5ActionPerformed
         // TODO add your handling code here:
@@ -333,10 +374,55 @@ public class ExportDialog extends javax.swing.JDialog {
 
     private void jList1MousePressed(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jList1MousePressed
         // TODO add your handling code here:
-        if(evt.getClickCount()==2){
+        if (evt.getClickCount() == 2) {
             addProduct();
         }
     }//GEN-LAST:event_jList1MousePressed
+
+    private void tblProductPropertyChange(java.beans.PropertyChangeEvent evt) {//GEN-FIRST:event_tblProductPropertyChange
+        // TODO add your handling code here:
+        if ("tableCellEditor".equals(evt.getPropertyName())) {
+            if (tblProduct.isEditing()) {
+            } else {
+                int row = tblProduct.getSelectedRow();
+                String quantity = tblProduct.getValueAt(row, 2) + "";
+                if (quantity.length() == 0) {
+                    tblProduct.setValueAt(1, row, 2);
+                    return;
+                }
+                for (int i = 0; i < quantity.length(); i++) {
+                    if (!Character.isDigit(quantity.charAt(i))) {
+                        MsgBox.alert(null, "Nhập số");
+                        tblProduct.setValueAt(1, row, 2);
+                        return;
+                    }
+                }
+                if (Integer.parseInt(quantity) <= 0) {
+                    MsgBox.alert(null, ">0");
+                    tblProduct.setValueAt(1, row, 2);
+                    return;
+                }
+                int q = Integer.parseInt(quantity);
+                if (q > lst.get(row).getQuantity()) {
+                    MsgBox.alert(null, "So luong lon hon so luong co trong kho");
+                    tblProduct.setValueAt(1, row, 2);
+                    return;
+                }
+                fillDetails();
+            }
+        }
+    }//GEN-LAST:event_tblProductPropertyChange
+
+    private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
+        // TODO add your handling code here:
+        Export e = new Export(Integer.parseInt(txtSoSP.getText()), Integer.parseInt(txtSum.getText()),
+                txtStaff.getText());
+        e.setDate(new Date());
+        e.setNote(txtNote.getText());
+        dao.insert(e);
+        getExportDetails();
+        lst.clear();
+    }//GEN-LAST:event_jButton1ActionPerformed
 
     /**
      * @param args the command line arguments
@@ -386,6 +472,7 @@ public class ExportDialog extends javax.swing.JDialog {
     private javax.swing.JButton jButton3;
     private javax.swing.JButton jButton4;
     private javax.swing.JButton jButton5;
+    private javax.swing.JButton jButton6;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel12;
     private javax.swing.JLabel jLabel2;
@@ -404,10 +491,10 @@ public class ExportDialog extends javax.swing.JDialog {
     private javax.swing.JTable tblProduct;
     private javax.swing.JTextField txtDate;
     private javax.swing.JTextField txtID;
-    private javax.swing.JTextField txtNo;
     private javax.swing.JTextArea txtNote;
-    private javax.swing.JTextField txtSoTienTT;
+    private javax.swing.JTextField txtSoSP;
     private javax.swing.JTextField txtStaff;
+    private javax.swing.JTextField txtSum;
     // End of variables declaration//GEN-END:variables
 
     private void fillList() {
@@ -421,7 +508,7 @@ public class ExportDialog extends javax.swing.JDialog {
     }
 
     private void addProduct() {
-                if (!add) {
+        if (!add) {
             MsgBox.alert(null, "Ban khong the chinh sua hoa don");
             return;
         }
@@ -433,11 +520,83 @@ public class ExportDialog extends javax.swing.JDialog {
                 modelList.remove(selectedIndex);
             }
             Object[] row = new Object[]{
-               p.getProductName(),
-                Xdate.toString(p.getEnteredDate(),"dd-MM-yyyy"),1
+                p.getProductName(),
+                Xdate.toString(p.getEnteredDate(), "dd-MM-yyyy"), 1,
+                Currency.getCurrency(p.getPrice())
+            };
+            lst.add(p);
+            model.addRow(row);
+            fillDetails();
+        }
+    }
+
+    private void fillDetails() {
+        txtSoSP.setText(tblProduct.getRowCount() + "");
+        int sum = 0;
+        for (int i = 0; i < tblProduct.getRowCount(); i++) {
+            sum += Integer.parseInt(tblProduct.getValueAt(i, 2) + "");
+        }
+        txtSum.setText(sum + "");
+    }
+
+    private void getExportDetails() {
+        ExportDetailsDAO edao = new ExportDetailsDAO();
+        int id = dao.getLastID();
+        for (int i = 0; i < tblProduct.getRowCount(); i++) {
+            ExportDetails e = new ExportDetails(id, lst.get(i).getId(),
+                    Integer.parseInt(tblProduct.getValueAt(i, 2) + ""));
+            edao.insert(e);
+            updateQuantity(e.getBatchId(), e.getQuantity());
+        }
+    }
+
+    private void updateQuantity(int batchID, int quantity) {
+        int q = quantity;
+        ProductBatch p = bdao.selectByID(batchID + "");
+        if (p.getQuantity() == quantity) {
+            sdao.deleteByBatch(batchID);
+            bdao.delete(batchID + "");
+        } else {
+            bdao.updateQuantity(batchID, quantity);
+            List<ShelvesDetails> list = sdao.selectListByBatch(batchID);
+            for (ShelvesDetails s : list) {
+                int sQuantity = s.getQuantity();
+                int temp = q - sQuantity;
+                if (temp == 0) {
+                    sdao.delete(s.getId() + "");
+                    break;
+                } else if (temp > 0) {
+                    sdao.delete(s.getId() + "");
+                    q = temp;
+                } else if (temp < 0) {
+                    s.setQuantity(s.getQuantity() - q);
+                    sdao.update(s);
+                    break;
+                }
+            }
+        }
+    }
+
+    public void setForm(Export e) {
+        txtID.setText(e.getId() + "");
+        txtDate.setText(Xdate.toString(e.getDate(), "dd-MM-yyyy"));
+        txtNote.setText(e.getNote());
+        txtSoSP.setText(e.getTotalProduct() + "");
+        txtSum.setText(e.getTotalQuantity() + "");
+        fillTable(e.getId());
+        add = false;
+    }
+
+    private void fillTable(int id) {
+        ExportDetailsDAO dao = new ExportDetailsDAO();
+        List<ExportDetails> list = dao.selectByHoaDon(id);
+        DefaultTableModel model = (DefaultTableModel) tblProduct.getModel();
+        model.setRowCount(0);
+        for (ExportDetails s : list) {
+            Object[] row = new Object[]{
+                s.getName(),Xdate.toString(s.getDate(), "dd-MM-yyyy"),s.getQuantity(),s.getPrice()
             };
             model.addRow(row);
-
         }
     }
 }

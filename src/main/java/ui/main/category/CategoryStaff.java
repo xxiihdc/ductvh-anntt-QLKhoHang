@@ -56,7 +56,7 @@ public class CategoryStaff extends javax.swing.JPanel {
 
         setBorder(javax.swing.BorderFactory.createTitledBorder(null, "Nhân Viên", javax.swing.border.TitledBorder.DEFAULT_JUSTIFICATION, javax.swing.border.TitledBorder.DEFAULT_POSITION, new java.awt.Font("Tahoma", 0, 18))); // NOI18N
 
-        tblStaff.setBackground(new java.awt.Color(255, 204, 102));
+        tblStaff.setBackground(new java.awt.Color(255, 204, 153));
         tblStaff.setFont(new java.awt.Font("Tahoma", 0, 18)); // NOI18N
         tblStaff.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {

@@ -21,6 +21,8 @@ public class ShelvesDetailsDAO extends WarehouseDAO<ShelvesDetails, String> {
 
     final String INSERT = "INSERT INTO shelves_details "
             + "(shelves_id, product_batch_id, quantity) VALUES (?,?,?)";
+    final String UPDATE = "UPDATE shelves_details SET "
+            + " quantity = ? where id = ?";
     private Vector<String> head;
     private Vector data;
 
@@ -41,7 +43,7 @@ public class ShelvesDetailsDAO extends WarehouseDAO<ShelvesDetails, String> {
 
     @Override
     public void update(ShelvesDetails entity) {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+        XJdbc.update(UPDATE, entity.getQuantity(),entity.getId());
     }
 
     @Override
@@ -66,6 +68,7 @@ public class ShelvesDetailsDAO extends WarehouseDAO<ShelvesDetails, String> {
             ResultSet rs = XJdbc.query(sql, args);
             while (rs.next()) {
                 ShelvesDetails s = new ShelvesDetails();
+                s.setId(rs.getInt(1));
                 s.setProductBatchID(rs.getInt(3));
                 s.setQuantity(rs.getInt(4));
                 s.setShelvesID(rs.getInt(2));
@@ -116,5 +119,13 @@ public class ShelvesDetailsDAO extends WarehouseDAO<ShelvesDetails, String> {
                 + "((select quantity from shelves_details where shelves_id = 0 and product_batch_id = ?)+?) "
                 + " where shelves_id = 0 and product_batch_id = ?";
         XJdbc.update(sql, batch_id,quantity,batch_id);
+    }
+    public void deleteByBatch(int batchID){
+        String sql = "delete from shelves_details where product_batch_id = ? ";
+        XJdbc.update(sql, batchID);
+    }
+    public List<ShelvesDetails> selectListByBatch(int batchID){
+        String sql = "select * from shelves_details where product_batch_id = ? order by shelves_id asc";
+        return selectBySql(sql, batchID);
     }
 }

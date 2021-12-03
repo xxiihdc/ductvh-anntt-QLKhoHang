@@ -19,6 +19,7 @@ import java.util.List;
 import javax.swing.DefaultComboBoxModel;
 import javax.swing.ImageIcon;
 import javax.swing.JFileChooser;
+import utils.Currency;
 import utils.MsgBox;
 import utils.XImage;
 
@@ -212,17 +213,27 @@ public class ProductDialog extends javax.swing.JDialog {
         jLabel5.setText("Đơn giá:");
 
         txtPrice.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
+        txtPrice.addFocusListener(new java.awt.event.FocusAdapter() {
+            public void focusGained(java.awt.event.FocusEvent evt) {
+                txtPriceFocusGained(evt);
+            }
+        });
+        txtPrice.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyTyped(java.awt.event.KeyEvent evt) {
+                txtPriceKeyTyped(evt);
+            }
+        });
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
-                .addGap(98, 98, 98)
+                .addGap(73, 73, 73)
                 .addComponent(jButton6)
-                .addGap(55, 55, 55)
+                .addGap(57, 57, 57)
                 .addComponent(jButton7)
-                .addGap(71, 71, 71)
+                .addGap(86, 86, 86)
                 .addComponent(jButton8)
                 .addGap(0, 0, Short.MAX_VALUE))
             .addGroup(layout.createSequentialGroup()
@@ -331,15 +342,16 @@ public class ProductDialog extends javax.swing.JDialog {
                     .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                         .addComponent(rdoDangKinhDoanh)
                         .addComponent(jLabel8)))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 33, Short.MAX_VALUE)
-                .addComponent(jLabel10)
                 .addGap(18, 18, 18)
+                .addComponent(jLabel10)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 187, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(jButton8)
+                    .addComponent(jButton6)
                     .addComponent(jButton7)
-                    .addComponent(jButton6)))
+                    .addComponent(jButton8))
+                .addGap(0, 31, Short.MAX_VALUE))
         );
 
         pack();
@@ -424,6 +436,25 @@ public class ProductDialog extends javax.swing.JDialog {
 
         }
     }//GEN-LAST:event_jButton7ActionPerformed
+
+    private void txtPriceFocusGained(java.awt.event.FocusEvent evt) {//GEN-FIRST:event_txtPriceFocusGained
+        // TODO add your handling code here:
+        String price = txtPrice.getText();
+        if(price.endsWith("đ")){
+            String price2 = price.substring(0,price.length()-2);
+            price2 = price2.replaceAll("\\.", "");
+            txtPrice.setText(price2);
+        }
+    }//GEN-LAST:event_txtPriceFocusGained
+
+    private void txtPriceKeyTyped(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_txtPriceKeyTyped
+        // TODO add your handling code here:
+        char k = evt.getKeyChar();
+        if (!Character.isDigit(k)) {
+            evt.consume();
+            return;
+        }
+    }//GEN-LAST:event_txtPriceKeyTyped
 
     /**
      * @param args the command line arguments
@@ -561,20 +592,23 @@ public class ProductDialog extends javax.swing.JDialog {
     }
 
     private void update() {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+        Product p = getForm();
+        new ProductDAO().update(p);
     }
 
     private void clearForm() {
         Product p = new Product();
         p.setImage(DEFAULT_IMG);
         setForm(p);
+        txtID.setEditable(true);
     }
 
     private void insert() {
         new ProductDAO().insert(getForm());
     }
 
-    private void setForm(Product p) {
+    public void setForm(Product p) {
+        txtID.setEditable(false);
         txtID.setText(p.getId());
         txtName.setText(p.getName());
         cbxProductGroup.setSelectedItem(new ProductGroupDAO().selectByID(p.getProductGroupID() + ""));
@@ -594,7 +628,7 @@ public class ProductDialog extends javax.swing.JDialog {
         }
         lblImg.setIcon(XImage.readImg(img));
         lblImg.setToolTipText(img);
-        txtPrice.setText(p.getPrice() + "");
+        txtPrice.setText(Currency.getCurrency(p.getPrice()));
     }
 
     private Product getForm() {
@@ -612,6 +646,9 @@ public class ProductDialog extends javax.swing.JDialog {
         p.setStatus(rdoDangKinhDoanh.isSelected());
         Vendor v = (Vendor) cbxVendor.getSelectedItem();
         p.setVendorID(v.getId());
+        String price = txtPrice.getText();
+        if(price.endsWith("đ")) p.setPrice(Currency.getDouble(price));
+        else p.setPrice(Double.parseDouble(price));
         p.setPrice(Double.parseDouble(txtPrice.getText()));
         return p;
     }

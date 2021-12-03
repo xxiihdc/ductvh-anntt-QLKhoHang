@@ -10,8 +10,6 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 import utils.XJdbc;
 
 /**
@@ -24,9 +22,11 @@ public class ShelvesDAO {
             + "(id, description, status, color) VALUES (?,?,?,?)";
     final String DELETE_SQL = "DELETE FROM shelves where id>0";
     final String SELECT_BY_ID = "SELECT * FROM shelves where id = ?";
-
+    final String UPDATE = "UPDATE shelves SET description = ?, status =? , color = ? where id = ?";
     public void insert(int quantity) {
         delete();
+        String sql = "update shelves_details set shelves_id =0";
+        XJdbc.update(sql);
         for (int i = 1; i <= quantity; i++) {
             XJdbc.update(INSERT_SQL, i, "Chưa có mô tả", true, "-2696737");
         }
@@ -62,6 +62,9 @@ public class ShelvesDAO {
         } catch (SQLException ex) {
             throw new RuntimeException(ex);
         }
+    }
+    public void update(Shelves s){
+        XJdbc.update(UPDATE, s.getNote(),s.isStatus(),s.getC().getRGB(),s.getId());
     }
 
 }

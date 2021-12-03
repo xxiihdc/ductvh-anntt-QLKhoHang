@@ -51,6 +51,7 @@ public class ProductBatchDialog extends javax.swing.JDialog {
         jButton1 = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
+        setTitle("Thêm Sản Phẩm");
 
         jLabel1.setText("Chọn Sản Phẩm Vào Kệ Hàng");
 
@@ -123,10 +124,10 @@ public class ProductBatchDialog extends javax.swing.JDialog {
         for(int i = 0;i<rows.length;i++){
             int quantity = Integer.parseInt(tblProduct.getValueAt(rows[i], 3)+"");
             int id = Integer.parseInt(tblProduct.getValueAt(rows[i], 0)+"");
-            ProductBatch b = new ProductBatch();
-            b.setId(id);
-            b.setQuantity(0);
-            dao.update(b);
+          //  ProductBatch b = new ProductBatch();
+          //  b.setId(id);
+           // b.setQuantity(quantity);
+           // dao.update(b);
             
             ShelvesDetails s = new ShelvesDetails();
             s.setShelvesID(shelves);
@@ -141,7 +142,9 @@ public class ProductBatchDialog extends javax.swing.JDialog {
             if(ss.getQuantity()==quantity){
                 sdao.deleteDefault(id);
             }else{
-                sdao.updateDefault(id,ss.getQuantity()-quantity);
+                int a = 0 - quantity;
+                //sdao.updateDefault(id,(ss.getQuantity()-quantity));
+                sdao.updateDefault(id,a);
             }
         }
         fillTable();

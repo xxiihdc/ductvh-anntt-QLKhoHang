@@ -58,6 +58,7 @@ public class SettingDialog extends javax.swing.JDialog {
         jButton1 = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
+        setTitle("Cài đặt");
 
         jPanel1.setBorder(javax.swing.BorderFactory.createTitledBorder(null, "Thiết Lập Hệ Thống", javax.swing.border.TitledBorder.CENTER, javax.swing.border.TitledBorder.DEFAULT_POSITION, new java.awt.Font("Tahoma", 0, 18))); // NOI18N
 

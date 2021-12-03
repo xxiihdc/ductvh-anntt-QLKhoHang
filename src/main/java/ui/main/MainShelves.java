@@ -4,19 +4,24 @@
  */
 package ui.main;
 
-import ui.*;
+import dao.MainDAO;
+import dao.ProductBatchDAO;
 import ui.dialog.DetailsShelvesDialog;
 import dao.ShelvesDAO;
+import entity.ProductBatch;
 import entity.Shelves;
+import java.awt.Color;
 import java.awt.Component;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
 import java.io.FileReader;
+import java.util.List;
 import java.util.Properties;
 import javax.swing.JButton;
-import javax.swing.JOptionPane;
-import javax.swing.JPanel;
+import javax.swing.table.DefaultTableModel;
+import utils.Currency;
 import utils.MsgBox;
+import utils.Xdate;
 
 /**
  *
@@ -26,6 +31,7 @@ public class MainShelves extends javax.swing.JPanel {
 
     int row, num, cols;
     ShelvesDAO dao;
+    MainDAO mdao;
 
     private boolean readConfig() {
         try {
@@ -44,8 +50,21 @@ public class MainShelves extends javax.swing.JPanel {
                 return false;
             }
         } catch (Exception ex) {
-            ex.printStackTrace();
             return false;
+        }
+    }
+
+    private void fillTable() {
+        ProductBatchDAO bdao = new ProductBatchDAO();
+        DefaultTableModel model =(DefaultTableModel) tblProduct.getModel();
+        List<ProductBatch> lst = bdao.selectAll();
+        model.setRowCount(0);
+         for (ProductBatch p : lst) {
+            Object[] row = new Object[]{
+                p.getProductName(),p.getQuantity(),Currency.getCurrency(p.getPrice()),
+                p.getSupplierName(),Xdate.toString(p.getEnteredDate(), "dd-MM-yyyy")
+            };
+            model.addRow(row);
         }
     }
 
@@ -69,7 +88,12 @@ public class MainShelves extends javax.swing.JPanel {
     }
 
     void init() {
+        mdao = new MainDAO();
         dao = new ShelvesDAO();
+        jTextField1.setText(mdao.selectCountShelves());
+        jTextField2.setText(mdao.selectSumQuantity());
+        jTextField3.setText(mdao.selectSorted());
+        jTextField4.setText(mdao.selectUnsorted());
         jPanel1.setLayout(new java.awt.GridLayout(cols, row));
         shevles[][] btn = new shevles[cols][row];
         int i = 1;
@@ -81,7 +105,6 @@ public class MainShelves extends javax.swing.JPanel {
                     btn[r][c].setEnabled(false);
                 } else {
                     Shelves s = dao.selectByID(i + "");
-
                     btn[r][c].setToolTipText(s.getNote());
                     btn[r][c].setBackground(s.getC());
                     btn[r][c].setEnabled(s.isStatus());
@@ -91,6 +114,7 @@ public class MainShelves extends javax.swing.JPanel {
 
             }
         }
+        
     }
 
     /**
@@ -109,10 +133,17 @@ public class MainShelves extends javax.swing.JPanel {
         jLabel4 = new javax.swing.JLabel();
         jComboBox1 = new javax.swing.JComboBox<>();
         jLabel5 = new javax.swing.JLabel();
+        jTextField1 = new javax.swing.JTextField();
+        jTextField2 = new javax.swing.JTextField();
+        jTextField3 = new javax.swing.JTextField();
+        jTextField4 = new javax.swing.JTextField();
         mainPanel = new javax.swing.JPanel();
         jScrollPane1 = new javax.swing.JScrollPane();
         jPanel1 = new javax.swing.JPanel();
         jPanel3 = new javax.swing.JPanel();
+        jLabel6 = new javax.swing.JLabel();
+        jScrollPane2 = new javax.swing.JScrollPane();
+        tblProduct = new javax.swing.JTable();
 
         setBorder(javax.swing.BorderFactory.createTitledBorder(null, "Quản Lý Kệ Hàng", javax.swing.border.TitledBorder.DEFAULT_JUSTIFICATION, javax.swing.border.TitledBorder.DEFAULT_POSITION, new java.awt.Font("Segoe UI", 1, 18))); // NOI18N
 
@@ -141,6 +172,26 @@ public class MainShelves extends javax.swing.JPanel {
         jLabel5.setFont(new java.awt.Font("Segoe UI", 1, 18)); // NOI18N
         jLabel5.setText("Xem dạng:");
 
+        jTextField1.setEditable(false);
+        jTextField1.setFont(new java.awt.Font("Segoe UI", 1, 18)); // NOI18N
+        jTextField1.setHorizontalAlignment(javax.swing.JTextField.CENTER);
+        jTextField1.setText("jTextField1");
+
+        jTextField2.setEditable(false);
+        jTextField2.setFont(new java.awt.Font("Segoe UI", 1, 18)); // NOI18N
+        jTextField2.setHorizontalAlignment(javax.swing.JTextField.CENTER);
+        jTextField2.setText("jTextField2");
+
+        jTextField3.setEditable(false);
+        jTextField3.setFont(new java.awt.Font("Segoe UI", 1, 18)); // NOI18N
+        jTextField3.setHorizontalAlignment(javax.swing.JTextField.CENTER);
+        jTextField3.setText("jTextField3");
+
+        jTextField4.setEditable(false);
+        jTextField4.setFont(new java.awt.Font("Segoe UI", 1, 18)); // NOI18N
+        jTextField4.setHorizontalAlignment(javax.swing.JTextField.CENTER);
+        jTextField4.setText("jTextField4");
+
         javax.swing.GroupLayout jPanel2Layout = new javax.swing.GroupLayout(jPanel2);
         jPanel2.setLayout(jPanel2Layout);
         jPanel2Layout.setHorizontalGroup(
@@ -148,18 +199,24 @@ public class MainShelves extends javax.swing.JPanel {
             .addGroup(jPanel2Layout.createSequentialGroup()
                 .addContainerGap()
                 .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(jPanel2Layout.createSequentialGroup()
-                        .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(jLabel2)
-                            .addComponent(jLabel4)
-                            .addComponent(jLabel1)
-                            .addComponent(jLabel3))
-                        .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                     .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel2Layout.createSequentialGroup()
                         .addComponent(jLabel5)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 53, Short.MAX_VALUE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                         .addComponent(jComboBox1, javax.swing.GroupLayout.PREFERRED_SIZE, 183, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(25, 25, 25))))
+                        .addGap(25, 25, 25))
+                    .addGroup(jPanel2Layout.createSequentialGroup()
+                        .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(jLabel4)
+                            .addComponent(jLabel3)
+                            .addComponent(jLabel2)
+                            .addComponent(jLabel1))
+                        .addGap(18, 18, 18)
+                        .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(jTextField1, javax.swing.GroupLayout.Alignment.TRAILING)
+                            .addComponent(jTextField2, javax.swing.GroupLayout.Alignment.TRAILING)
+                            .addComponent(jTextField3, javax.swing.GroupLayout.Alignment.TRAILING)
+                            .addComponent(jTextField4))
+                        .addContainerGap())))
         );
         jPanel2Layout.setVerticalGroup(
             jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -169,14 +226,22 @@ public class MainShelves extends javax.swing.JPanel {
                     .addComponent(jComboBox1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(jLabel5))
                 .addGap(23, 23, 23)
-                .addComponent(jLabel1)
-                .addGap(30, 30, 30)
-                .addComponent(jLabel2)
-                .addGap(30, 30, 30)
-                .addComponent(jLabel3)
-                .addGap(32, 32, 32)
-                .addComponent(jLabel4)
-                .addContainerGap(365, Short.MAX_VALUE))
+                .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(jLabel1)
+                    .addComponent(jTextField1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addGap(29, 29, 29)
+                .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(jLabel2)
+                    .addComponent(jTextField2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addGap(29, 29, 29)
+                .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(jLabel3)
+                    .addComponent(jTextField3, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addGap(31, 31, 31)
+                .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(jLabel4)
+                    .addComponent(jTextField4, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addContainerGap(344, Short.MAX_VALUE))
         );
 
         mainPanel.setLayout(new java.awt.CardLayout());
@@ -196,15 +261,40 @@ public class MainShelves extends javax.swing.JPanel {
 
         mainPanel.add(jScrollPane1, "card2");
 
+        jLabel6.setText("DANH MỤC SẢN PHẨM");
+
+        tblProduct.setBackground(new java.awt.Color(255, 204, 153));
+        tblProduct.setFont(new java.awt.Font("Tahoma", 0, 18)); // NOI18N
+        tblProduct.setModel(new javax.swing.table.DefaultTableModel(
+            new Object [][] {
+
+            },
+            new String [] {
+                "Sản Phẩm", "Số Lượng", "Đơn Giá", "Nhà Cung Cấp", "Ngày Nhập Kho"
+            }
+        ));
+        tblProduct.setRowHeight(30);
+        tblProduct.setRowMargin(5);
+        jScrollPane2.setViewportView(tblProduct);
+
         javax.swing.GroupLayout jPanel3Layout = new javax.swing.GroupLayout(jPanel3);
         jPanel3.setLayout(jPanel3Layout);
         jPanel3Layout.setHorizontalGroup(
             jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 785, Short.MAX_VALUE)
+            .addGroup(jPanel3Layout.createSequentialGroup()
+                .addGap(344, 344, 344)
+                .addComponent(jLabel6)
+                .addContainerGap(348, Short.MAX_VALUE))
+            .addComponent(jScrollPane2)
         );
         jPanel3Layout.setVerticalGroup(
             jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 640, Short.MAX_VALUE)
+            .addGroup(jPanel3Layout.createSequentialGroup()
+                .addContainerGap()
+                .addComponent(jLabel6)
+                .addGap(18, 18, 18)
+                .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 567, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addContainerGap(26, Short.MAX_VALUE))
         );
 
         mainPanel.add(jPanel3, "card3");
@@ -217,7 +307,7 @@ public class MainShelves extends javax.swing.JPanel {
                 .addContainerGap()
                 .addComponent(jPanel2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(18, 18, 18)
-                .addComponent(mainPanel, javax.swing.GroupLayout.DEFAULT_SIZE, 785, Short.MAX_VALUE))
+                .addComponent(mainPanel, javax.swing.GroupLayout.DEFAULT_SIZE, 819, Short.MAX_VALUE))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -231,9 +321,10 @@ public class MainShelves extends javax.swing.JPanel {
     private void jComboBox1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jComboBox1ActionPerformed
         // TODO add your handling code here:
         int i = jComboBox1.getSelectedIndex();
-        if(i==1){
+        if (i == 1) {
             selectPanel(jPanel3);
-        }else{
+            fillTable();
+        } else {
             selectPanel(jScrollPane1);
         }
     }//GEN-LAST:event_jComboBox1ActionPerformed
@@ -246,17 +337,26 @@ public class MainShelves extends javax.swing.JPanel {
     private javax.swing.JLabel jLabel3;
     private javax.swing.JLabel jLabel4;
     private javax.swing.JLabel jLabel5;
+    private javax.swing.JLabel jLabel6;
     private javax.swing.JPanel jPanel1;
     private javax.swing.JPanel jPanel2;
     private javax.swing.JPanel jPanel3;
     private javax.swing.JScrollPane jScrollPane1;
+    private javax.swing.JScrollPane jScrollPane2;
+    private javax.swing.JTextField jTextField1;
+    private javax.swing.JTextField jTextField2;
+    private javax.swing.JTextField jTextField3;
+    private javax.swing.JTextField jTextField4;
     private javax.swing.JPanel mainPanel;
+    private javax.swing.JTable tblProduct;
     // End of variables declaration//GEN-END:variables
-MouseListener ml = new MouseListener() {
+    MouseListener ml = new MouseListener() {
         @Override
         public void mouseClicked(MouseEvent e) {
             shevles s = (shevles) e.getComponent();
-            new DetailsShelvesDialog(null,true,Integer.parseInt(s.getText())).setVisible(true);
+            Color c = s.getBackground();
+            int i = c.getRGB();
+            new DetailsShelvesDialog(null, true, Integer.parseInt(s.getText()), i).setVisible(true);
         }
 
         @Override
@@ -275,7 +375,8 @@ MouseListener ml = new MouseListener() {
         public void mouseExited(MouseEvent e) {
         }
     };
-    void selectPanel(Component p){
+
+    void selectPanel(Component p) {
         mainPanel.removeAll();
         mainPanel.add(p);
         mainPanel.repaint();

@@ -9,8 +9,6 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 import utils.XJdbc;
 
 /**
@@ -21,7 +19,10 @@ public class ProductDAO extends WarehouseDAO<Product, String>{
     final String INSERT = "INSERT INTO product (id,_name, image, status, note, "
             + "product_group, product_type, product_unit, vendors_id, price) "
             + "VALUES (?,?,?,?,?,?,?,?,?,?)";
-    final String SELECT_ALL = "SELECT * FROM product";
+    final String UPDATE = "UPDATE product SET _name =?, image =?, status =?, "
+            + "note =?, product_group =?, product_type =?, product_unit =?, vendors_id =?, "
+            + "price = ? where id = ?";
+    final String SELECT_ALL = "SELECT * FROM product where status = 1";
     final String SELECT_BY_ID = "SELECT * FROM product where id = ?";
     @Override
     public void insert(Product entity) {
@@ -32,7 +33,9 @@ public class ProductDAO extends WarehouseDAO<Product, String>{
 
     @Override
     public void update(Product entity) {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+        XJdbc.update(UPDATE, entity.getName(),entity.getImage(),entity.isStatus(),entity.getNote(),
+                entity.getProductGroupID(),entity.getProductTypeID(),entity.getProductUnitID(),
+                entity.getVendorID(),entity.getPrice(),entity.getId());
     }
 
     @Override
@@ -87,5 +90,13 @@ public class ProductDAO extends WarehouseDAO<Product, String>{
         String sql = "select top 1 * from product new";
         return selectBySql(sql).get(0);
     }
-    
+
+    public List<Product> selectByKey(String key) {
+        String sql = "select * from product where id like '%"+key +"%' or _name like '%"+key+"%'" ;
+        return selectBySql(sql);
+    }
+    public List<Product> selectStop(){
+        String sql = "select * from product where status = 0";
+        return selectBySql(sql);
+    }
 }

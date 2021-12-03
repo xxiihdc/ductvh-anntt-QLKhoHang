@@ -27,7 +27,7 @@ public class ToolbarPanel1 extends javax.swing.JPanel {
     private void initComponents() {
 
         jToolBar1 = new javax.swing.JToolBar();
-        jButton1 = new javax.swing.JButton();
+        btnLogOut = new javax.swing.JButton();
         jSeparator1 = new javax.swing.JToolBar.Separator();
         btnUser = new javax.swing.JButton();
         jSeparator2 = new javax.swing.JToolBar.Separator();
@@ -37,20 +37,20 @@ public class ToolbarPanel1 extends javax.swing.JPanel {
         jToolBar1.setBackground(new java.awt.Color(255, 51, 204));
         jToolBar1.setRollover(true);
 
-        jButton1.setFont(new java.awt.Font("Segoe UI", 1, 16)); // NOI18N
-        jButton1.setForeground(new java.awt.Color(255, 51, 0));
-        jButton1.setIcon(new javax.swing.ImageIcon(getClass().getResource("/icon/logout_rounded_left_64px.png"))); // NOI18N
-        jButton1.setText("Đăng Xuất");
-        jButton1.setFocusable(false);
-        jButton1.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
-        jButton1.setMargin(new java.awt.Insets(5, 20, 5, 20));
-        jButton1.setVerticalTextPosition(javax.swing.SwingConstants.BOTTOM);
-        jButton1.addActionListener(new java.awt.event.ActionListener() {
+        btnLogOut.setFont(new java.awt.Font("Segoe UI", 1, 16)); // NOI18N
+        btnLogOut.setForeground(new java.awt.Color(255, 51, 0));
+        btnLogOut.setIcon(new javax.swing.ImageIcon(getClass().getResource("/icon/logout_rounded_left_64px.png"))); // NOI18N
+        btnLogOut.setText("Đăng Xuất");
+        btnLogOut.setFocusable(false);
+        btnLogOut.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
+        btnLogOut.setMargin(new java.awt.Insets(5, 20, 5, 20));
+        btnLogOut.setVerticalTextPosition(javax.swing.SwingConstants.BOTTOM);
+        btnLogOut.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jButton1ActionPerformed(evt);
+                btnLogOutActionPerformed(evt);
             }
         });
-        jToolBar1.add(jButton1);
+        jToolBar1.add(btnLogOut);
         jToolBar1.add(jSeparator1);
 
         btnUser.setFont(new java.awt.Font("Segoe UI", 1, 16)); // NOI18N
@@ -91,15 +91,15 @@ public class ToolbarPanel1 extends javax.swing.JPanel {
         );
     }// </editor-fold>//GEN-END:initComponents
 
-    private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
+    private void btnLogOutActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnLogOutActionPerformed
         // TODO add your handling code here:
-    }//GEN-LAST:event_jButton1ActionPerformed
+    }//GEN-LAST:event_btnLogOutActionPerformed
 
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    public javax.swing.JButton btnLogOut;
     public javax.swing.JButton btnSetting;
     public javax.swing.JButton btnUser;
-    private javax.swing.JButton jButton1;
     private javax.swing.JToolBar.Separator jSeparator1;
     private javax.swing.JToolBar.Separator jSeparator2;
     private javax.swing.JToolBar.Separator jSeparator3;
@@ -109,6 +109,7 @@ public class ToolbarPanel1 extends javax.swing.JPanel {
     private void init() {
         btnSetting.setName("setting");
         btnUser.setName("user");
+        btnLogOut.setName("logOut");
     }
 
 }
