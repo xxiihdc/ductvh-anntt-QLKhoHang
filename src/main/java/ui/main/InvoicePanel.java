@@ -118,11 +118,11 @@ public class InvoicePanel extends javax.swing.JPanel {
 
             },
             new String [] {
-                "ID", "Ngày Tạo", "Nhà Cung Cấp", "Giảm Giá", "Tổng Tiền", "Tổng Nợ"
+                "ID", "Ngày Tạo", "Nhà Cung Cấp", "Giảm Giá", "Tổng Tiền", "Tổng Nợ", "Trạng Thái"
             }
         ) {
             boolean[] canEdit = new boolean [] {
-                false, false, false, false, false, false
+                false, false, false, false, false, false, false
             };
 
             public boolean isCellEditable(int rowIndex, int columnIndex) {
@@ -319,6 +319,10 @@ public class InvoicePanel extends javax.swing.JPanel {
         SupplierDAO sdao = new SupplierDAO();
         for (Invoice s : lst) {
             int id = s.getSupplierID();
+            String status ="";
+            if(s.getStatus()==0) status= "Hủy";
+            else if(s.getStatus()==1) status ="Chờ xác nhân";
+            else status= "Đã xác nhân";
             String name = sdao.selectByID(id + "").getName();
             Object[] row = new Object[]{
                 s.getId(),
@@ -326,7 +330,8 @@ public class InvoicePanel extends javax.swing.JPanel {
                 name,
                 Currency.getCurrency(s.getDiscount()),
                 Currency.getCurrency(s.getAmount()),
-                Currency.getCurrency(s.getDebt())
+                Currency.getCurrency(s.getDebt()),
+                status
             };
             model.addRow(row);
         }

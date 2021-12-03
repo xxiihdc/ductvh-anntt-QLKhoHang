@@ -11,12 +11,20 @@ import java.util.Date;
  * @author ductr
  */
 public class Invoice {
-    private int id,supplierID;
+    private int id,supplierID,status;
     private double discount,amount,debt;
     private Date createDate,finalSettlement;
     private String paymentMethod,note,staffID;
 
     public Invoice() {
+    }
+
+    public int getStatus() {
+        return status;
+    }
+
+    public void setStatus(int status) {
+        this.status = status;
     }
 
     public int getSupplierID() {

@@ -10,8 +10,6 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 import utils.XJdbc;
 
 /**
@@ -22,7 +20,7 @@ public class InvoiceDAO extends WarehouseDAO<Invoice, String> {
 
     final String INSERT = "INSERT INTO invoice "
             + "(staff_id, discount, amount, created_date, debt, final_settlement,"
-            + " payment_method, note, supplier_id) VALUES (?,?,?,?,?,?,?,?,?)";
+            + " payment_method, note, supplier_id,status) VALUES (?,?,?,?,?,?,?,?,?,?)";
     final String SELECT_ALL = "SELECT * FROM INVOICE";
     final String SELECT_BY_ID = "select * from invoice where id =?";
     @Override
@@ -32,7 +30,7 @@ public class InvoiceDAO extends WarehouseDAO<Invoice, String> {
             XJdbc.update(INSERT, entity.getStaffID(), entity.getDiscount(),
                     entity.getAmount(), entity.getCreateDate(),
                     entity.getDebt(), "", entity.getPaymentMethod(), entity.getNote(),
-                    entity.getSupplierID());
+                    entity.getSupplierID(),entity.getStatus());
         } else {
 
         }
@@ -76,6 +74,7 @@ public class InvoiceDAO extends WarehouseDAO<Invoice, String> {
                 i.setPaymentMethod(rs.getString(8));
                 i.setNote(rs.getString(9));
                 i.setSupplierID(rs.getInt(10));
+                i.setStatus(rs.getInt(11));
                 lst.add(i);
             }
             rs.getStatement().getConnection().close();
