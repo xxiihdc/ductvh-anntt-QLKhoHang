@@ -49,12 +49,12 @@ public class SettingDialog extends javax.swing.JDialog {
         txtCols = new javax.swing.JTextField();
         txtRow = new javax.swing.JTextField();
         jPanel3 = new javax.swing.JPanel();
-        jTextField4 = new javax.swing.JTextField();
+        txtSoLuong = new javax.swing.JTextField();
         jTextField5 = new javax.swing.JTextField();
         jTextField6 = new javax.swing.JTextField();
-        jCheckBox1 = new javax.swing.JCheckBox();
-        jCheckBox2 = new javax.swing.JCheckBox();
-        jCheckBox3 = new javax.swing.JCheckBox();
+        jLabel4 = new javax.swing.JLabel();
+        jLabel5 = new javax.swing.JLabel();
+        jLabel6 = new javax.swing.JLabel();
         jButton1 = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
@@ -123,52 +123,47 @@ public class SettingDialog extends javax.swing.JDialog {
         jPanel3.setBackground(new java.awt.Color(255, 204, 153));
         jPanel3.setBorder(javax.swing.BorderFactory.createTitledBorder(null, "Thiết Lập Nhắc Việc", javax.swing.border.TitledBorder.DEFAULT_JUSTIFICATION, javax.swing.border.TitledBorder.DEFAULT_POSITION, new java.awt.Font("Tahoma", 0, 14))); // NOI18N
 
-        jCheckBox1.setFont(new java.awt.Font("Segoe UI", 1, 18)); // NOI18N
-        jCheckBox1.setText("Nhắc hết số lượng:");
-        jCheckBox1.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jCheckBox1ActionPerformed(evt);
-            }
-        });
+        jLabel4.setFont(new java.awt.Font("Segoe UI", 1, 18)); // NOI18N
+        jLabel4.setText("Nhắc hết số lượng:");
 
-        jCheckBox2.setFont(new java.awt.Font("Segoe UI", 1, 18)); // NOI18N
-        jCheckBox2.setText("Nhắc nợ NCC:");
+        jLabel5.setFont(new java.awt.Font("Segoe UI", 1, 18)); // NOI18N
+        jLabel5.setText("Nhắc nợ NCC:");
 
-        jCheckBox3.setFont(new java.awt.Font("Segoe UI", 1, 18)); // NOI18N
-        jCheckBox3.setText("Nhắc hàng chưa được sắp xếp:");
+        jLabel6.setFont(new java.awt.Font("Segoe UI", 1, 18)); // NOI18N
+        jLabel6.setText("Nhắc đơn hàng");
 
         javax.swing.GroupLayout jPanel3Layout = new javax.swing.GroupLayout(jPanel3);
         jPanel3.setLayout(jPanel3Layout);
         jPanel3Layout.setHorizontalGroup(
             jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel3Layout.createSequentialGroup()
-                .addGap(20, 20, 20)
+                .addContainerGap()
                 .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(jCheckBox2)
-                    .addComponent(jCheckBox3)
-                    .addComponent(jCheckBox1))
-                .addGap(31, 31, 31)
+                    .addComponent(jLabel4)
+                    .addComponent(jLabel5)
+                    .addComponent(jLabel6))
+                .addGap(142, 142, 142)
                 .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
                     .addComponent(jTextField5, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, 175, Short.MAX_VALUE)
-                    .addComponent(jTextField4, javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(txtSoLuong, javax.swing.GroupLayout.Alignment.LEADING)
                     .addComponent(jTextField6))
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                .addContainerGap(36, Short.MAX_VALUE))
         );
         jPanel3Layout.setVerticalGroup(
             jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel3Layout.createSequentialGroup()
-                .addGap(23, 23, 23)
+                .addGap(26, 26, 26)
                 .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(jTextField4, javax.swing.GroupLayout.PREFERRED_SIZE, 33, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(jCheckBox1))
+                    .addComponent(txtSoLuong, javax.swing.GroupLayout.PREFERRED_SIZE, 33, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(jLabel4))
                 .addGap(18, 18, 18)
-                .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(jCheckBox2)
-                    .addComponent(jTextField5, javax.swing.GroupLayout.PREFERRED_SIZE, 33, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(jTextField5, javax.swing.GroupLayout.PREFERRED_SIZE, 33, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(jLabel5))
                 .addGap(31, 31, 31)
-                .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jTextField6, javax.swing.GroupLayout.PREFERRED_SIZE, 31, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(jCheckBox3))
+                    .addComponent(jLabel6))
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
 
@@ -193,7 +188,7 @@ public class SettingDialog extends javax.swing.JDialog {
                         .addGap(0, 0, Short.MAX_VALUE))
                     .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
                         .addGap(0, 0, Short.MAX_VALUE)
-                        .addComponent(jPanel3, javax.swing.GroupLayout.PREFERRED_SIZE, 538, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                        .addComponent(jPanel3, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
                 .addContainerGap())
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
                 .addGap(0, 0, Short.MAX_VALUE)
@@ -236,10 +231,6 @@ public class SettingDialog extends javax.swing.JDialog {
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
-    private void jCheckBox1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jCheckBox1ActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_jCheckBox1ActionPerformed
-
     private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
         if (valid()) {
             if (MsgBox.confirm(null, "Thay đổi sẽ xóa toàn bộ dữ liệu về kệ hàng"
@@ -252,7 +243,12 @@ public class SettingDialog extends javax.swing.JDialog {
                     properties.setProperty("row", txtRow.getText());
                     properties.store(new FileWriter("src\\main\\resources\\config\\shelves.properties"), "Shelves Info");
                     int soKe = Integer.parseInt(txtNum.getText());
-                    dao.insert(soKe);
+                    dao.insert(soKe);   
+                    
+                    Properties properties2 = new Properties();
+                    properties2.setProperty("number", txtSoLuong.getText());
+                    properties2.store(new FileWriter("src\\main\\resources\\config\\soLuong.properties"), "Shelves Info");
+                    
                 } catch (IOException ex) {
                     throw new RuntimeException(ex);
                  }
@@ -309,21 +305,21 @@ public class SettingDialog extends javax.swing.JDialog {
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton jButton1;
-    private javax.swing.JCheckBox jCheckBox1;
-    private javax.swing.JCheckBox jCheckBox2;
-    private javax.swing.JCheckBox jCheckBox3;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel3;
+    private javax.swing.JLabel jLabel4;
+    private javax.swing.JLabel jLabel5;
+    private javax.swing.JLabel jLabel6;
     private javax.swing.JPanel jPanel1;
     private javax.swing.JPanel jPanel2;
     private javax.swing.JPanel jPanel3;
-    private javax.swing.JTextField jTextField4;
     private javax.swing.JTextField jTextField5;
     private javax.swing.JTextField jTextField6;
     private javax.swing.JTextField txtCols;
     private javax.swing.JTextField txtNum;
     private javax.swing.JTextField txtRow;
+    private javax.swing.JTextField txtSoLuong;
     // End of variables declaration//GEN-END:variables
     private boolean readConfig() {
         try {
@@ -351,7 +347,7 @@ public class SettingDialog extends javax.swing.JDialog {
     }
 
     private boolean valid() {
-        String num = txtCols.getText() + txtNum.getText() + txtRow.getText();
+        String num = txtCols.getText() + txtNum.getText() + txtRow.getText()+txtSoLuong.getText();
         for (int i = 0; i < num.length(); i++) {
             if (!Character.isDigit(num.charAt(i))) {
                 return false;

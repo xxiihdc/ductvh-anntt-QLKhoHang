@@ -58,12 +58,15 @@ public class InvoicePanel extends javax.swing.JPanel {
         jLabel2 = new javax.swing.JLabel();
         jScrollPane1 = new javax.swing.JScrollPane();
         tblInvoice = new javax.swing.JTable();
-        jButton2 = new javax.swing.JButton();
+        jLabel3 = new javax.swing.JLabel();
+        cbxStatus = new javax.swing.JComboBox<>();
+        checkboxNo = new javax.swing.JCheckBox();
         jToolBar1 = new javax.swing.JToolBar();
         jButton1 = new javax.swing.JButton();
         jButton3 = new javax.swing.JButton();
         jButton8 = new javax.swing.JButton();
         jButton9 = new javax.swing.JButton();
+        jButton2 = new javax.swing.JButton();
 
         setBorder(javax.swing.BorderFactory.createTitledBorder(null, "Quản Lý Hóa Đơn", javax.swing.border.TitledBorder.DEFAULT_JUSTIFICATION, javax.swing.border.TitledBorder.DEFAULT_POSITION, new java.awt.Font("Segoe UI", 0, 18))); // NOI18N
 
@@ -105,10 +108,16 @@ public class InvoicePanel extends javax.swing.JPanel {
         jButton7.setVerticalTextPosition(javax.swing.SwingConstants.BOTTOM);
         jToolBar2.add(jButton7);
 
-        jLabel1.setFont(new java.awt.Font("Tahoma", 0, 14)); // NOI18N
+        txtDateTo.setFont(new java.awt.Font("Tahoma", 0, 18)); // NOI18N
+
+        jLabel1.setFont(new java.awt.Font("Tahoma", 1, 14)); // NOI18N
+        jLabel1.setForeground(new java.awt.Color(255, 0, 0));
         jLabel1.setText("Từ ngày:");
 
-        jLabel2.setFont(new java.awt.Font("Tahoma", 0, 14)); // NOI18N
+        txtDateFrom.setFont(new java.awt.Font("Tahoma", 0, 18)); // NOI18N
+
+        jLabel2.setFont(new java.awt.Font("Tahoma", 1, 14)); // NOI18N
+        jLabel2.setForeground(new java.awt.Color(255, 0, 0));
         jLabel2.setText("Đến ngày:");
 
         tblInvoice.setBackground(new java.awt.Color(255, 204, 153));
@@ -138,10 +147,17 @@ public class InvoicePanel extends javax.swing.JPanel {
         });
         jScrollPane1.setViewportView(tblInvoice);
 
-        jButton2.setText("TÌM");
-        jButton2.addActionListener(new java.awt.event.ActionListener() {
+        jLabel3.setFont(new java.awt.Font("Tahoma", 0, 14)); // NOI18N
+        jLabel3.setText("Trạng Thái:");
+
+        cbxStatus.setFont(new java.awt.Font("Tahoma", 0, 18)); // NOI18N
+        cbxStatus.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Tất cả", "Chờ xác nhận", "Đã xác nhận", "Đã hủy" }));
+
+        checkboxNo.setFont(new java.awt.Font("Tahoma", 0, 18)); // NOI18N
+        checkboxNo.setText("Chỉ hiện thị hóa đơn nợ NCC ?");
+        checkboxNo.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jButton2ActionPerformed(evt);
+                checkboxNoActionPerformed(evt);
             }
         });
 
@@ -150,36 +166,37 @@ public class InvoicePanel extends javax.swing.JPanel {
         jPanel1Layout.setHorizontalGroup(
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel1Layout.createSequentialGroup()
-                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(jPanel1Layout.createSequentialGroup()
-                        .addComponent(jLabel1)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(txtDateFrom, javax.swing.GroupLayout.PREFERRED_SIZE, 196, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                        .addComponent(jLabel2)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(txtDateTo, javax.swing.GroupLayout.PREFERRED_SIZE, 196, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                        .addComponent(jButton2, javax.swing.GroupLayout.PREFERRED_SIZE, 112, javax.swing.GroupLayout.PREFERRED_SIZE))
-                    .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 1186, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addContainerGap())
+                .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 1186, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+            .addGroup(jPanel1Layout.createSequentialGroup()
+                .addComponent(jLabel1)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(txtDateFrom, javax.swing.GroupLayout.PREFERRED_SIZE, 196, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addComponent(jLabel2)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(txtDateTo, javax.swing.GroupLayout.PREFERRED_SIZE, 196, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(42, 42, 42)
+                .addComponent(jLabel3)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addComponent(cbxStatus, javax.swing.GroupLayout.PREFERRED_SIZE, 165, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(30, 30, 30)
+                .addComponent(checkboxNo)
+                .addGap(31, 31, 31))
         );
         jPanel1Layout.setVerticalGroup(
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel1Layout.createSequentialGroup()
                 .addContainerGap()
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(txtDateFrom, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, 47, Short.MAX_VALUE)
-                    .addComponent(txtDateTo, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .addGroup(jPanel1Layout.createSequentialGroup()
-                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(jLabel2)
-                            .addComponent(jLabel1))
-                        .addGap(0, 0, Short.MAX_VALUE))
-                    .addGroup(jPanel1Layout.createSequentialGroup()
-                        .addGap(0, 0, Short.MAX_VALUE)
-                        .addComponent(jButton2, javax.swing.GroupLayout.PREFERRED_SIZE, 43, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                    .addComponent(jLabel2)
+                    .addComponent(jLabel1)
+                    .addComponent(cbxStatus, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(txtDateFrom, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(txtDateTo, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(checkboxNo)
+                    .addComponent(jLabel3))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 12, Short.MAX_VALUE)
                 .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 465, javax.swing.GroupLayout.PREFERRED_SIZE))
         );
 
@@ -228,19 +245,34 @@ public class InvoicePanel extends javax.swing.JPanel {
         jButton9.setVerticalTextPosition(javax.swing.SwingConstants.BOTTOM);
         jToolBar1.add(jButton9);
 
+        jButton2.setIcon(new javax.swing.ImageIcon(getClass().getResource("/icon/search_40px.png"))); // NOI18N
+        jButton2.setText("TÌM");
+        jButton2.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton2ActionPerformed(evt);
+            }
+        });
+
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(this);
         this.setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addComponent(jToolBar2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-            .addComponent(jToolBar1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+            .addGroup(layout.createSequentialGroup()
+                .addComponent(jToolBar1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(281, 281, 281)
+                .addComponent(jButton2, javax.swing.GroupLayout.PREFERRED_SIZE, 235, javax.swing.GroupLayout.PREFERRED_SIZE))
             .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
-                .addComponent(jToolBar1, javax.swing.GroupLayout.PREFERRED_SIZE, 49, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(layout.createSequentialGroup()
+                        .addComponent(jToolBar1, javax.swing.GroupLayout.PREFERRED_SIZE, 49, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(0, 0, Short.MAX_VALUE))
+                    .addComponent(jButton2, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                 .addComponent(jToolBar2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
@@ -273,11 +305,18 @@ public class InvoicePanel extends javax.swing.JPanel {
         // TODO add your handling code here:
         txtDateFrom.setDate(null);
         txtDateTo.setDate(null);
+        cbxStatus.setSelectedIndex(0);
         fillTable();
     }//GEN-LAST:event_jButton8ActionPerformed
 
+    private void checkboxNoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_checkboxNoActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_checkboxNoActionPerformed
+
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JComboBox<String> cbxStatus;
+    private javax.swing.JCheckBox checkboxNo;
     private javax.swing.JButton jButton1;
     private javax.swing.JButton jButton2;
     private javax.swing.JButton jButton3;
@@ -290,6 +329,7 @@ public class InvoicePanel extends javax.swing.JPanel {
     private com.toedter.calendar.JDateChooser jDateChooser2;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
+    private javax.swing.JLabel jLabel3;
     private javax.swing.JPanel jPanel1;
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JToolBar jToolBar1;
@@ -300,13 +340,15 @@ public class InvoicePanel extends javax.swing.JPanel {
     private com.toedter.calendar.JDateChooser txtDateTo;
     // End of variables declaration//GEN-END:variables
 
-    private void fillTable() {
+    public void fillTable() {
         DefaultTableModel model = (DefaultTableModel) tblInvoice.getModel();
         model.setRowCount(0);
         List<Invoice> lst;
         Date d1 = txtDateFrom.getDate();
         Date d2 = txtDateTo.getDate();
-        if(d1==null && d2 == null){
+        int index = cbxStatus.getSelectedIndex();
+        boolean no = checkboxNo.isSelected();
+        if(d1==null && d2 == null && index ==0 && !no){
             lst = dao.selectAll();
         }else{
             String d1s,d2s;
@@ -314,15 +356,23 @@ public class InvoicePanel extends javax.swing.JPanel {
             else d1s = "1990-01-01";
             if(d2!=null) d2s = Xdate.toString(d2, "yyyy-MM-dd");
             else d2s = Xdate.toString(new Date(), "yyyy-MM-dd");
-            lst = dao.selectByDate(d1s, d2s);
+            lst = dao.selectByDate(d1s, d2s,index,no);
         }
         SupplierDAO sdao = new SupplierDAO();
         for (Invoice s : lst) {
             int id = s.getSupplierID();
-            String status ="";
-            if(s.getStatus()==0) status= "Hủy";
-            else if(s.getStatus()==1) status ="Chờ xác nhân";
-            else status= "Đã xác nhân";
+            String status;
+            switch (s.getStatus()) {
+                case 0:
+                    status= "Chờ xác nhân";
+                    break;
+                case 1:
+                    status ="Đã xác nhận";
+                    break;
+                default:
+                    status= "Hủy";
+                    break;
+            }
             String name = sdao.selectByID(id + "").getName();
             Object[] row = new Object[]{
                 s.getId(),
@@ -336,5 +386,9 @@ public class InvoicePanel extends javax.swing.JPanel {
             model.addRow(row);
         }
         lblRecord.setText("0/" + tblInvoice.getRowCount());
+    }
+    public void setStatus(boolean status, int index){
+        checkboxNo.setSelected(status);
+        cbxStatus.setSelectedIndex(index);
     }
 }

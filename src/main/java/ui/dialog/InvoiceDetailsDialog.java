@@ -54,6 +54,8 @@ public class InvoiceDetailsDialog extends javax.swing.JDialog {
     List<Product> lst;
     boolean add;
     int maHD = -1;
+    boolean update = false;
+
     public InvoiceDetailsDialog(java.awt.Frame parent, boolean modal) {
         super(parent, modal);
         initComponents();
@@ -127,7 +129,7 @@ public class InvoiceDetailsDialog extends javax.swing.JDialog {
         jButton5 = new javax.swing.JButton();
         jButton6 = new javax.swing.JButton();
         jButton7 = new javax.swing.JButton();
-        jComboBox1 = new javax.swing.JComboBox<>();
+        cbxStatus = new javax.swing.JComboBox<>();
         jLabel13 = new javax.swing.JLabel();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
@@ -461,11 +463,6 @@ public class InvoiceDetailsDialog extends javax.swing.JDialog {
 
         btnSave.setIcon(new javax.swing.ImageIcon(getClass().getResource("/icon/save_30px.png"))); // NOI18N
         btnSave.setText("LƯU");
-        btnSave.addMouseListener(new java.awt.event.MouseAdapter() {
-            public void mousePressed(java.awt.event.MouseEvent evt) {
-                btnSaveMousePressed(evt);
-            }
-        });
         btnSave.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 btnSaveActionPerformed(evt);
@@ -491,8 +488,13 @@ public class InvoiceDetailsDialog extends javax.swing.JDialog {
             }
         });
 
-        jComboBox1.setFont(new java.awt.Font("Tahoma", 0, 18)); // NOI18N
-        jComboBox1.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Chờ xác nhân", "Xác nhân", "Hủy bỏ" }));
+        cbxStatus.setFont(new java.awt.Font("Tahoma", 0, 18)); // NOI18N
+        cbxStatus.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Chờ xác nhân", "Xác nhân", "Hủy bỏ" }));
+        cbxStatus.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                cbxStatusActionPerformed(evt);
+            }
+        });
 
         jLabel13.setFont(new java.awt.Font("Segoe UI", 1, 18)); // NOI18N
         jLabel13.setForeground(new java.awt.Color(255, 153, 51));
@@ -516,7 +518,7 @@ public class InvoiceDetailsDialog extends javax.swing.JDialog {
                 .addGap(37, 37, 37)
                 .addComponent(jLabel13)
                 .addGap(18, 18, 18)
-                .addComponent(jComboBox1, 0, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addComponent(cbxStatus, 0, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                 .addContainerGap())
         );
         jPanel5Layout.setVerticalGroup(
@@ -525,7 +527,7 @@ public class InvoiceDetailsDialog extends javax.swing.JDialog {
                 .addGap(24, 24, 24)
                 .addGroup(jPanel5Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel13)
-                    .addComponent(jComboBox1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(cbxStatus, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addGap(18, 18, 18)
                 .addGroup(jPanel5Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(btnSave)
@@ -641,13 +643,33 @@ public class InvoiceDetailsDialog extends javax.swing.JDialog {
         if (!valid()) {
             return;
         }
-        InvoiceDAO dao = new InvoiceDAO();
-        dao.insert(getInvoice());
-        getInvoiceDetails();
-        lst.clear();
+        int status = cbxStatus.getSelectedIndex();
+        if (add) {//hoa don moi
+            dao.insert(getInvoice());
+            maHD=dao.getLastID();
+            if (status == 1) {
+                getInvoiceDetails(dao.getLastID());
+                maHD = dao.getLastID();
+                add = false;
+                update = true;
+            } else {
+                saveTemp(dao.getLastID());
+                maHD = dao.getLastID();
+                add = false;
+                update = true;
+            }
+        } else {//cap nhat
+            if(!update){
+                MsgBox.alert(null, "Bạn chỉ có thể chỉnh sửa hóa đơn chờ xác nhận");
+                return;
+            }
+            if(status==0){
+                MsgBox.alert(null, "Chọn trạng thái đơn trước khi cập nhật");
+                return;
+            }
+            updateInvoice();
+        }
         MsgBox.alert(null, "Thông tin hóa đơn đã được lưu");
-     
-
     }//GEN-LAST:event_btnSaveActionPerformed
 
     private void cbxThanhToanActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_cbxThanhToanActionPerformed
@@ -693,14 +715,18 @@ public class InvoiceDetailsDialog extends javax.swing.JDialog {
 
     private void jButton3ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton3ActionPerformed
         // TODO add your handling code here:
-        if (lst.isEmpty()) return;
-        if(tblDetails.getSelectedRow()==-1) return;
-            lst.remove(tblDetails.getSelectedRow());
-            DefaultTableModel model = (DefaultTableModel) tblDetails.getModel();
-            model.removeRow(tblDetails.getSelectedRow());
-            model.fireTableDataChanged();
-            fillDetails();
-        
+        if (lst.isEmpty()) {
+            return;
+        }
+        if (tblDetails.getSelectedRow() == -1) {
+            return;
+        }
+        lst.remove(tblDetails.getSelectedRow());
+        DefaultTableModel model = (DefaultTableModel) tblDetails.getModel();
+        model.removeRow(tblDetails.getSelectedRow());
+        model.fireTableDataChanged();
+        fillDetails();
+
     }//GEN-LAST:event_jButton3ActionPerformed
 
     private void jButton7ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton7ActionPerformed
@@ -713,9 +739,16 @@ public class InvoiceDetailsDialog extends javax.swing.JDialog {
         printInvoice();
     }//GEN-LAST:event_jButton6ActionPerformed
 
-    private void btnSaveMousePressed(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_btnSaveMousePressed
+    private void cbxStatusActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_cbxStatusActionPerformed
         // TODO add your handling code here:
-    }//GEN-LAST:event_btnSaveMousePressed
+        if (add) {
+            int index = cbxStatus.getSelectedIndex();
+            if (index == 2) {
+                MsgBox.alert(null, "Tạo hóa đơn mới không thể để trạng thái đã hủy !");
+                cbxStatus.setSelectedIndex(0);
+            }
+        }
+    }//GEN-LAST:event_cbxStatusActionPerformed
 
     /**
      * @param args the command line arguments
@@ -762,6 +795,7 @@ public class InvoiceDetailsDialog extends javax.swing.JDialog {
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton btnSave;
     private javax.swing.JComboBox<String> cbxPayment;
+    private javax.swing.JComboBox<String> cbxStatus;
     private javax.swing.JComboBox<String> cbxSupplier;
     private javax.swing.JComboBox<String> cbxThanhToan;
     private javax.swing.JButton jButton1;
@@ -771,7 +805,6 @@ public class InvoiceDetailsDialog extends javax.swing.JDialog {
     private javax.swing.JButton jButton6;
     private javax.swing.JButton jButton7;
     private javax.swing.JButton jButton8;
-    private javax.swing.JComboBox<String> jComboBox1;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel10;
     private javax.swing.JLabel jLabel11;
@@ -807,13 +840,13 @@ public class InvoiceDetailsDialog extends javax.swing.JDialog {
     // End of variables declaration//GEN-END:variables
 
     private void fillList() {
-        ProductDAO dao = new ProductDAO();
-        List<Product> lst = dao.selectAll();
-        DefaultListModel<Product> model = new DefaultListModel<>();
-        for (int i = 0; i < lst.size(); i++) {
-            model.add(i, lst.get(i));
+        ProductDAO pdao = new ProductDAO();
+        List<Product> list = pdao.selectAll();
+        DefaultListModel<Product> modell = new DefaultListModel<>();
+        for (int i = 0; i < list.size(); i++) {
+            modell.add(i, list.get(i));
         }
-        jList1.setModel(model);
+        jList1.setModel(modell);
     }
 
     private void fillCbx() {
@@ -829,6 +862,8 @@ public class InvoiceDetailsDialog extends javax.swing.JDialog {
 
     private Invoice getInvoice() {
         Invoice i = new Invoice();
+        int status = cbxStatus.getSelectedIndex();
+        i.setStatus(status);
         i.setCreateDate(new Date());
         String tongTienHoaDon = txtThanhToan.getText();
         i.setAmount(Currency.getDouble(tongTienHoaDon));
@@ -839,16 +874,19 @@ public class InvoiceDetailsDialog extends javax.swing.JDialog {
         i.setStaffID(txtStaff.getText());
         Supplier s = (Supplier) cbxSupplier.getSelectedItem();
         i.setSupplierID(s.getId());
+        if (maHD != -1) {
+            i.setId(maHD);
+        }
         return i;
     }
 
-    private void getInvoiceDetails() {
+    private void getInvoiceDetails(int invoiceID) {
         if (!valid()) {
             return;
         }
         InvoiceDetailsDAO iddao = new InvoiceDetailsDAO();
         ProductBatchDAO bdao = new ProductBatchDAO();
-        InvoiceDAO idao = new InvoiceDAO();
+        tblDetails.setEnabled(true);
         ShelvesDetailsDAO sdao = new ShelvesDetailsDAO();
         for (int i = 0; i < tblDetails.getRowCount(); i++) {
             ProductBatch pb = new ProductBatch();
@@ -876,21 +914,21 @@ public class InvoiceDetailsDialog extends javax.swing.JDialog {
                 sd.setQuantity(pb.getQuantity());
                 sdao.insert(sd);
             }
-
             InvoiceDetails iv = new InvoiceDetails();
             iv.setDiscount(Double.parseDouble(tblDetails.getValueAt(i, 5) + ""));
-            iv.setInvoiceID(idao.getLastID());
+            iv.setInvoiceID(invoiceID);
             iv.setPrice(Currency.getDouble(tblDetails.getValueAt(i, 3) + ""));
             iv.setProductBatchID(bdao.getBatch());
             iv.setQuantity(pb.getQuantity());
             iv.setProductID(lst.get(i).getId());
             iddao.insert(iv);
         }
+        tblDetails.setEnabled(false);
     }
 
     private void addProduct() {
         if (!add) {
-            MsgBox.alert(null, "Ban khong the chinh sua hoa don");
+            MsgBox.alert(null, "Bạn không thể thêm sản phẩm vào hóa đơn đã được lưu");
             return;
         }
         Product p = jList1.getSelectedValue();
@@ -973,7 +1011,12 @@ public class InvoiceDetailsDialog extends javax.swing.JDialog {
     }
 
     public void setForm(Invoice i) {
+        InvoiceDetailsDAO iddao = new InvoiceDetailsDAO();
+        lst = iddao.getProductByInvoiceID(i.getId());
+        txtNote.setEditable(false);
         txtID.setText(i.getId() + "");
+        maHD = i.getId();
+        update = i.getStatus()==0;
         txtStaff.setText(i.getStaffID());
         String payment = i.getPaymentMethod();
         if (payment.equalsIgnoreCase("Tiền mặt")) {
@@ -998,10 +1041,11 @@ public class InvoiceDetailsDialog extends javax.swing.JDialog {
         } else {
             cbxThanhToan.setSelectedIndex(3);
         }
+        cbxStatus.setSelectedIndex(i.getStatus());
+        cbxSupplier.setSelectedItem(new SupplierDAO().selectByID(i.getSupplierID()+""));
         fillTable(i.getId());
+        tblDetails.setEnabled(false);
     }
-
-    ;
 
     private void fillTable(int id) {
         InvoiceDetailsDAO iddao = new InvoiceDetailsDAO();
@@ -1031,12 +1075,17 @@ public class InvoiceDetailsDialog extends javax.swing.JDialog {
         txtSoTienTT.setText("");
         txtNo.setText("");
         txtNote.setText("");
+        lst.clear();
         fillList();
+        add = true;
+        maHD=-1;
+        tblDetails.setEnabled(true);
         model.setRowCount(0);
         tblDetails.setModel(model);
         txtTotalPrice.setText("");
         txtCK.setText("");
         txtThanhToan.setText("");
+        update = false;
     }
 
     private void printInvoice() {
@@ -1045,7 +1094,7 @@ public class InvoiceDetailsDialog extends javax.swing.JDialog {
             XWPFDocument document = new XWPFDocument();
             String time = java.time.LocalDateTime.now() + "";
             time = time.replaceAll(":", "");
-            String title ="hd" + time + ".docx";
+            String title = "hd" + time + ".docx";
             FileOutputStream o = new FileOutputStream(new File(title));
 
             XWPFParagraph paragraph = document.createParagraph();
@@ -1102,29 +1151,40 @@ public class InvoiceDetailsDialog extends javax.swing.JDialog {
                 cell.setVerticalAlignment(XWPFTableCell.XWPFVertAlign.CENTER);
                 cellRun.setBold(true);
             }
-            for(int i = 0; i<tblDetails.getRowCount();i++){
+            for (int i = 0; i < tblDetails.getRowCount(); i++) {
                 XWPFTableRow tableRow = table.createRow();
-                tableRow.getCell(0).setText(tblDetails.getValueAt(i, 0)+"");
-                tableRow.getCell(1).setText(tblDetails.getValueAt(i, 2)+"");
-                tableRow.getCell(2).setText(tblDetails.getValueAt(i, 3)+"");
-                tableRow.getCell(3).setText(tblDetails.getValueAt(i, 4)+"");
-                tableRow.getCell(4).setText(tblDetails.getValueAt(i, 5)+"%");
+                tableRow.getCell(0).setText(tblDetails.getValueAt(i, 0) + "");
+                tableRow.getCell(1).setText(tblDetails.getValueAt(i, 2) + "");
+                tableRow.getCell(2).setText(tblDetails.getValueAt(i, 3) + "");
+                tableRow.getCell(3).setText(tblDetails.getValueAt(i, 4) + "");
+                tableRow.getCell(4).setText(tblDetails.getValueAt(i, 5) + "%");
             }
-            
+
             XWPFParagraph paragraph3 = document.createParagraph();
             XWPFRun run8 = paragraph3.createRun();
-            run8.addBreak();run8.addBreak();run8.addBreak();
-            run8.setText("Tổng tiền hàng: "+txtTotalPrice.getText());
             run8.addBreak();
-            run8.setText("Số tiền chiết khấu: "+txtCK.getText());
             run8.addBreak();
-            run8.setText("Tổng tiền thanh toán:"+txtThanhToan.getText());
             run8.addBreak();
-            run8.addBreak();run8.addBreak();run8.addBreak();
+            run8.setText("Tổng tiền hàng: " + txtTotalPrice.getText());
+            run8.addBreak();
+            run8.setText("Số tiền chiết khấu: " + txtCK.getText());
+            run8.addBreak();
+            run8.setText("Tổng tiền thanh toán:" + txtThanhToan.getText());
+            run8.addBreak();
+            run8.addBreak();
+            run8.addBreak();
+            run8.addBreak();
             run8.setText("Bên giao");
-            run8.addTab();run8.addTab();run8.addTab();run8.addTab();
-            run8.addTab();run8.addTab();run8.addTab();run8.addTab();
-            run8.addTab();run8.addTab();
+            run8.addTab();
+            run8.addTab();
+            run8.addTab();
+            run8.addTab();
+            run8.addTab();
+            run8.addTab();
+            run8.addTab();
+            run8.addTab();
+            run8.addTab();
+            run8.addTab();
             run8.setText("Bên nhận");
             paragraph3.setAlignment(ParagraphAlignment.RIGHT);
             document.write(o);
@@ -1134,5 +1194,42 @@ public class InvoiceDetailsDialog extends javax.swing.JDialog {
         } catch (Exception e) {
             e.printStackTrace();
         }
+    }
+
+    private void updateInvoice() {
+        int status = cbxStatus.getSelectedIndex();
+        if(status==1){//xac nhan
+            Invoice iv = new Invoice();
+            iv.setId(maHD);
+            iv.setStatus(1);
+            iv.setNote(txtNote.getText()+"\n Xác nhân bởi: "+Auth.user.getName());
+            dao.update(iv);
+            tblDetails.setEnabled(true);
+            InvoiceDetailsDAO idao = new InvoiceDetailsDAO();
+            idao.delete(maHD+"");
+            getInvoiceDetails(maHD);
+            tblDetails.setEnabled(false);
+        }else{//huy
+            Invoice iv = new Invoice();
+            iv.setId(maHD);
+            iv.setStatus(2);
+            iv.setNote(txtNote.getText()+"\n Hủy bởi: "+Auth.user.getName());
+            dao.delete(iv);
+        }
+    }
+
+    private void saveTemp(int invoiceID) {
+        tblDetails.setEnabled(true);
+        InvoiceDetailsDAO idao = new InvoiceDetailsDAO();
+        for (int i = 0; i < tblDetails.getRowCount(); i++) {
+            InvoiceDetails iv = new InvoiceDetails();
+            iv.setDiscount(Double.parseDouble(tblDetails.getValueAt(i, 5) + ""));
+            iv.setInvoiceID(invoiceID);
+            iv.setPrice(Currency.getDouble(tblDetails.getValueAt(i, 3) + ""));
+            iv.setQuantity(Integer.parseInt(tblDetails.getValueAt(i, 2) + ""));
+            iv.setProductID(lst.get(i).getId());
+            idao.insertTemp(iv);
+        }
+        tblDetails.setEnabled(false);
     }
 }

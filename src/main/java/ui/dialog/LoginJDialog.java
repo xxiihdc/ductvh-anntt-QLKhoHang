@@ -10,8 +10,10 @@ import dao.UserDAO;
 import entity.Staff;
 import entity.User;
 import java.awt.Color;
+import java.awt.event.KeyEvent;
 import utils.Auth;
 import utils.MsgBox;
+import utils.SaveLogin;
 
 /**
  *
@@ -30,7 +32,7 @@ public class LoginJDialog extends javax.swing.JDialog {
 
     void init() {
         setLocationRelativeTo(null);
-        txtPassword.setText("123456");
+        txtPassword.setText("123");
         setTitle("Đăng nhập hệ thống");
         txtUserName.setForeground(new Color(58, 65, 65));
     }
@@ -68,6 +70,11 @@ public class LoginJDialog extends javax.swing.JDialog {
                 txtUserNameFocusLost(evt);
             }
         });
+        txtUserName.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyReleased(java.awt.event.KeyEvent evt) {
+                txtUserNameKeyReleased(evt);
+            }
+        });
 
         jLabel2.setFont(new java.awt.Font("Segoe UI", 1, 18)); // NOI18N
         jLabel2.setText("Mật khẩu:");
@@ -76,6 +83,11 @@ public class LoginJDialog extends javax.swing.JDialog {
         txtPassword.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 txtPasswordActionPerformed(evt);
+            }
+        });
+        txtPassword.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyReleased(java.awt.event.KeyEvent evt) {
+                txtPasswordKeyReleased(evt);
             }
         });
 
@@ -101,6 +113,11 @@ public class LoginJDialog extends javax.swing.JDialog {
         });
 
         cbSaveLogin.setText("Ghi nhớ đăng nhập");
+        cbSaveLogin.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                cbSaveLoginActionPerformed(evt);
+            }
+        });
 
         jLabel3.setIcon(new javax.swing.ImageIcon(getClass().getResource("/icon/Secure.png"))); // NOI18N
 
@@ -194,6 +211,20 @@ public class LoginJDialog extends javax.swing.JDialog {
         }
     }//GEN-LAST:event_txtUserNameFocusLost
 
+    private void cbSaveLoginActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_cbSaveLoginActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_cbSaveLoginActionPerformed
+
+    private void txtUserNameKeyReleased(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_txtUserNameKeyReleased
+        // TODO add your handling code here:
+        if(evt.getKeyCode()==KeyEvent.VK_ENTER) login();
+    }//GEN-LAST:event_txtUserNameKeyReleased
+
+    private void txtPasswordKeyReleased(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_txtPasswordKeyReleased
+        // TODO add your handling code here:
+        if(evt.getKeyCode()==KeyEvent.VK_ENTER) login();
+    }//GEN-LAST:event_txtPasswordKeyReleased
+
     /**
      * @param args the command line arguments
      */
@@ -271,6 +302,8 @@ public class LoginJDialog extends javax.swing.JDialog {
         this.dispose();
         Staff s = dao.selectByID(u.getId());
         Auth.user = s;
-
+        if(cbSaveLogin.isSelected()){
+            SaveLogin.writeFile(id,pass);
+        }
     }
 }

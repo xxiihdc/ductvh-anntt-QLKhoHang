@@ -4,10 +4,12 @@
  */
 package ui.main;
 
+import dao.CongViecDAO;
 import dao.MainDAO;
 import dao.ProductBatchDAO;
 import ui.dialog.DetailsShelvesDialog;
 import dao.ShelvesDAO;
+import entity.CongViec;
 import entity.ProductBatch;
 import entity.Shelves;
 import java.awt.Color;
@@ -17,6 +19,7 @@ import java.awt.event.MouseListener;
 import java.io.FileReader;
 import java.util.List;
 import java.util.Properties;
+import javax.swing.DefaultListModel;
 import javax.swing.JButton;
 import javax.swing.table.DefaultTableModel;
 import utils.Currency;
@@ -45,8 +48,10 @@ public class MainShelves extends javax.swing.JPanel {
                 cols = Integer.parseInt(scols);
                 row = Integer.parseInt(srow);
                 num = Integer.parseInt(snumber);
+                reader.close();
                 return true;
             } else {
+                reader.close();
                 return false;
             }
         } catch (Exception ex) {
@@ -56,13 +61,26 @@ public class MainShelves extends javax.swing.JPanel {
 
     private void fillTable() {
         ProductBatchDAO bdao = new ProductBatchDAO();
-        DefaultTableModel model =(DefaultTableModel) tblProduct.getModel();
+        DefaultTableModel model = (DefaultTableModel) tblProduct.getModel();
         List<ProductBatch> lst = bdao.selectAll();
         model.setRowCount(0);
-         for (ProductBatch p : lst) {
+        for (ProductBatch p : lst) {
             Object[] row = new Object[]{
-                p.getProductName(),p.getQuantity(),Currency.getCurrency(p.getPrice()),
-                p.getSupplierName(),Xdate.toString(p.getEnteredDate(), "dd-MM-yyyy")
+                p.getProductName(), p.getQuantity(), Currency.getCurrency(p.getPrice()),
+                p.getSupplierName(), Xdate.toString(p.getEnteredDate(), "dd-MM-yyyy")
+            };
+            model.addRow(row);
+        }
+    }
+
+    public void fillTableHetHang(int low) {
+        ProductBatchDAO bdao = new ProductBatchDAO();
+        DefaultTableModel model = (DefaultTableModel) tblProduct.getModel();
+        List<ProductBatch> lst = bdao.selectLowQuantity(low);
+        model.setRowCount(0);
+        for (ProductBatch p : lst) {
+            Object[] row = new Object[]{
+               p.getProductID(),p.getQuantity(),"-","-","-"
             };
             model.addRow(row);
         }
@@ -88,6 +106,7 @@ public class MainShelves extends javax.swing.JPanel {
     }
 
     void init() {
+        fillList();
         mdao = new MainDAO();
         dao = new ShelvesDAO();
         jTextField1.setText(mdao.selectCountShelves());
@@ -114,7 +133,7 @@ public class MainShelves extends javax.swing.JPanel {
 
             }
         }
-        
+
     }
 
     /**
@@ -137,6 +156,10 @@ public class MainShelves extends javax.swing.JPanel {
         jTextField2 = new javax.swing.JTextField();
         jTextField3 = new javax.swing.JTextField();
         jTextField4 = new javax.swing.JTextField();
+        jPanel4 = new javax.swing.JPanel();
+        jLabel7 = new javax.swing.JLabel();
+        jScrollPane3 = new javax.swing.JScrollPane();
+        jList1 = new javax.swing.JList<>();
         mainPanel = new javax.swing.JPanel();
         jScrollPane1 = new javax.swing.JScrollPane();
         jPanel1 = new javax.swing.JPanel();
@@ -192,6 +215,37 @@ public class MainShelves extends javax.swing.JPanel {
         jTextField4.setHorizontalAlignment(javax.swing.JTextField.CENTER);
         jTextField4.setText("jTextField4");
 
+        jLabel7.setFont(new java.awt.Font("Tahoma", 1, 18)); // NOI18N
+        jLabel7.setText("Công Việc Cần Chú Ý:");
+
+        jList1.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(0, 0, 0)));
+        jList1.setFont(new java.awt.Font("Tahoma", 0, 18)); // NOI18N
+        jList1.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mousePressed(java.awt.event.MouseEvent evt) {
+                jList1MousePressed(evt);
+            }
+        });
+        jScrollPane3.setViewportView(jList1);
+
+        javax.swing.GroupLayout jPanel4Layout = new javax.swing.GroupLayout(jPanel4);
+        jPanel4.setLayout(jPanel4Layout);
+        jPanel4Layout.setHorizontalGroup(
+            jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(jPanel4Layout.createSequentialGroup()
+                .addGap(75, 75, 75)
+                .addComponent(jLabel7)
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+            .addComponent(jScrollPane3)
+        );
+        jPanel4Layout.setVerticalGroup(
+            jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(jPanel4Layout.createSequentialGroup()
+                .addContainerGap()
+                .addComponent(jLabel7)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addComponent(jScrollPane3, javax.swing.GroupLayout.DEFAULT_SIZE, 270, Short.MAX_VALUE))
+        );
+
         javax.swing.GroupLayout jPanel2Layout = new javax.swing.GroupLayout(jPanel2);
         jPanel2.setLayout(jPanel2Layout);
         jPanel2Layout.setHorizontalGroup(
@@ -199,11 +253,11 @@ public class MainShelves extends javax.swing.JPanel {
             .addGroup(jPanel2Layout.createSequentialGroup()
                 .addContainerGap()
                 .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(jPanel4, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                     .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel2Layout.createSequentialGroup()
                         .addComponent(jLabel5)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                        .addComponent(jComboBox1, javax.swing.GroupLayout.PREFERRED_SIZE, 183, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(25, 25, 25))
+                        .addComponent(jComboBox1, javax.swing.GroupLayout.PREFERRED_SIZE, 196, javax.swing.GroupLayout.PREFERRED_SIZE))
                     .addGroup(jPanel2Layout.createSequentialGroup()
                         .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addComponent(jLabel4)
@@ -212,11 +266,13 @@ public class MainShelves extends javax.swing.JPanel {
                             .addComponent(jLabel1))
                         .addGap(18, 18, 18)
                         .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(jTextField1, javax.swing.GroupLayout.Alignment.TRAILING)
+                            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel2Layout.createSequentialGroup()
+                                .addGap(0, 0, Short.MAX_VALUE)
+                                .addComponent(jTextField1, javax.swing.GroupLayout.PREFERRED_SIZE, 107, javax.swing.GroupLayout.PREFERRED_SIZE))
                             .addComponent(jTextField2, javax.swing.GroupLayout.Alignment.TRAILING)
                             .addComponent(jTextField3, javax.swing.GroupLayout.Alignment.TRAILING)
-                            .addComponent(jTextField4))
-                        .addContainerGap())))
+                            .addComponent(jTextField4, javax.swing.GroupLayout.Alignment.TRAILING))))
+                .addContainerGap())
         );
         jPanel2Layout.setVerticalGroup(
             jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -241,7 +297,9 @@ public class MainShelves extends javax.swing.JPanel {
                 .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel4)
                     .addComponent(jTextField4, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addContainerGap(344, Short.MAX_VALUE))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addComponent(jPanel4, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addContainerGap())
         );
 
         mainPanel.setLayout(new java.awt.CardLayout());
@@ -263,6 +321,7 @@ public class MainShelves extends javax.swing.JPanel {
 
         jLabel6.setText("DANH MỤC SẢN PHẨM");
 
+        tblProduct.setAutoCreateRowSorter(true);
         tblProduct.setBackground(new java.awt.Color(255, 204, 153));
         tblProduct.setFont(new java.awt.Font("Tahoma", 0, 18)); // NOI18N
         tblProduct.setModel(new javax.swing.table.DefaultTableModel(
@@ -272,7 +331,15 @@ public class MainShelves extends javax.swing.JPanel {
             new String [] {
                 "Sản Phẩm", "Số Lượng", "Đơn Giá", "Nhà Cung Cấp", "Ngày Nhập Kho"
             }
-        ));
+        ) {
+            boolean[] canEdit = new boolean [] {
+                false, false, false, false, false
+            };
+
+            public boolean isCellEditable(int rowIndex, int columnIndex) {
+                return canEdit [columnIndex];
+            }
+        });
         tblProduct.setRowHeight(30);
         tblProduct.setRowMargin(5);
         jScrollPane2.setViewportView(tblProduct);
@@ -284,7 +351,7 @@ public class MainShelves extends javax.swing.JPanel {
             .addGroup(jPanel3Layout.createSequentialGroup()
                 .addGap(344, 344, 344)
                 .addComponent(jLabel6)
-                .addContainerGap(348, Short.MAX_VALUE))
+                .addContainerGap(313, Short.MAX_VALUE))
             .addComponent(jScrollPane2)
         );
         jPanel3Layout.setVerticalGroup(
@@ -307,7 +374,7 @@ public class MainShelves extends javax.swing.JPanel {
                 .addContainerGap()
                 .addComponent(jPanel2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(18, 18, 18)
-                .addComponent(mainPanel, javax.swing.GroupLayout.DEFAULT_SIZE, 819, Short.MAX_VALUE))
+                .addComponent(mainPanel, javax.swing.GroupLayout.DEFAULT_SIZE, 784, Short.MAX_VALUE))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -329,6 +396,17 @@ public class MainShelves extends javax.swing.JPanel {
         }
     }//GEN-LAST:event_jComboBox1ActionPerformed
 
+    private void jList1MousePressed(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jList1MousePressed
+        // TODO add your handling code here:
+        if(evt.getClickCount()==2){
+            CongViec cv = jList1.getSelectedValue();
+            if(cv.getName().equalsIgnoreCase("hetHang")){
+                selectPanel(jPanel3);
+                fillTableHetHang(Integer.parseInt(cv.getValue()));
+            }
+        }
+    }//GEN-LAST:event_jList1MousePressed
+
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JComboBox<String> jComboBox1;
@@ -338,11 +416,15 @@ public class MainShelves extends javax.swing.JPanel {
     private javax.swing.JLabel jLabel4;
     private javax.swing.JLabel jLabel5;
     private javax.swing.JLabel jLabel6;
+    private javax.swing.JLabel jLabel7;
+    public javax.swing.JList<CongViec> jList1;
     private javax.swing.JPanel jPanel1;
     private javax.swing.JPanel jPanel2;
     private javax.swing.JPanel jPanel3;
+    private javax.swing.JPanel jPanel4;
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JScrollPane jScrollPane2;
+    private javax.swing.JScrollPane jScrollPane3;
     private javax.swing.JTextField jTextField1;
     private javax.swing.JTextField jTextField2;
     private javax.swing.JTextField jTextField3;
@@ -381,5 +463,19 @@ public class MainShelves extends javax.swing.JPanel {
         mainPanel.add(p);
         mainPanel.repaint();
         mainPanel.revalidate();
+    }
+
+    void fillList() {
+        CongViecDAO dao = new CongViecDAO();
+        List<CongViec> lst = dao.getCV();
+        if (lst.isEmpty()) {
+
+        } else {
+            DefaultListModel<CongViec> modell = new DefaultListModel<>();
+            for (int i = 0; i < lst.size(); i++) {
+                modell.add(i, lst.get(i));
+            }
+            jList1.setModel(modell);
+        }
     }
 }

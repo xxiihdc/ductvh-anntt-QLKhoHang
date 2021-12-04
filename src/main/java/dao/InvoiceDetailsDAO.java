@@ -5,6 +5,7 @@
 package dao;
 
 import entity.InvoiceDetails;
+import entity.Product;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
@@ -17,14 +18,17 @@ import utils.XJdbc;
  *
  * @author ductr
  */
-public class InvoiceDetailsDAO extends WarehouseDAO<InvoiceDetails, String>{
+public class InvoiceDetailsDAO extends WarehouseDAO<InvoiceDetails, String> {
+
     final String INSERT = "INSERT INTO invoice_details (invoice_id, product_batch_id, price,"
             + " quantity, discount, product_id) VALUES (?,?,?,?,?,?)";
     final String SELECT_ALL = "select * from invoice_details";
+    final String DELETE = "delete from invoice_details where invoice_id = ?";
+
     @Override
     public void insert(InvoiceDetails entity) {
-        XJdbc.update(INSERT, entity.getInvoiceID(),entity.getProductBatchID(),entity.getPrice(),entity.getQuantity()
-        ,entity.getDiscount(),entity.getProductID());
+        XJdbc.update(INSERT, entity.getInvoiceID(), entity.getProductBatchID(), entity.getPrice(), entity.getQuantity(),
+                 entity.getDiscount(), entity.getProductID());
     }
 
     @Override
@@ -34,7 +38,7 @@ public class InvoiceDetailsDAO extends WarehouseDAO<InvoiceDetails, String>{
 
     @Override
     public void delete(String id) {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+        XJdbc.update(DELETE, id);
     }
 
     @Override
@@ -52,7 +56,7 @@ public class InvoiceDetailsDAO extends WarehouseDAO<InvoiceDetails, String>{
         List<InvoiceDetails> lst = new ArrayList<>();
         try {
             ResultSet rs = XJdbc.query(sql, args);
-            while(rs.next()){
+            while (rs.next()) {
                 InvoiceDetails i = new InvoiceDetails();
                 i.setProductID(rs.getString(7));
                 i.setPrice(rs.getDouble(4));
@@ -62,8 +66,8 @@ public class InvoiceDetailsDAO extends WarehouseDAO<InvoiceDetails, String>{
             }
             rs.getStatement().getConnection().close();
             return lst;
-                } catch (SQLException ex) {
-                    throw new RuntimeException(ex);
+        } catch (SQLException ex) {
+            throw new RuntimeException(ex);
         }
     }
 
@@ -71,5 +75,22 @@ public class InvoiceDetailsDAO extends WarehouseDAO<InvoiceDetails, String>{
         String sql = "select * from invoice_details where invoice_id = ?";
         return selectBySql(sql, id);
     }
-    
+
+    public void insertTemp(InvoiceDetails iv) {
+        String sql = "INSERT INTO invoice_details "
+                + "(invoice_id, price, quantity, discount, product_id) "
+                + "VALUES (?,?,?,?,?)";
+        XJdbc.update(sql, iv.getInvoiceID(),iv.getPrice(),iv.getQuantity(),iv.getDiscount(),iv.getProductID()); 
+    }
+
+    public List<Product> getProductByInvoiceID(int id) {
+        List<Product> lst = new ArrayList<>();
+        ProductDAO dao = new ProductDAO();
+        List<InvoiceDetails> lstIV = selectByInvoice(id);
+        lstIV.stream().map(iv -> dao.selectByID(iv.getProductID())).forEachOrdered(p -> {
+            lst.add(p);
+        });
+        return lst;
+    }
+
 }

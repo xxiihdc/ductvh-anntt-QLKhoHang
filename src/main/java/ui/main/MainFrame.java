@@ -4,6 +4,11 @@
  */
 package ui.main;
 
+import dao.StaffDAO;
+import dao.UserDAO;
+import entity.CongViec;
+import entity.Staff;
+import entity.User;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import ui.main.category.Category;
@@ -11,13 +16,19 @@ import ui.*;
 import ui.dialog.SettingDialog;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
+import java.io.BufferedReader;
+import java.io.FileReader;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import javax.swing.JButton;
+import javax.swing.JList;
 import javax.swing.JPanel;
 import javax.swing.Timer;
 import ui.dialog.LoginJDialog;
 import utils.Auth;
+import utils.MD5;
+import utils.MsgBox;
+import utils.SaveLogin;
 import utils.XImage;
 
 /**
@@ -45,14 +56,15 @@ public class MainFrame extends javax.swing.JFrame {
         selectToolBarPanel(t1);
         openLogin();
         txtStaff.setText(Auth.user.getName());
-                    new Timer(1000, new ActionListener() {
-                SimpleDateFormat format = new SimpleDateFormat("hh:mm:ss a");
-                @Override
-                public void actionPerformed(ActionEvent e) {
-                    lblTime.setText(format.format(new Date()));
-                    
-                }
-            }).start();
+        new Timer(1000, new ActionListener() {
+            SimpleDateFormat format = new SimpleDateFormat("hh:mm:ss a");
+
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                lblTime.setText(format.format(new Date()));
+
+            }
+        }).start();
     }
 
     /**
@@ -236,6 +248,7 @@ public class MainFrame extends javax.swing.JFrame {
         // TODO add your handling code here:
         ToolbarPanel1 t1 = new ToolbarPanel1();
         t1.btnSetting.addMouseListener(ml);
+        t1.btnLogOut.addMouseListener(ml);
         selectToolBarPanel(t1);
     }//GEN-LAST:event_jButton1ActionPerformed
 
@@ -337,10 +350,12 @@ public class MainFrame extends javax.swing.JFrame {
                     selectMainPanel(new Category());
                     break;
                 case "desk":
-                    selectMainPanel(new MainShelves());
+                    MainShelves ms = new MainShelves();
+                    selectMainPanel(ms);
+                    ms.jList1.addMouseListener(ml2);
                     break;
                 case "setting":
-                    new SettingDialog(null,true).setVisible(true);
+                    new SettingDialog(null, true).setVisible(true);
                     break;
                 case "product":
                     selectMainPanel(new ProductPanel());
@@ -378,14 +393,79 @@ public class MainFrame extends javax.swing.JFrame {
 
         private void logOut() {
             Auth.user = null;
+            SaveLogin.writeFile("","");
             txtStaff.setText("Chưa đăng nhập");
-            new LoginJDialog(null,true).setVisible(true);
+            new LoginJDialog(null, true).setVisible(true);
             txtStaff.setText(Auth.user.getName());
         }
 
     };
 
     private void openLogin() {
-        new LoginJDialog(null,true).setVisible(true);
+                try{
+            FileReader fr = new FileReader("src\\login.txt");
+            BufferedReader br = new BufferedReader(fr);
+            String line ="";
+            line = br.readLine();
+            if(!line.equalsIgnoreCase("null")){
+                UserDAO dao = new UserDAO();
+                User nv = dao.selectByID(line);
+                String pass = MD5.getMD5(nv.getPassword());
+                String passLine = br.readLine();
+                if(passLine.equalsIgnoreCase(pass)){
+                    Staff s = new StaffDAO().selectByID(nv.getId());
+                   Auth.user=s; 
+                }else{
+                    new LoginJDialog(this, true).setVisible(true);
+                }
+            }else{
+               new LoginJDialog(this, true).setVisible(true); 
+            }
+            fr.close();
+        }catch(Exception e){
+             new LoginJDialog(this, true).setVisible(true);
+        }
     }
+    MouseListener ml2 = new MouseListener() {
+        @Override
+        public void mouseClicked(MouseEvent e) {
+        }
+
+        @Override
+        public void mousePressed(MouseEvent e) {
+            if (e.getClickCount() == 2) {
+                JList j = (JList) e.getComponent();
+                if (j.getSelectedIndex() == -1) {
+                    return;
+                }
+                CongViec cv = (CongViec) j.getSelectedValue();
+                String name = cv.getName();
+                InvoicePanel ip = new InvoicePanel();
+                switch (name) {
+                    case "no":
+                        ip.setStatus(true,0);
+                        ip.fillTable();
+                        selectMainPanel(ip);
+                        break;
+                    case "xacNhan":
+                        ip.setStatus(false,1);
+                        ip.fillTable();
+                        selectMainPanel(ip);
+                        break;    
+                }
+            }
+        }
+
+        @Override
+        public void mouseReleased(MouseEvent e) {
+        }
+
+        @Override
+        public void mouseEntered(MouseEvent e) {
+        }
+
+        @Override
+        public void mouseExited(MouseEvent e) {
+        }
+    };
 }

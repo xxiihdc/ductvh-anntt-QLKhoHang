@@ -24,6 +24,7 @@ public class ShelvesDAO {
     final String SELECT_BY_ID = "SELECT * FROM shelves where id = ?";
     final String UPDATE = "UPDATE shelves SET description = ?, status =? , color = ? where id = ?";
     public void insert(int quantity) {
+        updateToDefault();
         delete();
         String sql = "update shelves_details set shelves_id =0";
         XJdbc.update(sql);
@@ -65,6 +66,11 @@ public class ShelvesDAO {
     }
     public void update(Shelves s){
         XJdbc.update(UPDATE, s.getNote(),s.isStatus(),s.getC().getRGB(),s.getId());
+    }
+
+    private void updateToDefault() {
+        String sql = "update shelves_details set shelves_id =0";
+        XJdbc.update(sql);
     }
 
 }

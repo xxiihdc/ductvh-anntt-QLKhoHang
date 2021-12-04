@@ -23,6 +23,8 @@ public class InvoiceDAO extends WarehouseDAO<Invoice, String> {
             + " payment_method, note, supplier_id,status) VALUES (?,?,?,?,?,?,?,?,?,?)";
     final String SELECT_ALL = "SELECT * FROM INVOICE";
     final String SELECT_BY_ID = "select * from invoice where id =?";
+    final String DELETE = "update invoice set status = 2, note = ? where id = ?";
+    final String UPDATE = "update invoice set status = 1, note = ? where id = ?";
     @Override
     public void insert(Invoice entity) {
         Date d = entity.getFinalSettlement();
@@ -39,12 +41,15 @@ public class InvoiceDAO extends WarehouseDAO<Invoice, String> {
 
     @Override
     public void update(Invoice entity) {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+        XJdbc.update(UPDATE, entity.getNote(),entity.getId());
     }
 
     @Override
     public void delete(String id) {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    
+    }
+    public void delete (Invoice iv){
+        XJdbc.update(DELETE, iv.getNote(),iv.getId());
     }
 
     @Override
@@ -99,8 +104,14 @@ public class InvoiceDAO extends WarehouseDAO<Invoice, String> {
         Object o = XJdbc.value(query);
         return (int) o;
     }
-    public List<Invoice> selectByDate(String from, String to){
-        String sql = "select * from invoice where created_date between ? and ?";
+    public List<Invoice> selectByDate(String from, String to, int index,boolean no){
+        String sql = "select * from invoice where created_date between ? and ? and status ";
+        if(index ==0) sql += "< 5";
+        else {
+            index--;
+            sql+= " = " + index;
+        }
+        if(no) sql +=" and debt > 0";
         return selectBySql(sql,from,to);
     }
 }

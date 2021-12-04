@@ -9,6 +9,8 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import utils.XJdbc;
 
 /**
@@ -124,6 +126,27 @@ public class ProductBatchDAO extends WarehouseDAO<ProductBatch, String> {
         String sql = "update product_batch set quantity = "
                 + "((select quantity from product_batch where id =?)-?)\n"
                 + "where id = ?";
-        XJdbc.update(sql, batchID,quantity,batchID);
+        XJdbc.update(sql, batchID, quantity, batchID);
+    }
+
+    public List<ProductBatch> selectLowQuantity(int low) {
+        try {
+            List<ProductBatch> lst = new ArrayList<>();
+            String sql = "select _name,sum(quantity) as 'sum' from product_batch "
+                    + "inner join product on product.id = product_batch.product_id "
+                    + "group by _name having sum(quantity) < " + low+ " order by sum(quantity)";
+            ResultSet rs = XJdbc.query(sql);
+            while (rs.next()) {
+                ProductBatch p = new ProductBatch();
+                p.setProductID(rs.getString(1));
+                p.setQuantity(rs.getInt(2));
+                lst.add(p);
+            }
+            rs.getStatement().getConnection().close();
+            return lst;
+        } catch (SQLException ex) {
+            throw new RuntimeException(ex);
+        }
+
     }
 }
