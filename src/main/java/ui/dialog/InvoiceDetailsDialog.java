@@ -681,10 +681,13 @@ public class InvoiceDetailsDialog extends javax.swing.JDialog {
                 MsgBox.alert(null, "Thông tin hóa đơn đã được lưu");
             }
             String sprice = txtSoTienTT.getText();
-            if(sprice.length()==0) sprice = "0";
-            else sprice = Currency.getString(sprice);
+            if (sprice.length() == 0) {
+                sprice = "0";
+            } else {
+                sprice = Currency.getString(sprice);
+            }
             Paid p = new Paid(dao.getLastID(),
-                    Double.parseDouble(sprice), new Date(),Auth.user.getId());
+                    Double.parseDouble(sprice), new Date(), Auth.user.getId());
             new PaidDAO().insert(p);
         } else {//cap nhat
             if (status == 0) {
@@ -694,7 +697,7 @@ public class InvoiceDetailsDialog extends javax.swing.JDialog {
             updateInvoice();
         }
         MsgBox.alert(null, "Thông tin hóa đơn đã được lưu");
-        setForm(dao.selectByID(maHD+""));
+        setForm(dao.selectByID(maHD + ""));
     }//GEN-LAST:event_btnSaveActionPerformed
 
     private void cbxThanhToanActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_cbxThanhToanActionPerformed
@@ -801,26 +804,30 @@ public class InvoiceDetailsDialog extends javax.swing.JDialog {
 
     private void jButton5ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton5ActionPerformed
         // TODO add your handling code here:
-        if(maHD ==-1) return;
+        if (maHD == -1) {
+            return;
+        }
         if (update != 1) {
             MsgBox.alert(null, "Hóa đơn này chưa được xác nhận");
             return;
         }
-        if(Currency.getDouble(txtNo.getText())==0){
+        if (Currency.getDouble(txtNo.getText()) == 0) {
             MsgBox.alert(null, "Hóa đơn này đã được thanh toán hết");
             return;
         }
-       PaidJDialog pj = new PaidJDialog(null,true,Currency.getDouble(txtNo.getText()));
-       pj.setVisible(true);
-       double paid =pj.paid;
-       if(paid==0) return;
-       Paid p = new Paid(maHD,paid,new Date(),Auth.user.getId());
-       new PaidDAO().insert(p);
-       Invoice iv = dao.selectByID(maHD+"");
-       iv.setDebt(iv.getDebt()-paid);
-       dao.updateDebt(iv);
+        PaidJDialog pj = new PaidJDialog(null, true, Currency.getDouble(txtNo.getText()));
+        pj.setVisible(true);
+        double paid = pj.paid;
+        if (paid == 0) {
+            return;
+        }
+        Paid p = new Paid(maHD, paid, new Date(), Auth.user.getId());
+        new PaidDAO().insert(p);
+        Invoice iv = dao.selectByID(maHD + "");
+        iv.setDebt(iv.getDebt() - paid);
+        dao.updateDebt(iv);
         setForm(iv);
-     // MsgBox.alert(null, Currency.getCurrency(paid));
+        // MsgBox.alert(null, Currency.getCurrency(paid));
 
     }//GEN-LAST:event_jButton5ActionPerformed
 
@@ -1103,9 +1110,9 @@ public class InvoiceDetailsDialog extends javax.swing.JDialog {
             cbxPayment.setSelectedIndex(2);
         }
         txtDate.setText(Xdate.toString(i.getCreateDate(), "dd-MM-yyyy"));
-        
-       // 
-       //MsgBox.alert(null, Currency.getCurrency(i.getDebt()));
+
+        // 
+        //MsgBox.alert(null, Currency.getCurrency(i.getDebt()));
         txtTotalPrice.setText(Currency.getCurrency(i.getAmount() + i.getDiscount()));
         txtCK.setText(Currency.getCurrency(i.getDiscount()));
         txtThanhToan.setText(Currency.getCurrency(i.getAmount()));
@@ -1122,10 +1129,16 @@ public class InvoiceDetailsDialog extends javax.swing.JDialog {
         cbxSupplier.setSelectedItem(new SupplierDAO().selectByID(i.getSupplierID() + ""));
         fillTable(i.getId());
         tblDetails.setEnabled(false);
-        fillPaid(i.getId()+"");
+        fillPaid(i.getId() + "");
         txtSoTienTT.setText(Currency.getCurrency(i.getAmount() - i.getDebt()));
         txtNo.setText(Currency.getCurrency(i.getDebt()));
         txtSoTienTT.setEditable(false);
+        cbxPayment.setEnabled(false);
+        cbxThanhToan.setEnabled(false);
+        cbxSupplier.setEnabled(false);
+        if (update == 1 || update == 2) {
+            cbxStatus.setEnabled(false);
+        }
     }
 
     private void fillTable(int id) {
@@ -1147,6 +1160,10 @@ public class InvoiceDetailsDialog extends javax.swing.JDialog {
     }
 
     private void clearForm() {
+        cbxPayment.setEnabled(true);
+        cbxStatus.setEnabled(true);
+        cbxSupplier.setEnabled(true);
+        cbxThanhToan.setEnabled(true);
         txtID.setText("(Phiếu mới)");
         txtStaff.setText(Auth.user.getId());
         txtDate.setText(Xdate.toString(new Date(), "dd-MM-yyyy"));
@@ -1167,6 +1184,7 @@ public class InvoiceDetailsDialog extends javax.swing.JDialog {
         txtCK.setText("");
         txtThanhToan.setText("");
         update = -1;
+
     }
 
     private void printInvoice() {
@@ -1323,7 +1341,7 @@ public class InvoiceDetailsDialog extends javax.swing.JDialog {
         for (int i = 0; i < list.size(); i++) {
             modell.add(i, list.get(i));
         }
-        
+
         jList1.setModel(modell);
     }
 }

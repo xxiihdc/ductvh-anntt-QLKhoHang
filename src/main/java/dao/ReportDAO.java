@@ -59,10 +59,16 @@ public class ReportDAO {
     }
 
     public List<String[]> getExport(int year, int month) {
-        String sql = "select _name,sum(Export_details.quantity) from export_details inner join product_batch on Export_details.product_batch_id = product_batch.id\n"
-                + "inner join product on product.id = product_batch.product_id inner join Export on Export_details.export_id = Export.id \n"
-                + "where YEAR(export.date) = 2021 and month(export.date) = 12\n"
-                + "group by _name"
+        String sql = "select _name,sum(Export_details.quantity) "
+                + "from export_details inner join "
+                + "product_batch on Export_details.product_batch_id "
+                + "= product_batch.id "
+                + "inner join product on product.id = "
+                + "product_batch.product_id inner join "
+                + "Export on Export_details.export_id = Export.id "
+                + "where YEAR(export.date) = ? and month(export.date) =  ? "
+                + "group by _name";
+        return getData(sql,year,month);
     }
 
     public List<Integer> selectYear() {
@@ -80,10 +86,10 @@ public class ReportDAO {
         }
     }
 
-    private List<String[]> getData(String sql) {
+    private List<String[]> getData(String sql,Object...args) {
         try {
             List<String[]> lst = new ArrayList<>();
-            ResultSet rs = XJdbc.query(sql);
+            ResultSet rs = XJdbc.query(sql,args);
             while (rs.next()) {
                 String[] str = new String[]{rs.getString(1), rs.getString(2)};
                 lst.add(str);

@@ -340,6 +340,11 @@ public class ExportDialog extends javax.swing.JDialog {
         jButton4.setFont(new java.awt.Font("Tahoma", 0, 14)); // NOI18N
         jButton4.setIcon(new javax.swing.ImageIcon(getClass().getResource("/icon/refresh_30px.png"))); // NOI18N
         jButton4.setText("LÀM MỚI");
+        jButton4.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton4ActionPerformed(evt);
+            }
+        });
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
@@ -469,6 +474,11 @@ public class ExportDialog extends javax.swing.JDialog {
         // TODO add your handling code here:
         this.dispose();
     }//GEN-LAST:event_jButton3ActionPerformed
+
+    private void jButton4ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton4ActionPerformed
+        // TODO add your handling code here:
+        clearForm();
+    }//GEN-LAST:event_jButton4ActionPerformed
 
     /**
      * @param args the command line arguments
@@ -646,5 +656,18 @@ public class ExportDialog extends javax.swing.JDialog {
             };
             model.addRow(row);
         }
+    }
+
+    private void clearForm() {
+        add = true;
+        tblProduct.setEnabled(add);
+        fillList();
+        model.setRowCount(0);
+        txtID.setText("Phiếu mới");
+        txtSoSP.setText("");
+        txtStaff.setText(Auth.user.getId());
+        txtSum.setText("");
+        txtDate.setText(Xdate.toString(new Date(),"dd-MM-yyyy"));
+        txtNote.setText("");
     }
 }

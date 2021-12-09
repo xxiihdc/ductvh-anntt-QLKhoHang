@@ -62,7 +62,6 @@ public class ReportPanel extends javax.swing.JPanel {
         cbxYearExport = new javax.swing.JComboBox<>();
         jLabel3 = new javax.swing.JLabel();
         cbxMonth = new javax.swing.JComboBox<>();
-        jPanel3 = new javax.swing.JPanel();
 
         setBorder(javax.swing.BorderFactory.createTitledBorder(null, "Thống Kê", javax.swing.border.TitledBorder.DEFAULT_JUSTIFICATION, javax.swing.border.TitledBorder.DEFAULT_POSITION, new java.awt.Font("Tahoma", 0, 18))); // NOI18N
 
@@ -217,19 +216,6 @@ public class ReportPanel extends javax.swing.JPanel {
 
         jTabbedPane1.addTab("Xuất Kho", jPanel2);
 
-        javax.swing.GroupLayout jPanel3Layout = new javax.swing.GroupLayout(jPanel3);
-        jPanel3.setLayout(jPanel3Layout);
-        jPanel3Layout.setHorizontalGroup(
-            jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 1141, Short.MAX_VALUE)
-        );
-        jPanel3Layout.setVerticalGroup(
-            jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 635, Short.MAX_VALUE)
-        );
-
-        jTabbedPane1.addTab("Dạng Danh Sách", jPanel3);
-
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(this);
         this.setLayout(layout);
         layout.setHorizontalGroup(
@@ -280,7 +266,6 @@ public class ReportPanel extends javax.swing.JPanel {
     private javax.swing.JLabel jLabel3;
     private javax.swing.JPanel jPanel1;
     private javax.swing.JPanel jPanel2;
-    private javax.swing.JPanel jPanel3;
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JScrollPane jScrollPane2;
     private javax.swing.JScrollPane jScrollPane3;
@@ -353,32 +338,32 @@ public class ReportPanel extends javax.swing.JPanel {
         jscrLoaiSP.getViewport().add(cpn2);
     }
 
-    private void makeChartInvoice() {       
-            //int i = Integer.parseInt(cbxYear.getSelectedItem()+""); 
+    private void makeChartInvoice() {
+        //int i = Integer.parseInt(cbxYear.getSelectedItem()+""); 
         DefaultCategoryDataset dcd = new DefaultCategoryDataset();
-        List<String[]> data = dao.getInvoice(Integer.parseInt(cbxYear.getSelectedItem()+""));
-        int [] month = {1,2,3,4,5,6,7,8,9,10,11,12};
-        
-        for(int i =0;i<month.length;i++){
-            if(data.isEmpty()){
-                dcd.setValue(0, "Tổng Tiền", "Tháng "+(i+1));
-            }else{
+        List<String[]> data = dao.getInvoice(Integer.parseInt(cbxYear.getSelectedItem() + ""));
+        int[] month = {1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12};
+
+        for (int i = 0; i < month.length; i++) {
+            if (data.isEmpty()) {
+                dcd.setValue(0, "Tổng Tiền", "Tháng " + (i + 1));
+            } else {
                 int count = 0;
-                for(int j =0;j<data.size();j++){
-                    if(month[i]==Integer.parseInt(data.get(j)[0])){
-                        dcd.setValue(Double.parseDouble(data.get(j)[1]),"Tổng Tiền","Tháng "+data.get(j)[0]);
+                for (int j = 0; j < data.size(); j++) {
+                    if (month[i] == Integer.parseInt(data.get(j)[0])) {
+                        dcd.setValue(Double.parseDouble(data.get(j)[1]), "Tổng Tiền", "Tháng " + data.get(j)[0]);
                         data.remove(data.get(j));
                         count++;
                         break;
                     }
                 }
-                if(count==0){
-                    dcd.setValue(0, "Tổng Tiền", "Tháng "+(i+1));
+                if (count == 0) {
+                    dcd.setValue(0, "Tổng Tiền", "Tháng " + (i + 1));
                 }
             }
-            
+
         }
-        JFreeChart jchart = ChartFactory.createBarChart("Tổng Tiền Hóa Đơn Theo Tháng Trong Năm "+ cbxYear.getSelectedItem(),
+        JFreeChart jchart = ChartFactory.createBarChart("Tổng Tiền Hóa Đơn Theo Tháng Trong Năm " + cbxYear.getSelectedItem(),
                 "Tháng", "Tổng Tiền", dcd, PlotOrientation.VERTICAL, true,
                 true, false);
         CategoryPlot plot = jchart.getCategoryPlot();
@@ -389,10 +374,10 @@ public class ReportPanel extends javax.swing.JPanel {
     }
 
     private void fillComboBox() {
-        DefaultComboBoxModel model =(DefaultComboBoxModel) cbxYear.getModel();
+        DefaultComboBoxModel model = (DefaultComboBoxModel) cbxYear.getModel();
         model.removeAllElements();
         List<Integer> list = dao.selectYear();
-        for(Integer cd:list){
+        for (Integer cd : list) {
             model.addElement(cd);
         }
     }
@@ -400,14 +385,33 @@ public class ReportPanel extends javax.swing.JPanel {
     private void makeChartExport() {
         Integer year = (Integer) cbxYearExport.getSelectedItem();
         Integer month = (Integer) cbxMonth.getSelectedItem();
-        if(year == null || month == null) return;
-        
+        if (year == null || month == null) {
+            return;
+        }
+        List<String[]> data = dao.getExport(year, month);
+        DefaultCategoryDataset dcd = new DefaultCategoryDataset();
+        for (String[] s : data) {
+            dcd.setValue(Integer.parseInt(s[1]), "Sản Phẩm", s[0]);
+            JFreeChart jchart = ChartFactory.createBarChart
+        ("Biểu đồ xuất kho tháng " + month +" năm "+ year,
+                    "Sản Phẩm", "Số Lượng", dcd, PlotOrientation.VERTICAL, true,
+                    true, false);
+            CategoryPlot plot = jchart.getCategoryPlot();
+            plot.setRangeGridlinePaint(Color.BLACK);
+            int width = 1100;
+            if (data.size() > 22) {
+                width = data.size() * 50;
+            }
+            ChartPanel cpn = new ChartPanel(jchart, width, 450, 500, 450, 10000, 450, true, true, true, true, true, true, true);
+            jScrollPane3.getViewport().add(cpn);
+        }
     }
-    private void fillCbxExport(){
+
+    private void fillCbxExport() {
         List<Integer> lst = dao.selectYearExport();
         DefaultComboBoxModel model = (DefaultComboBoxModel) cbxYearExport.getModel();
         model.removeAllElements();
-        for(Integer i:lst){
+        for (Integer i : lst) {
             model.addElement(i);
         }
         fillCbxMonth();
@@ -415,11 +419,13 @@ public class ReportPanel extends javax.swing.JPanel {
 
     private void fillCbxMonth() {
         Integer year = (Integer) cbxYearExport.getSelectedItem();
-        if (year==null)return;
+        if (year == null) {
+            return;
+        }
         List<Integer> lst = dao.selectMonth(year);
         DefaultComboBoxModel model = (DefaultComboBoxModel) cbxMonth.getModel();
         model.removeAllElements();
-        for(Integer i:lst){
+        for (Integer i : lst) {
             model.addElement(i);
         }
         makeChartExport();
