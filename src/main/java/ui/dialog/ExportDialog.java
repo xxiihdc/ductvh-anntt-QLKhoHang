@@ -701,8 +701,9 @@ public class ExportDialog extends javax.swing.JDialog {
             XWPFDocument document = new XWPFDocument();
             String time = java.time.LocalDateTime.now() + "";
             time = time.replaceAll(":", "");
+            String path = "src\\main\\resources\\docs";
             String title = "xuatkho" + time + ".docx";
-            FileOutputStream o = new FileOutputStream(new File(title));
+            FileOutputStream o = new FileOutputStream(new File(path,title));
             XWPFParagraph paragraph = document.createParagraph();
             paragraph.setAlignment(ParagraphAlignment.CENTER);
             XWPFRun paragraphOneRunOne = paragraph.createRun();
@@ -780,7 +781,7 @@ public class ExportDialog extends javax.swing.JDialog {
             paragraph3.setAlignment(ParagraphAlignment.RIGHT);
             document.write(o);
             o.close();
-            File file = new File(title);
+            File file = new File(path,title);
             Desktop.getDesktop().open(file);
         } catch (Exception e) {
             e.printStackTrace();
