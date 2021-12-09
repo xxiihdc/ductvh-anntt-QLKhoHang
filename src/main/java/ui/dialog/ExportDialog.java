@@ -444,6 +444,7 @@ public class ExportDialog extends javax.swing.JDialog {
         dao.insert(e);
         getExportDetails();
         add = false;
+        MsgBox.alert(null, "Phiếu xuất kho đã được lưu");
     }//GEN-LAST:event_jButton1ActionPerformed
 
     private void jButton6ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton6ActionPerformed
