@@ -6,6 +6,7 @@ package ui.dialog;
 
 import dao.ProductTypeDAO;
 import entity.ProductType;
+import utils.MsgBox;
 
 /**
  *
@@ -17,6 +18,7 @@ public class ProductTypeDialog extends javax.swing.JDialog {
      * Creates new form ProductTypeDialog
      */
     ProductTypeDAO dao;
+    int id = -1;
     public ProductTypeDialog(java.awt.Frame parent, boolean modal) {
         super(parent, modal);
         initComponents();
@@ -250,10 +252,17 @@ public class ProductTypeDialog extends javax.swing.JDialog {
     // End of variables declaration//GEN-END:variables
 
     private boolean valid() {
+        String msg ="";
+        if(txtName.getText().length()==0) msg += "Tên không được để trống";
+        if(msg.length()!=0){
+            MsgBox.alert(null, msg);
+            return false;
+        }
         return true;
     }
 
     private void update() {
+        dao.update(getForm());
     }
 
     private void clearForm() {
@@ -268,7 +277,7 @@ public class ProductTypeDialog extends javax.swing.JDialog {
         return new ProductType(txtName.getText(),txtDes.getText());
     }
 
-    private void setForm(ProductType p) {
+    public void setForm(ProductType p) {
         txtName.setText(p.getName());
         txtDes.setText(p.getDescription());
     }

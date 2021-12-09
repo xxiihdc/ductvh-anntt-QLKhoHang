@@ -22,6 +22,7 @@ public class ProductGroupDAO extends WarehouseDAO<ProductGroup, String> {
     final String INSERT = "INSERT INTO product_group (name, descrpition) VALUES (?,?)";
     final String SELECT_ALL = "SELECT * FROM product_group";
     final String SELECT_BY_ID = "SELECT * FROM product_group where id = ?";
+    final String UPDATE = "UPDATE product_group SET name =?, descrpition = ? where id = ?";
     @Override
     public void insert(ProductGroup entity) {
         XJdbc.update(INSERT, entity.getName(), entity.getDescription());
@@ -29,7 +30,7 @@ public class ProductGroupDAO extends WarehouseDAO<ProductGroup, String> {
 
     @Override
     public void update(ProductGroup entity) {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+        XJdbc.update(UPDATE, entity.getName(),entity.getDescription(),entity.getId());
     }
 
     @Override
@@ -66,10 +67,15 @@ public class ProductGroupDAO extends WarehouseDAO<ProductGroup, String> {
         }
     }
 
-    public boolean hasID(String id) {
+    public int hasID(String id) {
         String query = "select name from product_group where name = ?";
-        Object o = XJdbc.value(query, id);
-        return o != null;
-    }
+        Object o =  XJdbc.value(query, id);
+        if(o==null)return -1;
+        return (int) o;
 
+    }
+    public List<ProductGroup> selectByKey(String key){
+        String sql = "select * from product_group where name like N'%"+key+"%'";
+        return selectBySql(sql);
+    }
 }

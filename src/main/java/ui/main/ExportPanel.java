@@ -270,6 +270,7 @@ public class ExportPanel extends javax.swing.JPanel {
         // TODO add your handling code here:
         txtDateFrom.setDate(null);
         txtDateTo.setDate(null);
+        fillTable();
 
     }//GEN-LAST:event_jButton8ActionPerformed
 

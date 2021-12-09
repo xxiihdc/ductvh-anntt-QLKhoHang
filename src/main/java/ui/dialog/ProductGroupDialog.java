@@ -18,6 +18,7 @@ public class ProductGroupDialog extends javax.swing.JDialog {
      * Creates new form ProductGroupDialog
      */
     ProductGroupDAO dao;
+    int id = -1;
     public ProductGroupDialog(java.awt.Frame parent, boolean modal) {
         super(parent, modal);
         initComponents();
@@ -164,7 +165,7 @@ public class ProductGroupDialog extends javax.swing.JDialog {
     private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
         // TODO add your handling code here:
         if (valid()) {
-            if (dao.hasID(txtName.getText())) {
+            if (dao.hasID(txtName.getText())!=-1) {
                 update();
                 clearForm();
             } else {
@@ -183,7 +184,7 @@ public class ProductGroupDialog extends javax.swing.JDialog {
     private void jButton2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton2ActionPerformed
         // TODO add your handling code here:
             if (valid()) {
-            if (dao.hasID(txtName.getText())) {
+            if (dao.hasID(txtName.getText())!=-1) {
                 update();
                 this.dispose();
             } else {
@@ -250,15 +251,22 @@ public class ProductGroupDialog extends javax.swing.JDialog {
     // End of variables declaration//GEN-END:variables
 
     private boolean valid() {
+        String msg = "";
+        if(txtName.getText().length()==0) msg +="Tên nhóm không được để trống";
+        if(msg.length()!=0){
+            MsgBox.alert(null, msg);
+            return false;
+        }
         return true;
     }
 
     private void update() {
-        MsgBox.alert(null, "dang thuc hien");
+        if(valid()) dao.insert(getForm());
     }
 
     private void clearForm() {
         ProductGroup p = new ProductGroup();
+        p.setId(-1);
         setForm(p);
     }
 
@@ -271,8 +279,9 @@ public class ProductGroupDialog extends javax.swing.JDialog {
         return p;
     }
 
-    private void setForm(ProductGroup p) {
+    public void setForm(ProductGroup p) {
         txtName.setText(p.getName());
         txtDes.setText(p.getDescription());
+        id = p.getId();
     }
 }

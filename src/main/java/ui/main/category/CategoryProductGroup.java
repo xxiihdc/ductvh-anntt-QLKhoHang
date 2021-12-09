@@ -9,7 +9,6 @@ import entity.ProductGroup;
 import java.util.List;
 import javax.swing.table.DefaultTableModel;
 import ui.dialog.ProductGroupDialog;
-import utils.MsgBox;
 
 /**
  *
@@ -57,7 +56,7 @@ public class CategoryProductGroup extends javax.swing.JPanel {
         jButton6 = new javax.swing.JButton();
         jButton7 = new javax.swing.JButton();
         jPanel1 = new javax.swing.JPanel();
-        jTextField1 = new javax.swing.JTextField();
+        txtKey = new javax.swing.JTextField();
 
         setBorder(javax.swing.BorderFactory.createTitledBorder(null, "Nhóm Sản Phẩm", javax.swing.border.TitledBorder.DEFAULT_JUSTIFICATION, javax.swing.border.TitledBorder.DEFAULT_POSITION, new java.awt.Font("Tahoma", 0, 18))); // NOI18N
 
@@ -68,11 +67,11 @@ public class CategoryProductGroup extends javax.swing.JPanel {
 
             },
             new String [] {
-                "Tên Nhóm Sản Phẩm", "Mô Tả"
+                "Mã nhóm SP", "Tên Nhóm Sản Phẩm", "Mô Tả"
             }
         ) {
             boolean[] canEdit = new boolean [] {
-                false, false
+                false, false, false
             };
 
             public boolean isCellEditable(int rowIndex, int columnIndex) {
@@ -81,6 +80,11 @@ public class CategoryProductGroup extends javax.swing.JPanel {
         });
         tblProductGroup.setRowHeight(30);
         tblProductGroup.setRowMargin(5);
+        tblProductGroup.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mousePressed(java.awt.event.MouseEvent evt) {
+                tblProductGroupMousePressed(evt);
+            }
+        });
         jScrollPane2.setViewportView(tblProductGroup);
 
         jToolBar1.setRollover(true);
@@ -163,10 +167,10 @@ public class CategoryProductGroup extends javax.swing.JPanel {
 
         jPanel1.setBorder(new javax.swing.border.SoftBevelBorder(javax.swing.border.BevelBorder.RAISED, new java.awt.Color(0, 0, 204), new java.awt.Color(0, 0, 204), new java.awt.Color(0, 0, 204), new java.awt.Color(0, 0, 204)));
 
-        jTextField1.setFont(new java.awt.Font("Tahoma", 0, 14)); // NOI18N
-        jTextField1.addKeyListener(new java.awt.event.KeyAdapter() {
+        txtKey.setFont(new java.awt.Font("Tahoma", 0, 14)); // NOI18N
+        txtKey.addKeyListener(new java.awt.event.KeyAdapter() {
             public void keyReleased(java.awt.event.KeyEvent evt) {
-                jTextField1KeyReleased(evt);
+                txtKeyKeyReleased(evt);
             }
         });
 
@@ -176,14 +180,14 @@ public class CategoryProductGroup extends javax.swing.JPanel {
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel1Layout.createSequentialGroup()
                 .addContainerGap()
-                .addComponent(jTextField1)
+                .addComponent(txtKey)
                 .addContainerGap())
         );
         jPanel1Layout.setVerticalGroup(
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel1Layout.createSequentialGroup()
                 .addContainerGap()
-                .addComponent(jTextField1, javax.swing.GroupLayout.PREFERRED_SIZE, 49, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addComponent(txtKey, javax.swing.GroupLayout.PREFERRED_SIZE, 49, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
 
@@ -219,11 +223,24 @@ public class CategoryProductGroup extends javax.swing.JPanel {
 
     }//GEN-LAST:event_jButton1ActionPerformed
 
-    private void jTextField1KeyReleased(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_jTextField1KeyReleased
+    private void txtKeyKeyReleased(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_txtKeyKeyReleased
         // TODO add your handling code here:
-        String text = jTextField1.getText();
-        System.out.println(text);
-    }//GEN-LAST:event_jTextField1KeyReleased
+        fillTable();
+        System.out.println(txtKey.getText());
+    }//GEN-LAST:event_txtKeyKeyReleased
+
+    private void tblProductGroupMousePressed(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_tblProductGroupMousePressed
+        // TODO add your handling code here:
+        if(evt.getClickCount()==2){
+            int row = tblProductGroup.getSelectedRow();
+            if (row == -1 ) return;
+            int id = Integer.parseInt(tblProductGroup.getValueAt(row, 0)+"");
+            ProductGroupDialog d = new ProductGroupDialog(null,true);
+            ProductGroup p = dao.selectByID(id+"");
+            d.setForm(p);
+            d.setVisible(true);
+        }
+    }//GEN-LAST:event_tblProductGroupMousePressed
 
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
@@ -237,20 +254,21 @@ public class CategoryProductGroup extends javax.swing.JPanel {
     private javax.swing.JButton jButton8;
     private javax.swing.JPanel jPanel1;
     private javax.swing.JScrollPane jScrollPane2;
-    private javax.swing.JTextField jTextField1;
     private javax.swing.JToolBar jToolBar1;
     private javax.swing.JToolBar jToolBar2;
     private javax.swing.JLabel lblRecord;
     private javax.swing.JTable tblProductGroup;
+    private javax.swing.JTextField txtKey;
     // End of variables declaration//GEN-END:variables
 
     private void fillTable() {
         DefaultTableModel model = (DefaultTableModel) tblProductGroup.getModel();
         model.setRowCount(0);
-        List<ProductGroup> lst = dao.selectAll();
+        String key = txtKey.getText();
+        List<ProductGroup> lst = dao.selectByKey(key);
         for (ProductGroup s : lst) {
             Object[] data = new Object[]{
-                s.getName(), s.getDescription()
+                s.getId(),s.getName(), s.getDescription()
             };
             model.addRow(data);
         }

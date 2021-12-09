@@ -13,7 +13,7 @@ import java.util.Date;
 public class Invoice {
     private int id,supplierID,status;
     private double discount,amount,debt;
-    private Date createDate,finalSettlement;
+    private Date createDate;
     private String paymentMethod,note,staffID;
 
     public Invoice() {
@@ -35,13 +35,12 @@ public class Invoice {
         this.supplierID = supplierID;
     }
 
-    public Invoice(String staffID, double discount, double amount, double debt, Date createDate, Date finalSettlement, String paymentMethod, String note) {
+    public Invoice(String staffID, double discount, double amount, double debt, Date createDate, String paymentMethod, String note) {
         this.staffID = staffID;
         this.discount = discount;
         this.amount = amount;
         this.debt = debt;
         this.createDate = createDate;
-        this.finalSettlement = finalSettlement;
         this.paymentMethod = paymentMethod;
         this.note = note;
     }
@@ -93,15 +92,6 @@ public class Invoice {
     public void setCreateDate(Date createDate) {
         this.createDate = createDate;
     }
-
-    public Date getFinalSettlement() {
-        return finalSettlement;
-    }
-
-    public void setFinalSettlement(Date finalSettlement) {
-        this.finalSettlement = finalSettlement;
-    }
-
     public String getPaymentMethod() {
         return paymentMethod;
     }

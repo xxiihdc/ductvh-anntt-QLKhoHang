@@ -88,7 +88,7 @@ public class ProductBatch {
 
     @Override
     public String toString() {
-        return getProductName()+" - "+ "("+Xdate.toString(enteredDate,"dd-MM-yyyy"+")");
+        return getProductName()+" - "+ "("+Xdate.toString(enteredDate,"dd-MM-yyyy"+")") + " - Còn lại: "+ quantity;
     }
     public String getProductName(){
         ProductDAO dao = new ProductDAO();

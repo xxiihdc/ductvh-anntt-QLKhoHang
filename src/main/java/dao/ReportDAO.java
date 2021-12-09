@@ -38,8 +38,8 @@ public class ReportDAO {
         return getData(sql);
 
     }
-    
-    public List<String[]> getType(){
+
+    public List<String[]> getType() {
         String sql = "select product_type.name,sum(quantity) "
                 + "from product_batch inner join product "
                 + "on product_batch.product_id=product.id "
@@ -48,19 +48,20 @@ public class ReportDAO {
                 + "group by product_type.name having sum(quantity) > 0";
         return getData(sql);
     }
-    
-    public List<String[]> getInvoice(int year){
-        String sql = "select MONTH(created_date), sum(amount) from invoice "
-                + "where year(created_date) = " +year+ " group by MONTH(created_date)";
+
+    public List<String[]> getInvoice(int year) {
+
+        String sql = "select MONTH(date), sum(price) from paid where year(date) = " + year + 
+                " group by MONTH(date);";
         return getData(sql);
     }
 
-    public List<Integer> selectYear(){
+    public List<Integer> selectYear() {
         try {
-            List<Integer> lst= new ArrayList<>();
+            List<Integer> lst = new ArrayList<>();
             String sql = "select distinct year(created_date) from invoice order by year(created_date) desc";
             ResultSet rs = XJdbc.query(sql);
-            while(rs.next()){
+            while (rs.next()) {
                 lst.add(new Integer(rs.getInt(1)));
             }
             rs.getStatement().getConnection().close();
@@ -69,6 +70,7 @@ public class ReportDAO {
             throw new RuntimeException(ex);
         }
     }
+
     private List<String[]> getData(String sql) {
         try {
             List<String[]> lst = new ArrayList<>();

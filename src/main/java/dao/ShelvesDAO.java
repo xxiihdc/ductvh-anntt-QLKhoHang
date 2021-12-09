@@ -17,7 +17,7 @@ import utils.XJdbc;
  * @author ductr
  */
 public class ShelvesDAO {
-
+    final String SELECT_ALL = "select * from shelves where id > 0";
     final String INSERT_SQL = "INSERT INTO shelves "
             + "(id, description, status, color) VALUES (?,?,?,?)";
     final String DELETE_SQL = "DELETE FROM shelves where id>0";
@@ -38,7 +38,7 @@ public class ShelvesDAO {
     }
 
     public List<Shelves> selectAll() {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+        return selectBySql(SELECT_ALL);
     }
 
     public Shelves selectByID(String id) {

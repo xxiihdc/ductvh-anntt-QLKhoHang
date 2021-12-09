@@ -57,6 +57,7 @@ public class ReportPanel extends javax.swing.JPanel {
         cbxYear = new javax.swing.JComboBox<>();
         jLabel1 = new javax.swing.JLabel();
         jPanel2 = new javax.swing.JPanel();
+        jScrollPane3 = new javax.swing.JScrollPane();
         jPanel3 = new javax.swing.JPanel();
 
         setBorder(javax.swing.BorderFactory.createTitledBorder(null, "Thống Kê", javax.swing.border.TitledBorder.DEFAULT_JUSTIFICATION, javax.swing.border.TitledBorder.DEFAULT_POSITION, new java.awt.Font("Tahoma", 0, 18))); // NOI18N
@@ -161,15 +162,20 @@ public class ReportPanel extends javax.swing.JPanel {
 
         jTabbedPane1.addTab("Hóa Đơn", jPanel1);
 
+        jScrollPane3.setBackground(new java.awt.Color(255, 153, 153));
+        jScrollPane3.setHorizontalScrollBarPolicy(javax.swing.ScrollPaneConstants.HORIZONTAL_SCROLLBAR_ALWAYS);
+        jScrollPane3.setVerticalScrollBarPolicy(javax.swing.ScrollPaneConstants.VERTICAL_SCROLLBAR_ALWAYS);
+        jScrollPane3.setViewportBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(0, 0, 0)));
+
         javax.swing.GroupLayout jPanel2Layout = new javax.swing.GroupLayout(jPanel2);
         jPanel2.setLayout(jPanel2Layout);
         jPanel2Layout.setHorizontalGroup(
             jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 1189, Short.MAX_VALUE)
+            .addComponent(jScrollPane3, javax.swing.GroupLayout.DEFAULT_SIZE, 1189, Short.MAX_VALUE)
         );
         jPanel2Layout.setVerticalGroup(
             jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 689, Short.MAX_VALUE)
+            .addComponent(jScrollPane3, javax.swing.GroupLayout.DEFAULT_SIZE, 689, Short.MAX_VALUE)
         );
 
         jTabbedPane1.addTab("Xuất Kho", jPanel2);
@@ -235,6 +241,7 @@ public class ReportPanel extends javax.swing.JPanel {
     private javax.swing.JPanel jPanel3;
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JScrollPane jScrollPane2;
+    private javax.swing.JScrollPane jScrollPane3;
     private javax.swing.JTabbedPane jTabbedPane1;
     private javax.swing.JPanel jpnNcc;
     private javax.swing.JPanel jpnPhanLoai;
@@ -304,19 +311,15 @@ public class ReportPanel extends javax.swing.JPanel {
         jscrLoaiSP.getViewport().add(cpn2);
     }
 
-    private void makeChartInvoice() {
-        try{
-            int i = Integer.parseInt(cbxYear.getSelectedItem()+"");
-        }catch(Exception e){
-            return;
-        }
+    private void makeChartInvoice() {       
+            //int i = Integer.parseInt(cbxYear.getSelectedItem()+""); 
         DefaultCategoryDataset dcd = new DefaultCategoryDataset();
         List<String[]> data = dao.getInvoice(Integer.parseInt(cbxYear.getSelectedItem()+""));
         int [] month = {1,2,3,4,5,6,7,8,9,10,11,12};
         
         for(int i =0;i<month.length;i++){
             if(data.isEmpty()){
-                dcd.setValue(1000, "Tổng Tiền", "Tháng "+(i+1));
+                dcd.setValue(0, "Tổng Tiền", "Tháng "+(i+1));
             }else{
                 int count = 0;
                 for(int j =0;j<data.size();j++){
@@ -328,7 +331,7 @@ public class ReportPanel extends javax.swing.JPanel {
                     }
                 }
                 if(count==0){
-                    dcd.setValue(1000, "Tổng Tiền", "Tháng "+(i+1));
+                    dcd.setValue(0, "Tổng Tiền", "Tháng "+(i+1));
                 }
             }
             

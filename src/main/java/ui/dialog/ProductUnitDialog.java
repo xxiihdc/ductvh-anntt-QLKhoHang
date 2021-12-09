@@ -6,6 +6,7 @@ package ui.dialog;
 
 import dao.ProductUnitDAO;
 import entity.ProductUnit;
+import utils.MsgBox;
 
 /**
  *
@@ -288,11 +289,17 @@ public class ProductUnitDialog extends javax.swing.JDialog {
     // End of variables declaration//GEN-END:variables
 
     private boolean valid() {
+        String msg = "";
+        String reID = "[a-zA-Z0-9]{1,7}";
+        if(!txtID.getText().matches(reID)){
+           msg += "Mã DVT chỉ bao gồm chữ cái và số, dưới 7 ký tự";
+        }
+          if(txtName.getText().length()==0) msg += "\n Tên DVT không được rỗng";
         return true;
     }
 
     private void update() {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+        MsgBox.alert(null, "Đang thực hiện");
     }
 
     private void clearForm() {

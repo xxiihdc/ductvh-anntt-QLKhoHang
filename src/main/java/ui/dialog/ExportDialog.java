@@ -8,7 +8,6 @@ import entity.Export;
 import entity.ExportDetails;
 import entity.ProductBatch;
 import entity.ShelvesDetails;
-import entity.Staff;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
@@ -213,6 +212,8 @@ public class ExportDialog extends javax.swing.JDialog {
         });
         jScrollPane2.setViewportView(jList1);
 
+        jButton5.setFont(new java.awt.Font("Tahoma", 0, 14)); // NOI18N
+        jButton5.setIcon(new javax.swing.ImageIcon(getClass().getResource("/icon/add_30px.png"))); // NOI18N
         jButton5.setText("THÊM");
         jButton5.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -226,8 +227,8 @@ public class ExportDialog extends javax.swing.JDialog {
             jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addComponent(jScrollPane2, javax.swing.GroupLayout.DEFAULT_SIZE, 356, Short.MAX_VALUE)
             .addGroup(jPanel3Layout.createSequentialGroup()
-                .addGap(129, 129, 129)
-                .addComponent(jButton5, javax.swing.GroupLayout.PREFERRED_SIZE, 90, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(107, 107, 107)
+                .addComponent(jButton5, javax.swing.GroupLayout.PREFERRED_SIZE, 112, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
         jPanel3Layout.setVerticalGroup(
@@ -265,7 +266,15 @@ public class ExportDialog extends javax.swing.JDialog {
         });
         jScrollPane3.setViewportView(tblProduct);
 
-        jButton6.setText("XOAS");
+        jButton6.setBackground(new java.awt.Color(255, 0, 0));
+        jButton6.setFont(new java.awt.Font("Tahoma", 0, 14)); // NOI18N
+        jButton6.setIcon(new javax.swing.ImageIcon(getClass().getResource("/icon/delete_30px.png"))); // NOI18N
+        jButton6.setText("XÓA");
+        jButton6.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton6ActionPerformed(evt);
+            }
+        });
 
         javax.swing.GroupLayout jPanel5Layout = new javax.swing.GroupLayout(jPanel5);
         jPanel5.setLayout(jPanel5Layout);
@@ -305,6 +314,8 @@ public class ExportDialog extends javax.swing.JDialog {
             .addComponent(jPanel5, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
         );
 
+        jButton1.setFont(new java.awt.Font("Tahoma", 0, 14)); // NOI18N
+        jButton1.setIcon(new javax.swing.ImageIcon(getClass().getResource("/icon/save_30px.png"))); // NOI18N
         jButton1.setText("LƯU DỮ LIỆU");
         jButton1.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -312,10 +323,22 @@ public class ExportDialog extends javax.swing.JDialog {
             }
         });
 
+        jButton2.setFont(new java.awt.Font("Tahoma", 0, 14)); // NOI18N
+        jButton2.setIcon(new javax.swing.ImageIcon(getClass().getResource("/icon/print_30px.png"))); // NOI18N
         jButton2.setText("IN");
 
+        jButton3.setBackground(new java.awt.Color(255, 0, 0));
+        jButton3.setFont(new java.awt.Font("Tahoma", 0, 14)); // NOI18N
+        jButton3.setIcon(new javax.swing.ImageIcon(getClass().getResource("/icon/power_off_button_30px.png"))); // NOI18N
         jButton3.setText("THOÁT");
+        jButton3.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton3ActionPerformed(evt);
+            }
+        });
 
+        jButton4.setFont(new java.awt.Font("Tahoma", 0, 14)); // NOI18N
+        jButton4.setIcon(new javax.swing.ImageIcon(getClass().getResource("/icon/refresh_30px.png"))); // NOI18N
         jButton4.setText("LÀM MỚI");
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
@@ -328,14 +351,14 @@ public class ExportDialog extends javax.swing.JDialog {
                     .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(jPanel2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
             .addGroup(layout.createSequentialGroup()
-                .addGap(196, 196, 196)
-                .addComponent(jButton1, javax.swing.GroupLayout.PREFERRED_SIZE, 115, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(100, 100, 100)
-                .addComponent(jButton2, javax.swing.GroupLayout.PREFERRED_SIZE, 102, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(73, 73, 73)
-                .addComponent(jButton4, javax.swing.GroupLayout.PREFERRED_SIZE, 115, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(100, 100, 100)
-                .addComponent(jButton3, javax.swing.GroupLayout.PREFERRED_SIZE, 102, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(98, 98, 98)
+                .addComponent(jButton1, javax.swing.GroupLayout.PREFERRED_SIZE, 160, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(76, 76, 76)
+                .addComponent(jButton2, javax.swing.GroupLayout.PREFERRED_SIZE, 125, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(50, 50, 50)
+                .addComponent(jButton4, javax.swing.GroupLayout.PREFERRED_SIZE, 157, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(61, 61, 61)
+                .addComponent(jButton3, javax.swing.GroupLayout.PREFERRED_SIZE, 135, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(0, 0, Short.MAX_VALUE))
         );
         layout.setVerticalGroup(
@@ -346,14 +369,12 @@ public class ExportDialog extends javax.swing.JDialog {
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addComponent(jPanel2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(30, 30, 30)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                        .addComponent(jButton4)
-                        .addComponent(jButton3))
-                    .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                        .addComponent(jButton1)
-                        .addComponent(jButton2)))
-                .addContainerGap(31, Short.MAX_VALUE))
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(jButton1)
+                    .addComponent(jButton2)
+                    .addComponent(jButton4)
+                    .addComponent(jButton3))
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
 
         pack();
@@ -404,8 +425,7 @@ public class ExportDialog extends javax.swing.JDialog {
                 }
                 int q = Integer.parseInt(quantity);
                 if (q > lst.get(row).getQuantity()) {
-                    MsgBox.alert(null, "So luong lon hon so luong co trong kho");
-                    tblProduct.setValueAt(1, row, 2);
+                    tblProduct.setValueAt(lst.get(row).getQuantity(), row, 2);
                     return;
                 }
                 fillDetails();
@@ -415,14 +435,39 @@ public class ExportDialog extends javax.swing.JDialog {
 
     private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
         // TODO add your handling code here:
+        if(lst.isEmpty()) return;
+        if (!add) return;
         Export e = new Export(Integer.parseInt(txtSoSP.getText()), Integer.parseInt(txtSum.getText()),
                 txtStaff.getText());
         e.setDate(new Date());
         e.setNote(txtNote.getText());
         dao.insert(e);
         getExportDetails();
-        lst.clear();
+        add = false;
     }//GEN-LAST:event_jButton1ActionPerformed
+
+    private void jButton6ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton6ActionPerformed
+        // TODO add your handling code here:
+        if (!add) {
+            return;
+        }
+        int row = tblProduct.getRowCount();
+        if (row == -1) {
+            return;
+        }
+        if (lst.size() == 0) {
+            return;
+        }
+        DefaultTableModel model = (DefaultTableModel) tblProduct.getModel();
+        model.removeRow(tblProduct.getSelectedRow());
+        model.fireTableDataChanged();
+        lst.remove(row);
+    }//GEN-LAST:event_jButton6ActionPerformed
+
+    private void jButton3ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton3ActionPerformed
+        // TODO add your handling code here:
+        this.dispose();
+    }//GEN-LAST:event_jButton3ActionPerformed
 
     /**
      * @param args the command line arguments
@@ -509,7 +554,7 @@ public class ExportDialog extends javax.swing.JDialog {
 
     private void addProduct() {
         if (!add) {
-            MsgBox.alert(null, "Ban khong the chinh sua hoa don");
+            MsgBox.alert(null, "Không thể chỉnh sửa phiếu xuất kho cũ");
             return;
         }
         ProductBatch p = jList1.getSelectedValue();
@@ -585,6 +630,7 @@ public class ExportDialog extends javax.swing.JDialog {
         txtSum.setText(e.getTotalQuantity() + "");
         fillTable(e.getId());
         add = false;
+        tblProduct.setEnabled(add);
     }
 
     private void fillTable(int id) {
@@ -594,7 +640,8 @@ public class ExportDialog extends javax.swing.JDialog {
         model.setRowCount(0);
         for (ExportDetails s : list) {
             Object[] row = new Object[]{
-                s.getName(),Xdate.toString(s.getDate(), "dd-MM-yyyy"),s.getQuantity(),s.getPrice()
+                s.getName(), Xdate.toString(s.getDate(), "dd-MM-yyyy"),
+                s.getQuantity(), Currency.getCurrency(s.getPrice())
             };
             model.addRow(row);
         }

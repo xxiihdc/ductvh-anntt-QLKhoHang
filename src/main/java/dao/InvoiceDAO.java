@@ -8,7 +8,6 @@ import entity.Invoice;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.List;
 import utils.XJdbc;
 
@@ -19,37 +18,35 @@ import utils.XJdbc;
 public class InvoiceDAO extends WarehouseDAO<Invoice, String> {
 
     final String INSERT = "INSERT INTO invoice "
-            + "(staff_id, discount, amount, created_date, debt, final_settlement,"
-            + " payment_method, note, supplier_id,status) VALUES (?,?,?,?,?,?,?,?,?,?)";
+            + "(staff_id, discount, amount, created_date, debt,"
+            + " payment_method, note, supplier_id,status) VALUES (?,?,?,?,?,?,?,?,?)";
     final String SELECT_ALL = "SELECT * FROM INVOICE";
     final String SELECT_BY_ID = "select * from invoice where id =?";
     final String DELETE = "update invoice set status = 2, note = ? where id = ?";
     final String UPDATE = "update invoice set status = 1, note = ? where id = ?";
+
     @Override
     public void insert(Invoice entity) {
-        Date d = entity.getFinalSettlement();
-        if (d == null) {
-            XJdbc.update(INSERT, entity.getStaffID(), entity.getDiscount(),
-                    entity.getAmount(), entity.getCreateDate(),
-                    entity.getDebt(), "", entity.getPaymentMethod(), entity.getNote(),
-                    entity.getSupplierID(),entity.getStatus());
-        } else {
 
-        }
+        XJdbc.update(INSERT, entity.getStaffID(), entity.getDiscount(),
+                entity.getAmount(), entity.getCreateDate(),
+                entity.getDebt(), entity.getPaymentMethod(), entity.getNote(),
+                entity.getSupplierID(), entity.getStatus());
 
     }
 
     @Override
     public void update(Invoice entity) {
-        XJdbc.update(UPDATE, entity.getNote(),entity.getId());
+        XJdbc.update(UPDATE, entity.getNote(), entity.getId());
     }
 
     @Override
     public void delete(String id) {
-    
+
     }
-    public void delete (Invoice iv){
-        XJdbc.update(DELETE, iv.getNote(),iv.getId());
+
+    public void delete(Invoice iv) {
+        XJdbc.update(DELETE, iv.getNote(), iv.getId());
     }
 
     @Override
@@ -67,7 +64,7 @@ public class InvoiceDAO extends WarehouseDAO<Invoice, String> {
         try {
             List<Invoice> lst = new ArrayList<>();
             ResultSet rs = XJdbc.query(sql, args);
-            while(rs.next()){
+            while (rs.next()) {
                 Invoice i = new Invoice();
                 i.setId(rs.getInt(1));
                 i.setStaffID(rs.getString(2));
@@ -75,11 +72,10 @@ public class InvoiceDAO extends WarehouseDAO<Invoice, String> {
                 i.setAmount(rs.getDouble(4));
                 i.setCreateDate(rs.getDate(5));
                 i.setDebt(rs.getDouble(6));
-                i.setFinalSettlement(rs.getDate(7));
-                i.setPaymentMethod(rs.getString(8));
-                i.setNote(rs.getString(9));
-                i.setSupplierID(rs.getInt(10));
-                i.setStatus(rs.getInt(11));
+                i.setPaymentMethod(rs.getString(7));
+                i.setNote(rs.getString(8));
+                i.setSupplierID(rs.getInt(9));
+                i.setStatus(rs.getInt(10));
                 lst.add(i);
             }
             rs.getStatement().getConnection().close();
@@ -104,14 +100,23 @@ public class InvoiceDAO extends WarehouseDAO<Invoice, String> {
         Object o = XJdbc.value(query);
         return (int) o;
     }
-    public List<Invoice> selectByDate(String from, String to, int index,boolean no){
+
+    public List<Invoice> selectByDate(String from, String to, int index, boolean no) {
         String sql = "select * from invoice where created_date between ? and ? and status ";
-        if(index ==0) sql += "< 5";
-        else {
+        if (index == 0) {
+            sql += "< 5";
+        } else {
             index--;
-            sql+= " = " + index;
+            sql += " = " + index;
         }
-        if(no) sql +=" and debt > 0";
-        return selectBySql(sql,from,to);
+        if (no) {
+            sql += " and debt > 0";
+        }
+        return selectBySql(sql, from, to);
+    }
+
+    public void updateDebt(Invoice invoice) {
+        String sql = "update invoice set debt = ? where id = ?";
+        XJdbc.update(sql, invoice.getDebt(),invoice.getId());
     }
 }

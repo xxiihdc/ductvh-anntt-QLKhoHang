@@ -452,7 +452,6 @@ public class ProductDialog extends javax.swing.JDialog {
         char k = evt.getKeyChar();
         if (!Character.isDigit(k)) {
             evt.consume();
-            return;
         }
     }//GEN-LAST:event_txtPriceKeyTyped
 
@@ -588,6 +587,17 @@ public class ProductDialog extends javax.swing.JDialog {
     }
 
     private boolean valid() {
+        String msg = "";
+        String reID = "[a-zA-Z0-9]{1,7}";
+        if(!txtID.getText().matches(reID)){
+           msg += "ID chỉ bao gồm chữ cái và số, dưới 7 ký tự";
+        }
+        if(txtName.getText().length()==0) msg += "\n Tên sản phẩm không được rỗng";
+        if(txtPrice.getText().length()==0) msg += "\n Giá sản phẩm không được rỗng";
+        if(msg.length()>0){
+            MsgBox.alert(null, msg);
+            return false;
+        }
         return true;
     }
 

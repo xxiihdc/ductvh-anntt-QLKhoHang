@@ -243,12 +243,10 @@ public class SettingDialog extends javax.swing.JDialog {
                     properties.setProperty("row", txtRow.getText());
                     properties.store(new FileWriter("src\\main\\resources\\config\\shelves.properties"), "Shelves Info");
                     int soKe = Integer.parseInt(txtNum.getText());
-                    dao.insert(soKe);   
-                    
+                    dao.insert(soKe);
                     Properties properties2 = new Properties();
                     properties2.setProperty("number", txtSoLuong.getText());
                     properties2.store(new FileWriter("src\\main\\resources\\config\\soLuong.properties"), "Shelves Info");
-                    
                 } catch (IOException ex) {
                     throw new RuntimeException(ex);
                  }
@@ -323,7 +321,8 @@ public class SettingDialog extends javax.swing.JDialog {
     // End of variables declaration//GEN-END:variables
     private boolean readConfig() {
         try {
-            FileReader reader = new FileReader("src\\main\\resources\\config\\shelves.properties");
+            FileReader reader = new FileReader
+        ("src\\main\\resources\\config\\shelves.properties");
             Properties properties = new Properties();
             properties.load(reader);
             String scols = properties.getProperty("cols");
@@ -336,6 +335,12 @@ public class SettingDialog extends javax.swing.JDialog {
                 txtCols.setText(cols + "");
                 txtRow.setText(row + "");
                 txtNum.setText(num + "");
+                reader = new FileReader
+        ("src\\main\\resources\\config\\soLuong.properties");
+                properties.load(reader);
+                String num = properties.getProperty("number");
+                txtSoLuong.setText(num);
+                reader.close();
                 return true;
             } else {
                 return false;

@@ -28,6 +28,17 @@ public class Currency {
             String s2 = s1.replaceAll("\\.", "");
             return Double.parseDouble(s2);
         }
-
     }
+    public static String getString(String price){
+            String p = price;
+            String s1 = p.substring(0, p.length() - 2);
+            String s2 = s1.replaceAll("\\.", "");
+            return s2;
+        }
+
+    public static String getString(double fprice) {
+        String p = Currency.getCurrency(fprice);
+        return getString(p);
+    }
+
 }
