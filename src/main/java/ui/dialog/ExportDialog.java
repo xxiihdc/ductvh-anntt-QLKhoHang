@@ -8,11 +8,25 @@ import entity.Export;
 import entity.ExportDetails;
 import entity.ProductBatch;
 import entity.ShelvesDetails;
+import entity.Supplier;
+import java.awt.Desktop;
+import java.io.File;
+import java.io.FileOutputStream;
+import java.math.BigInteger;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 import javax.swing.DefaultListModel;
 import javax.swing.table.DefaultTableModel;
+import org.apache.poi.xwpf.usermodel.ParagraphAlignment;
+import org.apache.poi.xwpf.usermodel.XWPFDocument;
+import org.apache.poi.xwpf.usermodel.XWPFParagraph;
+import org.apache.poi.xwpf.usermodel.XWPFRun;
+import org.apache.poi.xwpf.usermodel.XWPFTable;
+import org.apache.poi.xwpf.usermodel.XWPFTableCell;
+import org.apache.poi.xwpf.usermodel.XWPFTableRow;
+import org.openxmlformats.schemas.wordprocessingml.x2006.main.CTTblWidth;
+import org.openxmlformats.schemas.wordprocessingml.x2006.main.STTblWidth;
 import utils.Auth;
 import utils.Currency;
 import utils.MsgBox;
@@ -326,6 +340,11 @@ public class ExportDialog extends javax.swing.JDialog {
         jButton2.setFont(new java.awt.Font("Tahoma", 0, 14)); // NOI18N
         jButton2.setIcon(new javax.swing.ImageIcon(getClass().getResource("/icon/print_30px.png"))); // NOI18N
         jButton2.setText("IN");
+        jButton2.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton2ActionPerformed(evt);
+            }
+        });
 
         jButton3.setBackground(new java.awt.Color(255, 0, 0));
         jButton3.setFont(new java.awt.Font("Tahoma", 0, 14)); // NOI18N
@@ -356,15 +375,15 @@ public class ExportDialog extends javax.swing.JDialog {
                     .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(jPanel2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
             .addGroup(layout.createSequentialGroup()
-                .addGap(98, 98, 98)
+                .addGap(121, 121, 121)
                 .addComponent(jButton1, javax.swing.GroupLayout.PREFERRED_SIZE, 160, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(76, 76, 76)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                 .addComponent(jButton2, javax.swing.GroupLayout.PREFERRED_SIZE, 125, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(50, 50, 50)
+                .addGap(102, 102, 102)
                 .addComponent(jButton4, javax.swing.GroupLayout.PREFERRED_SIZE, 157, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(61, 61, 61)
+                .addGap(91, 91, 91)
                 .addComponent(jButton3, javax.swing.GroupLayout.PREFERRED_SIZE, 135, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(0, 0, Short.MAX_VALUE))
+                .addGap(87, 87, 87))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -461,7 +480,7 @@ public class ExportDialog extends javax.swing.JDialog {
         if (row == -1) {
             return;
         }
-        if (lst.size() == 0) {
+        if (lst.isEmpty()) {
             return;
         }
         DefaultTableModel model = (DefaultTableModel) tblProduct.getModel();
@@ -479,6 +498,11 @@ public class ExportDialog extends javax.swing.JDialog {
         // TODO add your handling code here:
         clearForm();
     }//GEN-LAST:event_jButton4ActionPerformed
+
+    private void jButton2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton2ActionPerformed
+        // TODO add your handling code here:
+        print();
+    }//GEN-LAST:event_jButton2ActionPerformed
 
     /**
      * @param args the command line arguments
@@ -669,5 +693,97 @@ public class ExportDialog extends javax.swing.JDialog {
         txtSum.setText("");
         txtDate.setText(Xdate.toString(new Date(),"dd-MM-yyyy"));
         txtNote.setText("");
+    }
+
+    private void print() {
+         try {
+            String date = txtDate.getText();
+            XWPFDocument document = new XWPFDocument();
+            String time = java.time.LocalDateTime.now() + "";
+            time = time.replaceAll(":", "");
+            String title = "xuatkho" + time + ".docx";
+            FileOutputStream o = new FileOutputStream(new File(title));
+            XWPFParagraph paragraph = document.createParagraph();
+            paragraph.setAlignment(ParagraphAlignment.CENTER);
+            XWPFRun paragraphOneRunOne = paragraph.createRun();
+            paragraphOneRunOne.setBold(true);
+            paragraphOneRunOne.setFontSize(30);
+            paragraphOneRunOne.setText("PHIẾU XUẤT KHO");
+            paragraphOneRunOne.addBreak();
+            XWPFRun run2 = paragraph.createRun();
+            run2.setText("Ngày " + date.substring(0, 2) + " Tháng " + date.substring(3, 5) + " Năm " + date.substring(6));
+            run2.addBreak();
+
+            XWPFParagraph paragraph2 = document.createParagraph();
+
+            XWPFRun run7 = paragraph2.createRun();
+            run7.setText("Ghi chú: " + txtNote.getText());
+
+            XWPFTable table = document.createTable();
+            XWPFTableRow tableRowOne = table.getRow(0);
+
+            CTTblWidth width = table.getCTTbl().addNewTblPr().addNewTblW();
+            width.setType(STTblWidth.DXA);
+            width.setW(BigInteger.valueOf(9072));
+
+            String[] header = {"SẢN PHẨM", "NGÀY NHẬP KHO","SỐ LƯỢNG" , "ĐƠN GIÁ NHẬP"};
+            for (int i = 0; i < header.length; i++) {
+                XWPFTableCell cell;
+                if (i == 0) {
+                    cell = tableRowOne.getCell(0);
+                } else {
+                    cell = tableRowOne.createCell();
+                }
+                cell.removeParagraph(0);
+                XWPFParagraph cellPara = cell.addParagraph();
+                XWPFRun cellRun = cellPara.createRun();
+                cellRun.setText(header[i]);
+                cell.setColor("3498db");
+                cellPara.setAlignment(ParagraphAlignment.CENTER);
+                cell.setVerticalAlignment(XWPFTableCell.XWPFVertAlign.CENTER);
+                cellRun.setBold(true);
+            }
+            for (int i = 0; i < tblProduct.getRowCount(); i++) {
+                XWPFTableRow tableRow = table.createRow();
+                tableRow.getCell(0).setText(tblProduct.getValueAt(i, 0) + "");
+                tableRow.getCell(1).setText(tblProduct.getValueAt(i, 1) + "");
+                tableRow.getCell(2).setText(tblProduct.getValueAt(i, 2) + "");
+                tableRow.getCell(3).setText(tblProduct.getValueAt(i, 3) + "");
+            }
+
+            XWPFParagraph paragraph3 = document.createParagraph();
+            XWPFRun run8 = paragraph3.createRun();
+            run8.addBreak();
+            run8.addBreak();
+            run8.addBreak();
+            run8.setText("Số sản phẩm: " + txtSoSP.getText());
+            run8.addBreak();
+            run8.setText("Tổng số lượng: " + txtSum.getText());
+            run8.addBreak();
+            run8.setText("Nhân viên:" + txtStaff.getText());
+            run8.addBreak();
+            run8.addBreak();
+            run8.addBreak();
+            run8.addBreak();
+            run8.setText("Ký xác nhận");
+            run8.setBold(true);
+            run8.addTab();
+            run8.addTab();
+            run8.addTab();
+            run8.addTab();
+            run8.addTab();
+            run8.addTab();
+            run8.addTab();
+            run8.addTab();
+            run8.addTab();
+            run8.addTab();
+            paragraph3.setAlignment(ParagraphAlignment.RIGHT);
+            document.write(o);
+            o.close();
+            File file = new File(title);
+            Desktop.getDesktop().open(file);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
     }
 }

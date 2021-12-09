@@ -1096,7 +1096,6 @@ public class InvoiceDetailsDialog extends javax.swing.JDialog {
     public void setForm(Invoice i) {
         InvoiceDetailsDAO iddao = new InvoiceDetailsDAO();
         lst = iddao.getProductByInvoiceID(i.getId());
-        txtNote.setEditable(false);
         txtID.setText(i.getId() + "");
         maHD = i.getId();
         update = i.getStatus();
@@ -1139,6 +1138,8 @@ public class InvoiceDetailsDialog extends javax.swing.JDialog {
         if (update == 1 || update == 2) {
             cbxStatus.setEnabled(false);
         }
+        txtNote.setText(i.getNote());
+        txtNote.setEditable(false);
     }
 
     private void fillTable(int id) {

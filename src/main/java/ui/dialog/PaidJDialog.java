@@ -42,6 +42,7 @@ public class PaidJDialog extends javax.swing.JDialog {
         jButton3 = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DO_NOTHING_ON_CLOSE);
+        setTitle("Thanh Toán Nợ");
 
         jButton1.setText("Xác nhân");
         jButton1.addActionListener(new java.awt.event.ActionListener() {

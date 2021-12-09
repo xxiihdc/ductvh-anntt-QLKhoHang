@@ -6,6 +6,7 @@ package ui.dialog;
 
 import dao.VendorDAO;
 import entity.Vendor;
+import utils.MsgBox;
 
 /**
  *
@@ -17,15 +18,18 @@ public class VendorDialog extends javax.swing.JDialog {
      * Creates new form VendorDialog
      */
     VendorDAO dao;
+
     public VendorDialog(java.awt.Frame parent, boolean modal) {
         super(parent, modal);
         initComponents();
         init();
     }
-    void init(){
+
+    void init() {
         dao = new VendorDAO();
         setLocationRelativeTo(null);
     }
+
     /**
      * This method is called from within the constructor to initialize the form.
      * WARNING: Do NOT modify this code. The content of this method is always
@@ -187,7 +191,7 @@ public class VendorDialog extends javax.swing.JDialog {
 
     private void jButton2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton2ActionPerformed
         // TODO add your handling code here:
-         if (valid()) {
+        if (valid()) {
             if (dao.hasID(txtID.getText())) {
                 update();
                 this.dispose();
@@ -256,11 +260,21 @@ public class VendorDialog extends javax.swing.JDialog {
     // End of variables declaration//GEN-END:variables
 
     private boolean valid() {
-        return true;
+        String msg = "";
+ 
+        if (txtID.getText().length()==0) {
+            msg+= "Tên nhà SX không được rỗng";
+        }
+        if (txtName.getText().length() == 0) {
+            msg += "\n Tên DVT không được rỗng";
+        }
+        if(msg.length()==0)return true;
+        MsgBox.alert(null, msg);
+        return false;
     }
 
     private void update() {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+        MsgBox.alert(null, "Chức năng đang được thực hiện");
     }
 
     private void clearForm() {
@@ -272,9 +286,10 @@ public class VendorDialog extends javax.swing.JDialog {
     }
 
     private Vendor getForm() {
-        return new Vendor(txtID.getText(),txtName.getText(),txtOrigin.getText());
+        return new Vendor(txtID.getText(), txtName.getText(), txtOrigin.getText());
     }
-    public void setForm(Vendor v){
+
+    public void setForm(Vendor v) {
         txtID.setText(v.getId());
         txtName.setText(v.getName());
         txtOrigin.setText(v.getOrigin());

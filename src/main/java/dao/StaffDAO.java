@@ -18,7 +18,7 @@ public class StaffDAO extends WarehouseDAO<Staff, String>{
     final String INSERT = "INSERT INTO staff "
             + "(id, _name, image, phone, email, status, role)"
             + "VALUES (?,?,?,?,?,?,?)";
-    final String SELECT_ALL = "Select * from staff";
+    final String SELECT_ALL = "Select * from staff where status = 1 ";
     final String SELECT_BY_ID = "Select * from staff where id = ?";
     final String UPDATE = "UPDATE staff SET _name =?, image =?, phone =?, "
             + "email =?, status =?, role =? where id = ?";
@@ -78,5 +78,8 @@ public class StaffDAO extends WarehouseDAO<Staff, String>{
         Object o = XJdbc.value(query, id);
         return o!=null;
     }
-    
+    public List<Staff> selectNotYetAccount(){
+        String sql = "select * from staff where id not in (select id from _user)";
+        return selectBySql(sql);
+    }
 }

@@ -18,14 +18,17 @@ import utils.XJdbc;
 public class UserDAO extends WarehouseDAO<User, String>{
 
      final String SELECT_BY_ID = "select * from _user where username = ?";
-    @Override
+     final String INSERT = "INSERT INTO _user (username, password, id) VALUES (?,?,?)";
+     final String UPDATE = "UPDATE _user SET password = ? where username = ?";
+     final String SELECT_ALL = "SELECT * FROM _USER";
+     @Override
     public void insert(User entity) {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+        XJdbc.update(INSERT, entity.getUsername(),entity.getPassword(),entity.getId());
     }
 
     @Override
     public void update(User entity) {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+        XJdbc.update(UPDATE, entity.getPassword(),entity.getUsername());
     }
 
     @Override
@@ -35,12 +38,18 @@ public class UserDAO extends WarehouseDAO<User, String>{
 
     @Override
     public List<User> selectAll() {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+        return selectBySql(SELECT_ALL);
     }
 
     @Override
     public User selectByID(String id) {
         List<User> lst= selectBySql(SELECT_BY_ID, id);
+        if(lst.isEmpty()) return null;
+        return lst.get(0);
+    }
+    public User selectByStaff(String id) {
+        String sql = "select * from _user where id = ?";
+        List<User> lst= selectBySql(sql, id);
         if(lst.isEmpty()) return null;
         return lst.get(0);
     }
@@ -62,6 +71,12 @@ public class UserDAO extends WarehouseDAO<User, String>{
         } catch (SQLException ex) {
             throw new RuntimeException(ex);
         }
+    }
+
+    public boolean hasUsername() {
+        String sql = "select id from _user";
+        Object o = XJdbc.value(sql);
+        return o!= null;
     }
     
 }

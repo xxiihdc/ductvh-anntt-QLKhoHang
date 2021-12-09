@@ -489,7 +489,20 @@ public class StaffDialog extends javax.swing.JDialog {
     }
 
     private boolean valid() {
-        return true;
+        String msg = "";
+        String id = txtID.getText();
+         String regex = "[a-zA-Z0-9]{5}";
+         if(!id.matches(regex)) msg+="Id đúng 5 ký tự gồm chữ và số";
+         if(txtFullname.getText().length()==0) msg+="\n Tên không được để trống";
+        String reMail="^([\\w-\\.]+){1,64}@([\\w&&[^_]]+){2,255}.[a-z]{2,}$";
+        String mail = txtEmail.getText();
+        if(!mail.matches(reMail)) msg +="\nMail không đúng định dạng";
+        String rePhone = "^[0]{1}\\d{9}";
+        String phone = txtPhone.getText();
+        if(!phone.matches(rePhone)) msg += "\nSdt không đúng định dạng";
+        if(msg.length()==0) return true;
+        else MsgBox.alert(null, msg);
+        return false;
     }
 
     private void update() {

@@ -295,7 +295,10 @@ public class ProductUnitDialog extends javax.swing.JDialog {
            msg += "Mã DVT chỉ bao gồm chữ cái và số, dưới 7 ký tự";
         }
           if(txtName.getText().length()==0) msg += "\n Tên DVT không được rỗng";
-        return true;
+          if(msg.length()==0)return true;
+          MsgBox.alert(null, msg);
+          return false;
+        
     }
 
     private void update() {

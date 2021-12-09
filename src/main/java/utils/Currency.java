@@ -31,6 +31,7 @@ public class Currency {
     }
     public static String getString(String price){
             String p = price;
+            if(p.length()<2 )return "0";
             String s1 = p.substring(0, p.length() - 2);
             String s2 = s1.replaceAll("\\.", "");
             return s2;

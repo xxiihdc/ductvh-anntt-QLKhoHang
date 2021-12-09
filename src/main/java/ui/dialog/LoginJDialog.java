@@ -11,7 +11,13 @@ import entity.Staff;
 import entity.User;
 import java.awt.Color;
 import java.awt.event.KeyEvent;
+import java.io.BufferedReader;
+import java.io.FileReader;
+import java.util.Properties;
+import ui.main.AdminDashboard;
+import ui.main.MainFrame;
 import utils.Auth;
+import utils.MD5;
 import utils.MsgBox;
 import utils.SaveLogin;
 
@@ -26,6 +32,7 @@ public class LoginJDialog extends javax.swing.JDialog {
      */
     public LoginJDialog(java.awt.Frame parent, boolean modal) {
         super(parent, modal);
+
         initComponents();
         init();
     }
@@ -35,6 +42,7 @@ public class LoginJDialog extends javax.swing.JDialog {
         txtPassword.setText("123");
         setTitle("Đăng nhập hệ thống");
         txtUserName.setForeground(new Color(58, 65, 65));
+
     }
 
     /**
@@ -55,6 +63,7 @@ public class LoginJDialog extends javax.swing.JDialog {
         btnExit = new javax.swing.JButton();
         cbSaveLogin = new javax.swing.JCheckBox();
         jLabel3 = new javax.swing.JLabel();
+        lblAdmin = new javax.swing.JLabel();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DO_NOTHING_ON_CLOSE);
 
@@ -121,6 +130,15 @@ public class LoginJDialog extends javax.swing.JDialog {
 
         jLabel3.setIcon(new javax.swing.ImageIcon(getClass().getResource("/icon/Secure.png"))); // NOI18N
 
+        lblAdmin.setForeground(new java.awt.Color(0, 0, 255));
+        lblAdmin.setText("Đăng nhập bằng tài khoản admin.");
+        lblAdmin.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
+        lblAdmin.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mousePressed(java.awt.event.MouseEvent evt) {
+                lblAdminMousePressed(evt);
+            }
+        });
+
         javax.swing.GroupLayout pnlFormLayout = new javax.swing.GroupLayout(pnlForm);
         pnlForm.setLayout(pnlFormLayout);
         pnlFormLayout.setHorizontalGroup(
@@ -130,13 +148,17 @@ public class LoginJDialog extends javax.swing.JDialog {
                     .addGroup(pnlFormLayout.createSequentialGroup()
                         .addGap(40, 40, 40)
                         .addGroup(pnlFormLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(txtPassword, javax.swing.GroupLayout.PREFERRED_SIZE, 338, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addGroup(pnlFormLayout.createSequentialGroup()
-                                .addComponent(btnLogin, javax.swing.GroupLayout.PREFERRED_SIZE, 164, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                .addGap(46, 46, 46)
-                                .addComponent(btnExit, javax.swing.GroupLayout.PREFERRED_SIZE, 128, javax.swing.GroupLayout.PREFERRED_SIZE))
                             .addComponent(jLabel2)
-                            .addComponent(cbSaveLogin, javax.swing.GroupLayout.PREFERRED_SIZE, 206, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                            .addGroup(pnlFormLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                                .addGroup(pnlFormLayout.createSequentialGroup()
+                                    .addComponent(cbSaveLogin, javax.swing.GroupLayout.PREFERRED_SIZE, 206, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                    .addGap(132, 132, 132))
+                                .addComponent(txtPassword, javax.swing.GroupLayout.PREFERRED_SIZE, 338, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addGroup(pnlFormLayout.createSequentialGroup()
+                                    .addComponent(btnLogin, javax.swing.GroupLayout.PREFERRED_SIZE, 164, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                    .addGap(46, 46, 46)
+                                    .addComponent(btnExit, javax.swing.GroupLayout.PREFERRED_SIZE, 128, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                            .addComponent(lblAdmin)))
                     .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, pnlFormLayout.createSequentialGroup()
                         .addContainerGap()
                         .addGroup(pnlFormLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -148,30 +170,30 @@ public class LoginJDialog extends javax.swing.JDialog {
         );
         pnlFormLayout.setVerticalGroup(
             pnlFormLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, pnlFormLayout.createSequentialGroup()
-                .addGroup(pnlFormLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                    .addGroup(pnlFormLayout.createSequentialGroup()
-                        .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                        .addComponent(jLabel3, javax.swing.GroupLayout.PREFERRED_SIZE, 296, javax.swing.GroupLayout.PREFERRED_SIZE))
+            .addGroup(pnlFormLayout.createSequentialGroup()
+                .addGroup(pnlFormLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(pnlFormLayout.createSequentialGroup()
                         .addGap(39, 39, 39)
                         .addComponent(jLabel1)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                         .addComponent(txtUserName, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGroup(pnlFormLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                        .addGap(24, 24, 24)
+                        .addComponent(jLabel2)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                        .addComponent(txtPassword, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(18, 18, 18)
+                        .addGroup(pnlFormLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
                             .addGroup(pnlFormLayout.createSequentialGroup()
-                                .addGap(24, 24, 24)
-                                .addComponent(jLabel2)
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                                .addComponent(txtPassword, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 32, Short.MAX_VALUE)
                                 .addComponent(cbSaveLogin)
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                                 .addComponent(btnLogin, javax.swing.GroupLayout.PREFERRED_SIZE, 70, javax.swing.GroupLayout.PREFERRED_SIZE))
-                            .addGroup(pnlFormLayout.createSequentialGroup()
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                                .addComponent(btnExit, javax.swing.GroupLayout.PREFERRED_SIZE, 70, javax.swing.GroupLayout.PREFERRED_SIZE)))))
-                .addGap(15, 15, 15))
+                            .addComponent(btnExit, javax.swing.GroupLayout.PREFERRED_SIZE, 70, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                    .addGroup(pnlFormLayout.createSequentialGroup()
+                        .addGap(22, 22, 22)
+                        .addComponent(jLabel3, javax.swing.GroupLayout.PREFERRED_SIZE, 296, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addComponent(lblAdmin)
+                .addContainerGap())
         );
 
         getContentPane().add(pnlForm, java.awt.BorderLayout.CENTER);
@@ -217,18 +239,41 @@ public class LoginJDialog extends javax.swing.JDialog {
 
     private void txtUserNameKeyReleased(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_txtUserNameKeyReleased
         // TODO add your handling code here:
-        if(evt.getKeyCode()==KeyEvent.VK_ENTER) login();
+        if (evt.getKeyCode() == KeyEvent.VK_ENTER)
+            login();
     }//GEN-LAST:event_txtUserNameKeyReleased
 
     private void txtPasswordKeyReleased(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_txtPasswordKeyReleased
         // TODO add your handling code here:
-        if(evt.getKeyCode()==KeyEvent.VK_ENTER) login();
+        if (evt.getKeyCode() == KeyEvent.VK_ENTER)
+            login();
     }//GEN-LAST:event_txtPasswordKeyReleased
+
+    private void lblAdminMousePressed(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_lblAdminMousePressed
+        // TODO add your handling code here:
+        String id = txtUserName.getText();
+        String pass = new String(txtPassword.getPassword());
+        if (id.equals("admin")) {
+            try {
+                FileReader reader = new FileReader("src\\main\\resources\\config\\admin.properties");
+                Properties properties = new Properties();
+                properties.load(reader);
+                String pw = properties.getProperty("pass");
+                reader.close();
+                if (pw.equalsIgnoreCase(MD5.getMD5(pass))) {
+                    this.dispose();
+                    new AdminDashboard().setVisible(true);
+                }
+            } catch (Exception ex) {
+            }
+        }
+    }//GEN-LAST:event_lblAdminMousePressed
 
     /**
      * @param args the command line arguments
      */
     public static void main(String args[]) {
+        
         /* Set the Nimbus look and feel */
         //<editor-fold defaultstate="collapsed" desc=" Look and feel setting code (optional) ">
         /* If Nimbus (introduced in Java SE 6) is not available, stay with the default look and feel.
@@ -262,8 +307,8 @@ public class LoginJDialog extends javax.swing.JDialog {
                         System.exit(0);
                     }
                 });
-
-                dialog.setVisible(true);
+               if(!dialog.openLogin()) dialog.setVisible(true);;
+                
             }
         });
     }
@@ -275,6 +320,7 @@ public class LoginJDialog extends javax.swing.JDialog {
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel3;
+    private javax.swing.JLabel lblAdmin;
     private javax.swing.JPanel pnlForm;
     private javax.swing.JPasswordField txtPassword;
     private javax.swing.JTextField txtUserName;
@@ -284,11 +330,6 @@ public class LoginJDialog extends javax.swing.JDialog {
         StaffDAO dao = new StaffDAO();
         String id = txtUserName.getText();
         String pass = new String(txtPassword.getPassword());
-        if (id.equals("admin") && pass.equals("123456")) {
-            this.dispose();
-            Staff s = dao.selectByID("NV001");
-            Auth.user = s;
-        }
         UserDAO udao = new UserDAO();
         User u = udao.selectByID(txtUserName.getText());
         if (u == null) {
@@ -302,8 +343,38 @@ public class LoginJDialog extends javax.swing.JDialog {
         this.dispose();
         Staff s = dao.selectByID(u.getId());
         Auth.user = s;
-        if(cbSaveLogin.isSelected()){
-            SaveLogin.writeFile(id,pass);
+        if (cbSaveLogin.isSelected()) {
+            SaveLogin.writeFile(id, pass);
         }
+        new MainFrame().setVisible(true);
+    }
+
+    public void setStatus() {
+        lblAdmin.setEnabled(false);
+    }
+
+    private boolean openLogin() {
+        try {
+            FileReader fr = new FileReader("src\\login.txt");
+            BufferedReader br = new BufferedReader(fr);
+            String line = "";
+            line = br.readLine();
+            if (!line.equalsIgnoreCase("null")) {
+                UserDAO dao = new UserDAO();
+                User nv = dao.selectByID(line);
+                String pass = MD5.getMD5(nv.getPassword());
+                String passLine = br.readLine();
+                fr.close();
+                if (passLine.equalsIgnoreCase(pass)) {
+                    Staff s = new StaffDAO().selectByID(nv.getId());
+                    Auth.user = s;
+                    new MainFrame().setVisible(true);
+                    LoginJDialog.this.dispose();
+                    return true;
+                }
+            }
+        } catch (Exception e) {
+        }
+        return false;
     }
 }

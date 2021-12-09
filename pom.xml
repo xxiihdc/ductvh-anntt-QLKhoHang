@@ -80,7 +80,7 @@
                          <manifest>
                              <addClasspath>true</addClasspath>
                              <classpathPrefix>libs/</classpathPrefix>
-                             <mainClass>ui.main.MainFrame</mainClass>
+                             <mainClass>ui.dialog.LoginJDialog</mainClass>
                          </manifest>
                          
                      </archive>
