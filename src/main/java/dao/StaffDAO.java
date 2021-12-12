@@ -14,26 +14,26 @@ import utils.XJdbc;
  *
  * @author ductr
  */
-public class StaffDAO extends WarehouseDAO<Staff, String>{
+public class StaffDAO extends WarehouseDAO<Staff, String> {
+
     final String INSERT = "INSERT INTO staff "
             + "(id, _name, image, phone, email, status, role)"
             + "VALUES (?,?,?,?,?,?,?)";
-    final String SELECT_ALL = "Select * from staff where status = 1 ";
+    final String SELECT_ALL = "Select * from staff";
     final String SELECT_BY_ID = "Select * from staff where id = ?";
     final String UPDATE = "UPDATE staff SET _name =?, image =?, phone =?, "
             + "email =?, status =?, role =? where id = ?";
-    
 
     @Override
     public void insert(Staff entity) {
-        XJdbc.update(INSERT,entity.getId(),entity.getName(),entity.getImage(),entity.getPhone(),
-                entity.getEmail(),entity.isStatus(),entity.isRole());
+        XJdbc.update(INSERT, entity.getId(), entity.getName(), entity.getImage(), entity.getPhone(),
+                entity.getEmail(), entity.isStatus(), entity.isRole());
     }
 
     @Override
     public void update(Staff entity) {
-        XJdbc.update(UPDATE, entity.getName(),entity.getImage(),entity.getPhone(),
-        entity.getEmail(),entity.isStatus(),entity.isRole(),entity.getId());
+        XJdbc.update(UPDATE, entity.getName(), entity.getImage(), entity.getPhone(),
+                entity.getEmail(), entity.isStatus(), entity.isRole(), entity.getId());
     }
 
     @Override
@@ -47,15 +47,20 @@ public class StaffDAO extends WarehouseDAO<Staff, String>{
 
     @Override
     public Staff selectByID(String id) {
-        return selectBySql(SELECT_BY_ID, id).get(0);
+        List<Staff> lst = selectBySql(SELECT_BY_ID, id);
+        if (!lst.isEmpty()) {
+            return selectBySql(SELECT_BY_ID, id).get(0);
+        }
+        return null;
+
     }
 
     @Override
     public List<Staff> selectBySql(String sql, Object... args) {
         List<Staff> lst = new ArrayList<>();
-        try{
+        try {
             ResultSet rs = XJdbc.query(sql, args);
-            while(rs.next()){
+            while (rs.next()) {
                 Staff nv = new Staff();
                 nv.setId(rs.getString(1));
                 nv.setName(rs.getString(2));
@@ -67,18 +72,19 @@ public class StaffDAO extends WarehouseDAO<Staff, String>{
                 lst.add(nv);
             }
             rs.getStatement().getConnection().close();
-        }catch(Exception e){
+        } catch (Exception e) {
             throw new RuntimeException(e);
         }
         return lst;
     }
 
     public boolean hasID(String id) {
-        String query ="select id from staff where id = ?";
+        String query = "select id from staff where id = ?";
         Object o = XJdbc.value(query, id);
-        return o!=null;
+        return o != null;
     }
-    public List<Staff> selectNotYetAccount(){
+
+    public List<Staff> selectNotYetAccount() {
         String sql = "select * from staff where id not in (select id from _user)";
         return selectBySql(sql);
     }

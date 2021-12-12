@@ -428,20 +428,18 @@ public class ProductDialog extends javax.swing.JDialog {
         if (valid()) {
             if (dao.hasID(txtID.getText())) {
                 update();
-                clearForm();
             } else {
                 insert();
-                clearForm();
+                this.dispose();
             }
-
         }
     }//GEN-LAST:event_jButton7ActionPerformed
 
     private void txtPriceFocusGained(java.awt.event.FocusEvent evt) {//GEN-FIRST:event_txtPriceFocusGained
         // TODO add your handling code here:
         String price = txtPrice.getText();
-        if(price.endsWith("đ")){
-            String price2 = price.substring(0,price.length()-2);
+        if (price.endsWith("đ")) {
+            String price2 = price.substring(0, price.length() - 2);
             price2 = price2.replaceAll("\\.", "");
             txtPrice.setText(price2);
         }
@@ -589,12 +587,16 @@ public class ProductDialog extends javax.swing.JDialog {
     private boolean valid() {
         String msg = "";
         String reID = "[a-zA-Z0-9]{1,7}";
-        if(!txtID.getText().matches(reID)){
-           msg += "ID chỉ bao gồm chữ cái và số, dưới 7 ký tự";
+        if (!txtID.getText().trim().matches(reID)) {
+            msg += "ID chỉ bao gồm chữ cái và số, dưới 7 ký tự";
         }
-        if(txtName.getText().length()==0) msg += "\n Tên sản phẩm không được rỗng";
-        if(txtPrice.getText().length()==0) msg += "\n Giá sản phẩm không được rỗng";
-        if(msg.length()>0){
+        if (txtName.getText().length() == 0) {
+            msg += "\n Tên sản phẩm không được rỗng";
+        }
+        if (txtPrice.getText().length() == 0) {
+            msg += "\n Giá sản phẩm không được rỗng";
+        }
+        if (msg.length() > 0) {
             MsgBox.alert(null, msg);
             return false;
         }
@@ -656,10 +658,13 @@ public class ProductDialog extends javax.swing.JDialog {
         p.setStatus(rdoDangKinhDoanh.isSelected());
         Vendor v = (Vendor) cbxVendor.getSelectedItem();
         p.setVendorID(v.getId());
-        String price = txtPrice.getText();
-        if(price.endsWith("đ")) p.setPrice(Currency.getDouble(price));
-        else p.setPrice(Double.parseDouble(price));
-        p.setPrice(Double.parseDouble(txtPrice.getText()));
+        String price = txtPrice.getText().trim();
+        if (price.endsWith("đ")) {
+            p.setPrice(Currency.getDouble(price));
+        } else {
+            p.setPrice(Double.parseDouble(price));
+        }
+        //p.setPrice(Double.parseDouble(txtPrice.getText()));
         return p;
     }
 }

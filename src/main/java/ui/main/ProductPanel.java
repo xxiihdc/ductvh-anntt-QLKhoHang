@@ -468,7 +468,7 @@ public class ProductPanel extends javax.swing.JPanel {
             return;
         }
         tblProduct.setRowSelectionInterval(0, pos);
-        lblRecord.setText(pos + "/" + tblProduct.getRowCount());
+        lblRecord.setText((pos+1) + "/" + tblProduct.getRowCount());
 
     }
 
@@ -483,7 +483,7 @@ public class ProductPanel extends javax.swing.JPanel {
             return;
         }
         tblProduct.setRowSelectionInterval(0, pos);
-        lblRecord.setText(pos + "/" + tblProduct.getRowCount());
+        lblRecord.setText((pos+1) + "/" + tblProduct.getRowCount());
 
     }
 

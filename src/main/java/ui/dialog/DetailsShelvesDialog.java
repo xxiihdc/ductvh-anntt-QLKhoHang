@@ -5,8 +5,12 @@
 package ui.dialog;
 
 import dao.ShelvesDetailsDAO;
+import entity.ShelvesDetails;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Vector;
 import javax.swing.table.DefaultTableModel;
+import utils.MsgBox;
 
 /**
  *
@@ -17,13 +21,15 @@ public class DetailsShelvesDialog extends javax.swing.JDialog {
     /**
      * Creates new form DetailsShelvesDialog
      */
-    int shelves,color;
+    int shelves, color;
+    List<ShelvesDetails> lst;
+    ShelvesDetailsDAO dao = new ShelvesDetailsDAO();
 
-    public DetailsShelvesDialog(java.awt.Frame parent, boolean modal, int s,int color) {
+    public DetailsShelvesDialog(java.awt.Frame parent, boolean modal, int s, int color) {
         super(parent, modal);
         initComponents();
         this.shelves = s;
-        this.color=color;
+        this.color = color;
         init();
     }
 
@@ -83,12 +89,17 @@ public class DetailsShelvesDialog extends javax.swing.JDialog {
         jButton2.setVerticalTextPosition(javax.swing.SwingConstants.BOTTOM);
         jToolBar1.add(jButton2);
 
-        jButton8.setIcon(new javax.swing.ImageIcon(getClass().getResource("/icon/add_30px.png"))); // NOI18N
+        jButton8.setIcon(new javax.swing.ImageIcon(getClass().getResource("/icon/refresh_30px.png"))); // NOI18N
         jButton8.setToolTipText("Làm mới");
         jButton8.setFocusable(false);
         jButton8.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
         jButton8.setMargin(new java.awt.Insets(2, 20, 2, 20));
         jButton8.setVerticalTextPosition(javax.swing.SwingConstants.BOTTOM);
+        jButton8.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton8ActionPerformed(evt);
+            }
+        });
         jToolBar1.add(jButton8);
 
         jButton3.setIcon(new javax.swing.ImageIcon(getClass().getResource("/icon/delete_30px.png"))); // NOI18N
@@ -97,6 +108,11 @@ public class DetailsShelvesDialog extends javax.swing.JDialog {
         jButton3.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
         jButton3.setMargin(new java.awt.Insets(2, 20, 2, 0));
         jButton3.setVerticalTextPosition(javax.swing.SwingConstants.BOTTOM);
+        jButton3.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton3ActionPerformed(evt);
+            }
+        });
         jToolBar1.add(jButton3);
 
         jToolBar2.setRollover(true);
@@ -146,7 +162,15 @@ public class DetailsShelvesDialog extends javax.swing.JDialog {
             new String [] {
                 "ID", "Sản Phẩm", " Lô Sản Phẩm", "Số Lượng"
             }
-        ));
+        ) {
+            boolean[] canEdit = new boolean [] {
+                false, false, false, false
+            };
+
+            public boolean isCellEditable(int rowIndex, int columnIndex) {
+                return canEdit [columnIndex];
+            }
+        });
         tblProduct.setRowHeight(30);
         tblProduct.setRowMargin(5);
         jScrollPane1.setViewportView(tblProduct);
@@ -195,8 +219,39 @@ public class DetailsShelvesDialog extends javax.swing.JDialog {
 
     private void jButton9ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton9ActionPerformed
         // TODO add your handling code here:
-        new ShelvesDialog(null, true, shelves,color).setVisible(true);
+        new ShelvesDialog(null, true, shelves, color).setVisible(true);
     }//GEN-LAST:event_jButton9ActionPerformed
+
+    private void jButton3ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton3ActionPerformed
+
+        int[] rows = tblProduct.getSelectedRows();
+        if (rows.length == 0) {
+            return;
+        }
+        List<ShelvesDetails> lst2 = new ArrayList<>();
+        for (int i = 0; i < rows.length; i++) {
+            lst2.add(lst.get(i));
+        }
+        for (ShelvesDetails s : lst2) {
+            // delete current shelves
+            dao.delete(s.getId() + "");
+
+            //search in default shelves
+            MsgBox.alert(null, s.getProductBatchID() + "");
+            if (dao.hasProduct(0, 88)) {
+                dao.updateDefault(s.getProductBatchID(), s.getQuantity());
+            } else {
+                s.setShelvesID(0);
+                dao.insert(s);
+            }
+        }
+    }//GEN-LAST:event_jButton3ActionPerformed
+
+    private void jButton8ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton8ActionPerformed
+        // TODO add your handling code here:
+        lst.clear();
+        fillTable(shelves);
+    }//GEN-LAST:event_jButton8ActionPerformed
 
     /**
      * @param args the command line arguments
@@ -258,21 +313,12 @@ public class DetailsShelvesDialog extends javax.swing.JDialog {
     // End of variables declaration//GEN-END:variables
 
     private void fillTable(int shelves) {
-//        ShelvesDetailsDAO dao = new ShelvesDetailsDAO();
-//        DefaultTableModel model = (DefaultTableModel) tblProduct.getModel();
-//        model.setRowCount(0);
-//        List<ShelvesDetails> lst = dao.selectByID(shelves);
-//        for (ShelvesDetails s : lst) {
-//            Object[] data = new Object[]{
-//                s.getShelvesID(),s.getProductBatchID(),"A",s.getQuantity()
-//            };
-//            model.addRow(data);
-//        }
-//        lblRecord.setText("0/" + tblProduct.getRowCount());
-        ShelvesDetailsDAO dao = new ShelvesDetailsDAO();
-        Vector<String> head = dao.getHead();
         Vector data = dao.selectByKho(shelves);
-        DefaultTableModel model = new DefaultTableModel(data,head);
-        tblProduct.setModel(model);
+        DefaultTableModel model2 = (DefaultTableModel) tblProduct.getModel();
+        model2.setRowCount(0);
+        for (int i = 0; i < data.size(); i++) {
+            model2.addRow((Vector) data.get(i));
+        }
+        lst = dao.selectByID(shelves);
     }
 }

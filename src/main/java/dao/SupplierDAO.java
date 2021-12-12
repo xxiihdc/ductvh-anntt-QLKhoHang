@@ -64,6 +64,7 @@ public class SupplierDAO extends WarehouseDAO<Supplier, String>{
                  lst.add(s);   
                 }
             }
+            rs.getStatement().getConnection().close();
             return lst;
         } catch (SQLException ex) {
             throw new RuntimeException(ex);

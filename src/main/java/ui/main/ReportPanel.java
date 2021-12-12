@@ -8,15 +8,19 @@ import dao.ReportDAO;
 import java.awt.Color;
 import java.awt.Component;
 import java.util.List;
+import javafx.scene.chart.CategoryAxis;
 import javax.swing.DefaultComboBoxModel;
 import javax.swing.JPanel;
+import javax.swing.table.DefaultTableModel;
 import org.jfree.chart.ChartFactory;
 import org.jfree.chart.ChartPanel;
 import org.jfree.chart.JFreeChart;
+import org.jfree.chart.axis.CategoryLabelPositions;
 import org.jfree.chart.plot.CategoryPlot;
 import org.jfree.chart.plot.PlotOrientation;
 import org.jfree.data.category.DefaultCategoryDataset;
 import org.jfree.data.general.DefaultPieDataset;
+import utils.Currency;
 
 /**
  *
@@ -62,6 +66,11 @@ public class ReportPanel extends javax.swing.JPanel {
         cbxYearExport = new javax.swing.JComboBox<>();
         jLabel3 = new javax.swing.JLabel();
         cbxMonth = new javax.swing.JComboBox<>();
+        jPanel3 = new javax.swing.JPanel();
+        jScrollPane4 = new javax.swing.JScrollPane();
+        tblReport = new javax.swing.JTable();
+        cbxReport = new javax.swing.JComboBox<>();
+        jLabel4 = new javax.swing.JLabel();
 
         setBorder(javax.swing.BorderFactory.createTitledBorder(null, "Thống Kê", javax.swing.border.TitledBorder.DEFAULT_JUSTIFICATION, javax.swing.border.TitledBorder.DEFAULT_POSITION, new java.awt.Font("Tahoma", 0, 18))); // NOI18N
 
@@ -190,12 +199,12 @@ public class ReportPanel extends javax.swing.JPanel {
                 .addContainerGap()
                 .addComponent(jLabel2, javax.swing.GroupLayout.PREFERRED_SIZE, 51, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(cbxYearExport, javax.swing.GroupLayout.PREFERRED_SIZE, 158, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(113, 113, 113)
+                .addComponent(cbxYearExport, javax.swing.GroupLayout.PREFERRED_SIZE, 466, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 87, Short.MAX_VALUE)
                 .addComponent(jLabel3)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                .addComponent(cbxMonth, javax.swing.GroupLayout.PREFERRED_SIZE, 159, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(590, Short.MAX_VALUE))
+                .addGap(36, 36, 36)
+                .addComponent(cbxMonth, javax.swing.GroupLayout.PREFERRED_SIZE, 404, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(39, 39, 39))
             .addGroup(jPanel2Layout.createSequentialGroup()
                 .addComponent(jScrollPane3)
                 .addContainerGap())
@@ -215,6 +224,58 @@ public class ReportPanel extends javax.swing.JPanel {
         );
 
         jTabbedPane1.addTab("Xuất Kho", jPanel2);
+
+        tblReport.setFont(new java.awt.Font("Tahoma", 0, 18)); // NOI18N
+        tblReport.setModel(new javax.swing.table.DefaultTableModel(
+            new Object [][] {
+
+            },
+            new String [] {
+                "Title 1", "Title 2", "Title 3", "Title 4"
+            }
+        ));
+        tblReport.setRowHeight(30);
+        tblReport.setRowMargin(5);
+        jScrollPane4.setViewportView(tblReport);
+
+        cbxReport.setFont(new java.awt.Font("Tahoma", 0, 18)); // NOI18N
+        cbxReport.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Tồn Kho", "Phân Loại Sản Phẩm (Nhóm)", "Phân Loại Sản Phẩm (Loại)", "Mua Hàng NCC" }));
+        cbxReport.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                cbxReportActionPerformed(evt);
+            }
+        });
+
+        jLabel4.setFont(new java.awt.Font("Tahoma", 1, 14)); // NOI18N
+        jLabel4.setText("Chọn báo cáo:");
+
+        javax.swing.GroupLayout jPanel3Layout = new javax.swing.GroupLayout(jPanel3);
+        jPanel3.setLayout(jPanel3Layout);
+        jPanel3Layout.setHorizontalGroup(
+            jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(jPanel3Layout.createSequentialGroup()
+                .addComponent(jScrollPane4, javax.swing.GroupLayout.DEFAULT_SIZE, 1129, Short.MAX_VALUE)
+                .addContainerGap())
+            .addGroup(jPanel3Layout.createSequentialGroup()
+                .addContainerGap()
+                .addComponent(jLabel4)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addComponent(cbxReport, javax.swing.GroupLayout.PREFERRED_SIZE, 360, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+        );
+        jPanel3Layout.setVerticalGroup(
+            jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel3Layout.createSequentialGroup()
+                .addGap(34, 34, 34)
+                .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(cbxReport, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(jLabel4))
+                .addGap(18, 18, 18)
+                .addComponent(jScrollPane4, javax.swing.GroupLayout.DEFAULT_SIZE, 542, Short.MAX_VALUE)
+                .addContainerGap())
+        );
+
+        jTabbedPane1.addTab("Xem Dạng Bảng", jPanel3);
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(this);
         this.setLayout(layout);
@@ -248,8 +309,15 @@ public class ReportPanel extends javax.swing.JPanel {
             case 4:
                 fillCbxExport();
                 break;
+            case 5:
+                fillTable();
         }
     }//GEN-LAST:event_jTabbedPane1StateChanged
+
+    private void cbxReportActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_cbxReportActionPerformed
+        // TODO add your handling code here:
+        fillTable();
+    }//GEN-LAST:event_cbxReportActionPerformed
     void selectMainPanel(JPanel main, Component p) {
         main.removeAll();
         main.add(p);
@@ -259,16 +327,20 @@ public class ReportPanel extends javax.swing.JPanel {
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JComboBox<String> cbxMonth;
+    private javax.swing.JComboBox<String> cbxReport;
     private javax.swing.JComboBox<String> cbxYear;
     private javax.swing.JComboBox<String> cbxYearExport;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel3;
+    private javax.swing.JLabel jLabel4;
     private javax.swing.JPanel jPanel1;
     private javax.swing.JPanel jPanel2;
+    private javax.swing.JPanel jPanel3;
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JScrollPane jScrollPane2;
     private javax.swing.JScrollPane jScrollPane3;
+    private javax.swing.JScrollPane jScrollPane4;
     private javax.swing.JTabbedPane jTabbedPane1;
     private javax.swing.JPanel jpnNcc;
     private javax.swing.JPanel jpnPhanLoai;
@@ -276,6 +348,7 @@ public class ReportPanel extends javax.swing.JPanel {
     private javax.swing.JScrollPane jscrLoaiSP;
     private javax.swing.JScrollPane jscrNhomSP;
     private javax.swing.JPanel mainPanel1;
+    private javax.swing.JTable tblReport;
     // End of variables declaration//GEN-END:variables
 
     private void makeChartTonKho() {
@@ -289,6 +362,8 @@ public class ReportPanel extends javax.swing.JPanel {
                 true, false);
         CategoryPlot plot = jchart.getCategoryPlot();
         plot.setRangeGridlinePaint(Color.BLACK);
+//        org.jfree.chart.axis.CategoryAxis axis = jchart.getCategoryPlot().getDomainAxis();
+//        axis.setCategoryLabelPositions(CategoryLabelPositions.UP_45);
         int width = 1100;
         if (data.size() > 22) {
             width = data.size() * 50;
@@ -392,8 +467,7 @@ public class ReportPanel extends javax.swing.JPanel {
         DefaultCategoryDataset dcd = new DefaultCategoryDataset();
         for (String[] s : data) {
             dcd.setValue(Integer.parseInt(s[1]), "Sản Phẩm", s[0]);
-            JFreeChart jchart = ChartFactory.createBarChart
-        ("Biểu đồ xuất kho tháng " + month +" năm "+ year,
+            JFreeChart jchart = ChartFactory.createBarChart("Biểu đồ xuất kho tháng " + month + " năm " + year,
                     "Sản Phẩm", "Số Lượng", dcd, PlotOrientation.VERTICAL, true,
                     true, false);
             CategoryPlot plot = jchart.getCategoryPlot();
@@ -429,5 +503,51 @@ public class ReportPanel extends javax.swing.JPanel {
             model.addElement(i);
         }
         makeChartExport();
+    }
+
+    private void fillTable() {
+        int index = cbxReport.getSelectedIndex();
+        DefaultTableModel model = (DefaultTableModel) tblReport.getModel();
+        switch (index) {
+            case 0:
+                List<String[]> data = dao.getTonKho();
+                String[] head = {"Sản Phẩm", "Số lượng"};
+                model.setColumnIdentifiers(head);
+                for (String[] s : data) {
+                    Object[] row = {s[0], s[1]};
+                    model.addRow(row);
+                }
+                break;
+            case 1:
+                String[] head1 = {"Nhóm Sản Phẩm", "Số mặt hàng", "Tổng lượng hàng hóa"};
+                model.setColumnIdentifiers(head1);
+                model.setRowCount(0);
+                List<String[]> data1 = dao.getGroupDetails();
+                for (String[] s : data1) {
+                    Object[] row = {s[0], s[1], s[2]};
+                    model.addRow(row);
+                }
+                break;
+            case 2:
+                String[] head2 = {"Loại Sản Phẩm", "Số mặt hàng", "Tổng lượng hàng hóa"};
+                model.setColumnIdentifiers(head2);
+                model.setRowCount(0);
+                List<String[]> data2 = dao.getTypeDetails();
+                for (String[] s : data2) {
+                    Object[] row = {s[0], s[1], s[2]};
+                    model.addRow(row);
+                }
+                break;
+            case 3:
+                String[] head3 = {"Nhà Cung Cấp","Tổng tiền đã mua"};
+                 model.setColumnIdentifiers(head3);
+                model.setRowCount(0);
+                List<String[]> data3 = dao.getNCC();
+                for (String[] s : data3) {
+                    Object[] row = {s[0], Currency.getCurrency(Double.parseDouble(s[1]))};
+                    model.addRow(row);
+                }
+                break;
+        }
     }
 }

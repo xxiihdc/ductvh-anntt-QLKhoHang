@@ -4,7 +4,9 @@
  */
 package dao;
 
+import entity.ProductBatch;
 import entity.Shelves;
+import entity.ShelvesDetails;
 import java.awt.Color;
 import java.sql.ResultSet;
 import java.sql.SQLException;
@@ -17,12 +19,14 @@ import utils.XJdbc;
  * @author ductr
  */
 public class ShelvesDAO {
+
     final String SELECT_ALL = "select * from shelves where id > 0";
     final String INSERT_SQL = "INSERT INTO shelves "
             + "(id, description, status, color) VALUES (?,?,?,?)";
     final String DELETE_SQL = "DELETE FROM shelves where id>0";
     final String SELECT_BY_ID = "SELECT * FROM shelves where id = ?";
     final String UPDATE = "UPDATE shelves SET description = ?, status =? , color = ? where id = ?";
+
     public void insert(int quantity) {
         updateToDefault();
         delete();
@@ -64,13 +68,23 @@ public class ShelvesDAO {
             throw new RuntimeException(ex);
         }
     }
-    public void update(Shelves s){
-        XJdbc.update(UPDATE, s.getNote(),s.isStatus(),s.getC().getRGB(),s.getId());
+
+    public void update(Shelves s) {
+        XJdbc.update(UPDATE, s.getNote(), s.isStatus(), s.getC().getRGB(), s.getId());
     }
 
     private void updateToDefault() {
         String sql = "update shelves_details set shelves_id =0";
         XJdbc.update(sql);
+        ShelvesDetailsDAO sdao = new ShelvesDetailsDAO();
+        sdao.deleteAll();
+        List<ProductBatch> lst = new ProductBatchDAO().selectAll();
+        for(ProductBatch p : lst){
+            ShelvesDetails s= new ShelvesDetails();
+            s.setProductBatchID(p.getId());
+            s.setQuantity(p.getQuantity());
+            s.setShelvesID(0);
+            sdao.insert(s);
+        }
     }
-
 }

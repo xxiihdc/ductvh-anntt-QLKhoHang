@@ -92,7 +92,7 @@ public class ProductDAO extends WarehouseDAO<Product, String>{
     }
 
     public List<Product> selectByKey(String key) {
-        String sql = "select * from product where id like '%"+key +"%' or _name like '%"+key+"%'" ;
+        String sql = "select * from product where id like N'%"+key +"%' or _name like N'%"+key+"%'" ;
         return selectBySql(sql);
     }
     public List<Product> selectStop(){

@@ -4,13 +4,13 @@
  */
 package ui.main.category;
 
-
 import dao.StaffDAO;
 import entity.Staff;
 import java.util.List;
 import javax.swing.table.DefaultTableModel;
 import ui.dialog.StaffDialog;
-
+import utils.Auth;
+import utils.MsgBox;
 
 /**
  *
@@ -106,6 +106,11 @@ public class CategoryStaff extends javax.swing.JPanel {
         jButton2.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
         jButton2.setMargin(new java.awt.Insets(2, 20, 2, 20));
         jButton2.setVerticalTextPosition(javax.swing.SwingConstants.BOTTOM);
+        jButton2.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton2ActionPerformed(evt);
+            }
+        });
         jToolBar1.add(jButton2);
 
         jButton8.setIcon(new javax.swing.ImageIcon(getClass().getResource("/icon/refresh_30px.png"))); // NOI18N
@@ -220,18 +225,28 @@ public class CategoryStaff extends javax.swing.JPanel {
 
     private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
         // TODO add your handling code here:
-        new StaffDialog(null,true).setVisible(true);
+        new StaffDialog(null, true).setVisible(true);
     }//GEN-LAST:event_jButton1ActionPerformed
 
     private void tblStaffMousePressed(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_tblStaffMousePressed
         // TODO add your handling code here:
         if (evt.getClickCount() == 2) {
             row = tblStaff.getSelectedRow();
-            String id =tblStaff.getValueAt(row,0)+"";
+            String id = tblStaff.getValueAt(row, 0) + "";
             Staff s = dao.selectByID(id);
-            StaffDialog ss = new StaffDialog(null,true);
-            ss.setForm(s);
-            ss.setVisible(true);
+            if (s.getId().equals(Auth.user.getId())) {
+                StaffDialog ss = new StaffDialog(null, true);
+                ss.setForm(s);
+                ss.setVisible(true);
+                return;
+            }
+            if(Auth.isManager()){
+                StaffDialog ss = new StaffDialog(null, true);
+                ss.setForm(s);
+                ss.setVisible(true); 
+            }else{
+                MsgBox.alert(null, "Bạn không có quyền xem thông tin NV khác");
+            }
         }
     }//GEN-LAST:event_tblStaffMousePressed
 
@@ -245,6 +260,18 @@ public class CategoryStaff extends javax.swing.JPanel {
         // TODO add your handling code here:
         refesh();
     }//GEN-LAST:event_jButton8ActionPerformed
+
+    private void jButton2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton2ActionPerformed
+        // TODO add your handling code here:
+        int row = tblStaff.getSelectedRow();
+        if (row == -1) {
+            return;
+        }
+        String id = tblStaff.getValueAt(row, 0) + "";
+        Staff s = dao.selectByID(id);
+        StaffDialog sd = new StaffDialog(null, true);
+        sd.setVisible(true);
+    }//GEN-LAST:event_jButton2ActionPerformed
 
 
     // Variables declaration - do not modify//GEN-BEGIN:variables

@@ -9,6 +9,7 @@ import entity.Staff;
 import java.io.File;
 import javax.swing.ImageIcon;
 import javax.swing.JFileChooser;
+import utils.Auth;
 import utils.MsgBox;
 import utils.XImage;
 
@@ -39,6 +40,11 @@ public class StaffDialog extends javax.swing.JDialog {
         btnGroupStatus.add(rdoTrue);
         btnGroupStatus.add(rdoFalse);
         lblImg.setName(DEFAULT_IMG);
+        if (!Auth.isManager()) {
+            rdoManager.setEnabled(false);
+        } else {
+            rdoManager.setEnabled(true);
+        }
     }
 
     /**
@@ -91,6 +97,11 @@ public class StaffDialog extends javax.swing.JDialog {
         jButton2.setFont(new java.awt.Font("Segoe UI", 1, 14)); // NOI18N
         jButton2.setIcon(new javax.swing.ImageIcon(getClass().getResource("/icon/pin_in_circle_30px.png"))); // NOI18N
         jButton2.setText("Lưu & Thoát");
+        jButton2.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton2ActionPerformed(evt);
+            }
+        });
 
         jButton1.setBackground(new java.awt.Color(255, 153, 51));
         jButton1.setFont(new java.awt.Font("Segoe UI", 1, 14)); // NOI18N
@@ -313,13 +324,22 @@ public class StaffDialog extends javax.swing.JDialog {
                 insert();
                 clearForm();
             }
-
         }
-
     }//GEN-LAST:event_jButton1ActionPerformed
 
     private void txtIDFocusLost(java.awt.event.FocusEvent evt) {//GEN-FIRST:event_txtIDFocusLost
         // TODO add your handling code here:
+        String id = txtID.getText();
+        Staff s = dao.selectByID(id);
+        if (s != null) {
+            boolean check = MsgBox.confirm(null, "Id đã tồn tại bạn có muốn cập nhật");
+            if (check) {
+                setForm(s);
+            } else {
+                txtID.setText("");
+                txtID.requestFocus();
+            }
+        }
 
     }//GEN-LAST:event_txtIDFocusLost
 
@@ -359,6 +379,19 @@ public class StaffDialog extends javax.swing.JDialog {
             }
         }
     }//GEN-LAST:event_lblImgMousePressed
+
+    private void jButton2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton2ActionPerformed
+        // TODO add your handling code here:
+        if (valid()) {
+            if (dao.hasID(txtID.getText())) {
+                update();
+                this.dispose();
+            } else {
+                insert();
+                this.dispose();
+            }
+        }
+    }//GEN-LAST:event_jButton2ActionPerformed
 
     /**
      * @param args the command line arguments
@@ -454,7 +487,7 @@ public class StaffDialog extends javax.swing.JDialog {
         s.setImage(lblImg.getToolTipText());
         s.setPhone(txtPhone.getText());
         s.setEmail(txtEmail.getText());
-        s.setRole(rdoStaff.isSelected());
+        s.setRole(rdoManager.isSelected());
         s.setStatus(rdoTrue.isSelected());
         return s;
     }
@@ -481,27 +514,45 @@ public class StaffDialog extends javax.swing.JDialog {
         }
         lblImg.setIcon(XImage.readImg(img));
         lblImg.setToolTipText(img);
+        txtID.setEnabled(false);
+        if (!Auth.isManager()) {
+            rdoManager.setEnabled(false);
+        } else {
+            rdoManager.setEnabled(true);
+        }
     }
 
     private void clearForm() {
         Staff s = new Staff();
         setForm(s);
+        txtID.setEnabled(true);
     }
 
     private boolean valid() {
         String msg = "";
         String id = txtID.getText();
-         String regex = "[a-zA-Z0-9]{5}";
-         if(!id.matches(regex)) msg+="Id đúng 5 ký tự gồm chữ và số";
-         if(txtFullname.getText().length()==0) msg+="\n Tên không được để trống";
-        String reMail="^([\\w-\\.]+){1,64}@([\\w&&[^_]]+){2,255}.[a-z]{2,}$";
+        String regex = "[a-zA-Z0-9]{5}";
+        if (!id.matches(regex)) {
+            msg += "Id đúng 5 ký tự gồm chữ và số";
+        }
+        if (txtFullname.getText().length() == 0) {
+            msg += "\n Tên không được để trống";
+        }
+        String reMail = "^([\\w-\\.]+){1,64}@([\\w&&[^_]]+){2,255}.[a-z]{2,}$";
         String mail = txtEmail.getText();
-        if(!mail.matches(reMail)) msg +="\nMail không đúng định dạng";
+        if (!mail.matches(reMail)) {
+            msg += "\nMail không đúng định dạng";
+        }
         String rePhone = "^[0]{1}\\d{9}";
         String phone = txtPhone.getText();
-        if(!phone.matches(rePhone)) msg += "\nSdt không đúng định dạng";
-        if(msg.length()==0) return true;
-        else MsgBox.alert(null, msg);
+        if (!phone.matches(rePhone)) {
+            msg += "\nSdt không đúng định dạng";
+        }
+        if (msg.length() == 0) {
+            return true;
+        } else {
+            MsgBox.alert(null, msg);
+        }
         return false;
     }
 

@@ -58,6 +58,7 @@ public class ProductTypeDAO extends WarehouseDAO<ProductType, String>{
                 ProductType p = new ProductType(rs.getInt(1),rs.getString(2),rs.getString(3));
                 lst.add(p);
             }
+            rs.getStatement().getConnection().close();
             return lst;
         } catch (SQLException ex) {
             throw new RuntimeException(ex);

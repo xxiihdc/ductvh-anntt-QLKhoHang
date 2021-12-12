@@ -56,6 +56,7 @@ public class PaidDAO extends WarehouseDAO<Paid, String> {
                 Paid p = new Paid(rs.getInt(1), rs.getInt(2), rs.getDouble(3), rs.getDate(4),rs.getString(5));
                 lst.add(p);
             }
+            rs.getStatement().getConnection().close();
             return lst;
         } catch (SQLException ex) {
             throw new RuntimeException(ex);

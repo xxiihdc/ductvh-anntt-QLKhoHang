@@ -236,12 +236,16 @@ public class SettingDialog extends javax.swing.JDialog {
             if (MsgBox.confirm(null, "Thay đổi sẽ xóa toàn bộ dữ liệu về kệ hàng"
                     + " bạn có đồng ý")) {
                 try {
-                    // TODO add your handling code here:
                     Properties properties = new Properties();
                     properties.setProperty("number", txtNum.getText());
                     properties.setProperty("cols", txtCols.getText());
                     properties.setProperty("row", txtRow.getText());
-                    properties.store(new FileWriter("src\\main\\resources\\config\\shelves.properties"), "Shelves Info");
+                    FileWriter fw = new FileWriter
+        ("src\\main\\resources\\config\\shelves.properties");
+//                    properties.store
+//        (new FileWriter("src\\main\\resources\\config\\shelves.properties"), "Shelves Info");
+                    properties.store(fw, "shelves info");
+                    fw.close();
                     int soKe = Integer.parseInt(txtNum.getText());
                     dao.insert(soKe);
                     Properties properties2 = new Properties();
@@ -249,14 +253,12 @@ public class SettingDialog extends javax.swing.JDialog {
                     properties2.store(new FileWriter("src\\main\\resources\\config\\soLuong.properties"), "Shelves Info");
                 } catch (IOException ex) {
                     throw new RuntimeException(ex);
-                 }
+                }
             }
 
         } else {
             MsgBox.alert(null, "Nhập đúng định dạng dữ liệu");
         }
-        //MsgBox.alert(null, jButton1.getBackground().getRGB()+"");
-        // -2696737
     }//GEN-LAST:event_jButton1ActionPerformed
 
     /**
@@ -321,8 +323,7 @@ public class SettingDialog extends javax.swing.JDialog {
     // End of variables declaration//GEN-END:variables
     private boolean readConfig() {
         try {
-            FileReader reader = new FileReader
-        ("src\\main\\resources\\config\\shelves.properties");
+            FileReader reader = new FileReader("src\\main\\resources\\config\\shelves.properties");
             Properties properties = new Properties();
             properties.load(reader);
             String scols = properties.getProperty("cols");
@@ -335,8 +336,7 @@ public class SettingDialog extends javax.swing.JDialog {
                 txtCols.setText(cols + "");
                 txtRow.setText(row + "");
                 txtNum.setText(num + "");
-                reader = new FileReader
-        ("src\\main\\resources\\config\\soLuong.properties");
+                reader = new FileReader("src\\main\\resources\\config\\soLuong.properties");
                 properties.load(reader);
                 String num = properties.getProperty("number");
                 txtSoLuong.setText(num);
@@ -352,7 +352,7 @@ public class SettingDialog extends javax.swing.JDialog {
     }
 
     private boolean valid() {
-        String num = txtCols.getText() + txtNum.getText() + txtRow.getText()+txtSoLuong.getText();
+        String num = txtCols.getText() + txtNum.getText() + txtRow.getText() + txtSoLuong.getText();
         for (int i = 0; i < num.length(); i++) {
             if (!Character.isDigit(num.charAt(i))) {
                 return false;
@@ -361,9 +361,11 @@ public class SettingDialog extends javax.swing.JDialog {
         int number = Integer.parseInt(txtNum.getText());
         int cols = Integer.parseInt(txtCols.getText());
         int row = Integer.parseInt(txtRow.getText());
-        if(number <= cols*row){
+        if (number <= cols * row) {
             return true;
-        }else return false;
-        
+        } else {
+            return false;
+        }
+
     }
 }

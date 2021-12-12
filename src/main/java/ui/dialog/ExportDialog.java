@@ -459,8 +459,12 @@ public class ExportDialog extends javax.swing.JDialog {
 
     private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
         // TODO add your handling code here:
-        if(lst.isEmpty()) return;
-        if (!add) return;
+        if (lst.isEmpty()) {
+            return;
+        }
+        if (!add) {
+            return;
+        }
         Export e = new Export(Integer.parseInt(txtSoSP.getText()), Integer.parseInt(txtSum.getText()),
                 txtStaff.getText());
         e.setDate(new Date());
@@ -691,19 +695,19 @@ public class ExportDialog extends javax.swing.JDialog {
         txtSoSP.setText("");
         txtStaff.setText(Auth.user.getId());
         txtSum.setText("");
-        txtDate.setText(Xdate.toString(new Date(),"dd-MM-yyyy"));
+        txtDate.setText(Xdate.toString(new Date(), "dd-MM-yyyy"));
         txtNote.setText("");
     }
 
     private void print() {
-         try {
+        try {
             String date = txtDate.getText();
             XWPFDocument document = new XWPFDocument();
             String time = java.time.LocalDateTime.now() + "";
             time = time.replaceAll(":", "");
             String path = "src\\main\\resources\\docs";
             String title = "xuatkho" + time + ".docx";
-            FileOutputStream o = new FileOutputStream(new File(path,title));
+            FileOutputStream o = new FileOutputStream(new File(path, title));
             XWPFParagraph paragraph = document.createParagraph();
             paragraph.setAlignment(ParagraphAlignment.CENTER);
             XWPFRun paragraphOneRunOne = paragraph.createRun();
@@ -727,7 +731,7 @@ public class ExportDialog extends javax.swing.JDialog {
             width.setType(STTblWidth.DXA);
             width.setW(BigInteger.valueOf(9072));
 
-            String[] header = {"SẢN PHẨM", "NGÀY NHẬP KHO","SỐ LƯỢNG" , "ĐƠN GIÁ NHẬP"};
+            String[] header = {"SẢN PHẨM", "NGÀY NHẬP KHO", "SỐ LƯỢNG", "ĐƠN GIÁ NHẬP"};
             for (int i = 0; i < header.length; i++) {
                 XWPFTableCell cell;
                 if (i == 0) {
@@ -781,7 +785,7 @@ public class ExportDialog extends javax.swing.JDialog {
             paragraph3.setAlignment(ParagraphAlignment.RIGHT);
             document.write(o);
             o.close();
-            File file = new File(path,title);
+            File file = new File(path, title);
             Desktop.getDesktop().open(file);
         } catch (Exception e) {
             e.printStackTrace();

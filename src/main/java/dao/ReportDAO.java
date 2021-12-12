@@ -8,8 +8,6 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 import utils.XJdbc;
 
 /**
@@ -68,7 +66,7 @@ public class ReportDAO {
                 + "Export on Export_details.export_id = Export.id "
                 + "where YEAR(export.date) = ? and month(export.date) =  ? "
                 + "group by _name";
-        return getData(sql,year,month);
+        return getData(sql, year, month);
     }
 
     public List<Integer> selectYear() {
@@ -86,10 +84,10 @@ public class ReportDAO {
         }
     }
 
-    private List<String[]> getData(String sql,Object...args) {
+    private List<String[]> getData(String sql, Object... args) {
         try {
             List<String[]> lst = new ArrayList<>();
-            ResultSet rs = XJdbc.query(sql,args);
+            ResultSet rs = XJdbc.query(sql, args);
             while (rs.next()) {
                 String[] str = new String[]{rs.getString(1), rs.getString(2)};
                 lst.add(str);
@@ -125,6 +123,48 @@ public class ReportDAO {
             while (rs.next()) {
                 int month = rs.getInt(1);
                 lst.add(month);
+            }
+            rs.getStatement().getConnection().close();
+            return lst;
+        } catch (SQLException ex) {
+            throw new RuntimeException(ex);
+        }
+    }
+
+    public List<String[]> getGroupDetails() {
+        String sql = " select A.name,SUM(quantity) as 'tong sl',"
+                + "Count(Distinct B.id) as 'so sp' from product_group A "
+                + "inner join product B on A.id = B.product_group\n"
+                + " inner join product_batch C on C.product_id = B.id\n"
+                + " where C.quantity > 0\n"
+                + " group by A.name";
+        try {
+            List<String[]> lst = new ArrayList<>();
+            ResultSet rs = XJdbc.query(sql);
+            while (rs.next()) {
+                String[] str = new String[]{rs.getString(1), rs.getString(3), rs.getString(2)};
+                lst.add(str);
+            }
+            rs.getStatement().getConnection().close();
+            return lst;
+        } catch (SQLException ex) {
+            throw new RuntimeException(ex);
+        }
+    }
+
+    public List<String[]> getTypeDetails() {
+        String sql = " select A.name,SUM(quantity) as 'tong sl',\n"
+                + "Count(Distinct B.id) as 'so sp' from product_type A\n"
+                + "inner join product B on A.id = B.product_type\n"
+                + "inner join product_batch C on C.product_id = B.id\n"
+                + " where C.quantity > 0\n"
+                + " group by A.name";
+        try {
+            List<String[]> lst = new ArrayList<>();
+            ResultSet rs = XJdbc.query(sql);
+            while (rs.next()) {
+                String[] str = new String[]{rs.getString(1), rs.getString(3), rs.getString(2)};
+                lst.add(str);
             }
             rs.getStatement().getConnection().close();
             return lst;

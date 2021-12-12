@@ -77,7 +77,7 @@ public class InvoiceDetailsDialog extends javax.swing.JDialog {
         txtDate.setText(sDate);
         txtID.setText("(Phiếu mới)");
         txtStaff.setText(Auth.user.getId());
-        // addEvt();
+        setStatus();
     }
 
     /**
@@ -678,7 +678,7 @@ public class InvoiceDetailsDialog extends javax.swing.JDialog {
                 maHD = dao.getLastID();
                 add = false;
                 update = cbxStatus.getSelectedIndex();
-                MsgBox.alert(null, "Thông tin hóa đơn đã được lưu");
+              //  MsgBox.alert(null, "Thông tin hóa đơn đã được lưu");
             }
             String sprice = txtSoTienTT.getText();
             if (sprice.length() == 0) {
@@ -1345,5 +1345,12 @@ public class InvoiceDetailsDialog extends javax.swing.JDialog {
         }
 
         jList1.setModel(modell);
+    }
+
+    private void setStatus() {
+        if(!Auth.isManager()){
+            cbxStatus.setSelectedIndex(0);
+            cbxStatus.setEnabled(false);
+        }
     }
 }

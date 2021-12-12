@@ -9,8 +9,6 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 import utils.XJdbc;
 
 /**
@@ -21,7 +19,8 @@ public class ProductBatchDAO extends WarehouseDAO<ProductBatch, String> {
 
     final String INSERT = "INSERT INTO product_batch (product_id, "
             + "quantity, price, supplier_id,entered_date) VALUES (?,?,?,?,?)";
-    final String SELECT_ALL = "select * from product_batch where quantity > 0";
+    final String SELECT_ALL =
+            "select * from product_batch where quantity > 0 order by product_id asc, entered_date asc";
     final String UPDATE = "UPDATE product_batch SET "
             + "quantity=? where id = ?";
     final String SELECT_BY_ID = "select * from product_batch where id = ?";
@@ -105,6 +104,7 @@ public class ProductBatchDAO extends WarehouseDAO<ProductBatch, String> {
                 p.setQuantity(rs.getInt(4));
                 lst.add(p);
             }
+            rs.getStatement().getConnection().close();
             return lst;
         } catch (SQLException ex) {
             throw new RuntimeException(ex);
@@ -147,6 +147,5 @@ public class ProductBatchDAO extends WarehouseDAO<ProductBatch, String> {
         } catch (SQLException ex) {
             throw new RuntimeException(ex);
         }
-
     }
 }

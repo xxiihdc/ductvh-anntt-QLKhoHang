@@ -1,12 +1,6 @@
 
-import dao.ShelvesDAO;
-import entity.Invoice;
-import entity.Shelves;
-import java.awt.Desktop;
-import java.io.File;
+import dao.ShelvesDetailsDAO;
 import java.io.IOException;
-import java.util.Date;
-import javafx.scene.transform.Shear;
 import utils.Currency;
 
 /*
@@ -20,8 +14,12 @@ import utils.Currency;
  */
 public class NewClass {
     public static void main(String[] args) throws IOException {
-        double a = 1000000000;
-        System.out.print(Currency.getString(a));
+        ShelvesDetailsDAO dao = new ShelvesDetailsDAO();
+        if(dao.hasProduct(0, 88)){
+            System.out.println("A");
+        }else{
+            System.out.println("B");
+        }
         
     }
 }

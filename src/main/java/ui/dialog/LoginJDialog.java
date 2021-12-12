@@ -263,6 +263,8 @@ public class LoginJDialog extends javax.swing.JDialog {
                 if (pw.equalsIgnoreCase(MD5.getMD5(pass))) {
                     this.dispose();
                     new AdminDashboard().setVisible(true);
+                }else{
+                    MsgBox.alert(null, "Mật khẩu admin không đúng");
                 }
             } catch (Exception ex) {
             }
@@ -340,8 +342,12 @@ public class LoginJDialog extends javax.swing.JDialog {
             MsgBox.alert(null, "Mật khẩu không đúng");
             return;
         }
-        this.dispose();
         Staff s = dao.selectByID(u.getId());
+        if(!s.isStatus()) {
+            MsgBox.alert(null, "Bạn đã nghĩ việc");
+            return;
+        }
+        this.dispose();
         Auth.user = s;
         if (cbSaveLogin.isSelected()) {
             SaveLogin.writeFile(id, pass);

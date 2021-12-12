@@ -24,6 +24,7 @@ import javax.swing.Timer;
 import ui.dialog.LoginJDialog;
 import ui.dialog.UserJDialog;
 import utils.Auth;
+import utils.MsgBox;
 import utils.SaveLogin;
 import utils.XImage;
 
@@ -42,25 +43,25 @@ public class MainFrame extends javax.swing.JFrame {
     }
 
     void init() {
-            setLocationRelativeTo(null);
-            setIconImage(XImage.getAppIcon());
-            setTitle("WAREHOUSE MANAGEMENT SYSTEM");
-            ToolbarPanel1 t1 = new ToolbarPanel1();
-            t1.btnSetting.addMouseListener(ml);
-            t1.btnUser.addMouseListener(ml);
-            t1.btnLogOut.addMouseListener(ml);
-            selectToolBarPanel(t1);
-           // openLogin();
-            txtStaff.setText(Auth.user.getName());
-            new Timer(1000, new ActionListener() {
-                SimpleDateFormat format = new SimpleDateFormat("hh:mm:ss a");
+        setLocationRelativeTo(null);
+        setIconImage(XImage.getAppIcon());
+        setTitle("WAREHOUSE MANAGEMENT SYSTEM");
+        ToolbarPanel1 t1 = new ToolbarPanel1();
+        t1.btnSetting.addMouseListener(ml);
+        t1.btnUser.addMouseListener(ml);
+        t1.btnLogOut.addMouseListener(ml);
+        selectToolBarPanel(t1);
+        // openLogin();
+        txtStaff.setText(Auth.user.getName());
+        new Timer(1000, new ActionListener() {
+            SimpleDateFormat format = new SimpleDateFormat("hh:mm:ss a");
 
-                @Override
-                public void actionPerformed(ActionEvent e) {
-                    lblTime.setText(format.format(new Date()));
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                lblTime.setText(format.format(new Date()));
 
-                }
-            }).start();
+            }
+        }).start();
     }
 
     /**
@@ -242,15 +243,20 @@ public class MainFrame extends javax.swing.JFrame {
 
     private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
         // TODO add your handling code here:
+        btnHeThongAction();
+    }//GEN-LAST:event_jButton1ActionPerformed
+    void btnHeThongAction() {
         ToolbarPanel1 t1 = new ToolbarPanel1();
         t1.btnSetting.addMouseListener(ml);
         t1.btnLogOut.addMouseListener(ml);
         t1.btnUser.addMouseListener(ml);
         selectToolBarPanel(t1);
-    }//GEN-LAST:event_jButton1ActionPerformed
-
+    }
     private void jButton2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton2ActionPerformed
         // TODO add your handling code here:
+        btnChucNangAction();
+    }//GEN-LAST:event_jButton2ActionPerformed
+    void btnChucNangAction() {
         ToolbarPanel2 t2 = new ToolbarPanel2();
         t2.btnCategory.addMouseListener(ml);
         t2.btnDesk.addMouseListener(ml);
@@ -259,13 +265,15 @@ public class MainFrame extends javax.swing.JFrame {
         t2.btnExport.addMouseListener(ml);
         t2.btnReport.addMouseListener(ml);
         selectToolBarPanel(t2);
-    }//GEN-LAST:event_jButton2ActionPerformed
-
+    }
     private void jButton3ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton3ActionPerformed
         // TODO add your handling code here:
+        btnTroGiupAction();
+    }//GEN-LAST:event_jButton3ActionPerformed
+    void btnTroGiupAction() {
         ToolbarPanel3 t3 = new ToolbarPanel3();
         selectToolBarPanel(t3);
-    }//GEN-LAST:event_jButton3ActionPerformed
+    }
 
     /**
      * @param args the command line arguments
@@ -342,17 +350,22 @@ public class MainFrame extends javax.swing.JFrame {
         public void mousePressed(MouseEvent e) {
             JButton b = (JButton) e.getComponent();
             String name = b.getName();
+            MainShelves ms = new MainShelves();
+            ms.jList1.addMouseListener(ml2);
             switch (name) {
                 case "category":
                     selectMainPanel(new Category());
                     break;
                 case "desk":
-                    MainShelves ms = new MainShelves();
+                    ms.gBtnRefresh.addMouseListener(ml);
                     selectMainPanel(ms);
-                    ms.jList1.addMouseListener(ml2);
                     break;
                 case "setting":
-                    new SettingDialog(null, true).setVisible(true);
+                    if (Auth.isManager()) {
+                        new SettingDialog(null, true).setVisible(true);
+                    } else {
+                        MsgBox.alert(null, "Bạn không có quyền thiết lập");
+                    }
                     break;
                 case "product":
                     selectMainPanel(new ProductPanel());
@@ -374,6 +387,9 @@ public class MainFrame extends javax.swing.JFrame {
                 case "logOut":
                     logOut();
                     break;
+                case "btnRefresh":
+                    selectMainPanel(ms);
+                    break;
             }
         }
 
@@ -393,13 +409,15 @@ public class MainFrame extends javax.swing.JFrame {
     };
 
     private void logOut() {
-            Auth.user = null;
-            SaveLogin.writeFile("", "");
-            txtStaff.setText("Chưa đăng nhập");
-            LoginJDialog l = new LoginJDialog(null,true);
-            l.setStatus();
-            l.setVisible(true);
-            txtStaff.setText(Auth.user.getName());
+        Auth.user = null;
+        SaveLogin.writeFile("", "");
+        txtStaff.setText("Chưa đăng nhập");
+        this.dispose();
+        LoginJDialog l = new LoginJDialog(null, true);
+        //l.setStatus();
+        l.setVisible(true);
+        //txtStaff.setText(Auth.user.getName());
+        //MainFrame.this.dispose();
     }
     MouseListener ml2 = new MouseListener() {
         @Override

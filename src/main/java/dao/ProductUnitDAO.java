@@ -59,6 +59,7 @@ public class ProductUnitDAO extends WarehouseDAO<ProductUnit, String> {
                 s.setDescription(rs.getString(3));
                 lst.add(s);
             }
+            rs.getStatement().getConnection().close();
             return lst;
         } catch (SQLException ex) {
             throw new RuntimeException(ex);

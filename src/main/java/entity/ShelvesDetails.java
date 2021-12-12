@@ -51,6 +51,11 @@ public class ShelvesDetails {
     public void setQuantity(int quantity) {
         this.quantity = quantity;
     }
+
+    @Override
+    public String toString() {
+        return "ShelvesDetails{" + "id=" + id + ", shelvesID=" + shelvesID + ", productBatchID=" + productBatchID + ", quantity=" + quantity + '}';
+    }
     
     
 }
