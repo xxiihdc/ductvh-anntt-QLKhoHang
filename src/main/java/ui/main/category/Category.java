@@ -54,7 +54,6 @@ public class Category extends javax.swing.JPanel {
 
         jPanel1.setBorder(new javax.swing.border.SoftBevelBorder(javax.swing.border.BevelBorder.RAISED));
 
-        jPanel2.setBackground(new java.awt.Color(255, 204, 153));
         jPanel2.setBorder(javax.swing.BorderFactory.createTitledBorder(null, "Hồ Sơ", javax.swing.border.TitledBorder.CENTER, javax.swing.border.TitledBorder.DEFAULT_POSITION, new java.awt.Font("Tahoma", 0, 18))); // NOI18N
         jPanel2.setForeground(new java.awt.Color(255, 153, 102));
         jPanel2.setFont(new java.awt.Font("Tahoma", 0, 18)); // NOI18N
@@ -97,7 +96,6 @@ public class Category extends javax.swing.JPanel {
                 .addContainerGap(21, Short.MAX_VALUE))
         );
 
-        jPanel3.setBackground(new java.awt.Color(255, 204, 153));
         jPanel3.setBorder(javax.swing.BorderFactory.createTitledBorder(null, "Sản Phẩm", javax.swing.border.TitledBorder.CENTER, javax.swing.border.TitledBorder.DEFAULT_POSITION, new java.awt.Font("Tahoma", 0, 18))); // NOI18N
         jPanel3.setForeground(new java.awt.Color(255, 153, 102));
 
@@ -139,7 +137,6 @@ public class Category extends javax.swing.JPanel {
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
 
-        jPanel4.setBackground(new java.awt.Color(255, 204, 153));
         jPanel4.setBorder(javax.swing.BorderFactory.createTitledBorder(null, "Kho", javax.swing.border.TitledBorder.CENTER, javax.swing.border.TitledBorder.DEFAULT_POSITION, new java.awt.Font("Tahoma", 0, 18))); // NOI18N
         jPanel4.setForeground(new java.awt.Color(255, 153, 102));
 

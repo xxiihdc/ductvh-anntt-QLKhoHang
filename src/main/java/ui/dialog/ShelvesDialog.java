@@ -8,6 +8,7 @@ import dao.ShelvesDAO;
 import entity.Shelves;
 import java.awt.Color;
 import javax.swing.JColorChooser;
+import utils.MsgBox;
 
 /**
  *
@@ -58,7 +59,6 @@ public class ShelvesDialog extends javax.swing.JDialog {
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
         setTitle("Thiết Lập Kệ Hàng");
 
-        jPanel1.setBackground(new java.awt.Color(255, 204, 153));
         jPanel1.setBorder(new javax.swing.border.SoftBevelBorder(javax.swing.border.BevelBorder.RAISED));
 
         jLabel1.setFont(new java.awt.Font("Tahoma", 0, 14)); // NOI18N
@@ -216,7 +216,8 @@ public class ShelvesDialog extends javax.swing.JDialog {
          s.setC(c);
          ShelvesDAO dao = new ShelvesDAO();
          dao.update(s);
-         
+         MsgBox.alert(null, "Dữ liệu đã được lưu");
+         this.dispose();
     }//GEN-LAST:event_jButton2ActionPerformed
 
 

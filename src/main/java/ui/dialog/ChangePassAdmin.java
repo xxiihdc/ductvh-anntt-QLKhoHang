@@ -143,6 +143,7 @@ public class ChangePassAdmin extends javax.swing.JDialog {
         ("src\\main\\resources\\config\\admin.properties");
                     properties2.store(fw,"admin");
                     fw.close();
+                    this.dispose();
                 }else{
                     MsgBox.alert(null, "Mật khẩu không khớp");
                 }

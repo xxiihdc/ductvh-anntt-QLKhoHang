@@ -17,6 +17,7 @@ import java.awt.Component;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
 import java.io.FileReader;
+import java.util.Date;
 import java.util.List;
 import java.util.Properties;
 import javax.swing.DefaultListModel;
@@ -88,6 +89,21 @@ public class MainShelves extends javax.swing.JPanel {
         }
     }
 
+    private void fillTableHetHan(int value) {
+        Date date = Xdate.addDays(new Date(), (0 - value));
+        ProductBatchDAO bdao = new ProductBatchDAO();
+        DefaultTableModel model = (DefaultTableModel) tblProduct.getModel();
+        List<ProductBatch> lst = bdao.selectOutOfDate(date);
+        model.setRowCount(0);
+        for (ProductBatch p : lst) {
+            Object[] row = new Object[]{
+                p.getProductName(), p.getQuantity(), Currency.getCurrency(p.getPrice()),
+                p.getSupplierName(), Xdate.toString(p.getEnteredDate(), "dd-MM-yyyy")
+            };
+            model.addRow(row);
+        }
+    }
+
     /**
      * Creates new form MainShelves
      */
@@ -107,7 +123,7 @@ public class MainShelves extends javax.swing.JPanel {
                 MsgBox.alert(null, "Vui lòng thiết lập kệ hàng");
                 new SettingDialog(null, true).setVisible(true);
                 init();
-            }else{
+            } else {
                 MsgBox.alert(null, "Đăng nhập bằng tài khoản quản lý và thiết lập kệ hàng");
             }
 
@@ -180,8 +196,6 @@ public class MainShelves extends javax.swing.JPanel {
         tblProduct = new javax.swing.JTable();
 
         setBorder(javax.swing.BorderFactory.createTitledBorder(null, "Quản Lý Kệ Hàng", javax.swing.border.TitledBorder.DEFAULT_JUSTIFICATION, javax.swing.border.TitledBorder.DEFAULT_POSITION, new java.awt.Font("Segoe UI", 1, 18))); // NOI18N
-
-        jPanel2.setBackground(new java.awt.Color(255, 204, 153));
 
         jLabel1.setFont(new java.awt.Font("Segoe UI", 1, 18)); // NOI18N
         jLabel1.setText("Số kệ hàng:");
@@ -425,6 +439,9 @@ public class MainShelves extends javax.swing.JPanel {
             if (cv.getName().equalsIgnoreCase("hetHang")) {
                 selectPanel(jPanel3);
                 fillTableHetHang(Integer.parseInt(cv.getValue()));
+            } else if (cv.getName().equalsIgnoreCase("hetHan")) {
+                selectPanel(jPanel3);
+                fillTableHetHan(Integer.parseInt(cv.getValue()));
             }
         }
     }//GEN-LAST:event_jList1MousePressed
@@ -496,7 +513,6 @@ public class MainShelves extends javax.swing.JPanel {
         CongViecDAO dao = new CongViecDAO();
         List<CongViec> lst = dao.getCV();
         if (lst.isEmpty()) {
-
         } else {
             DefaultListModel<CongViec> modell = new DefaultListModel<>();
             for (int i = 0; i < lst.size(); i++) {

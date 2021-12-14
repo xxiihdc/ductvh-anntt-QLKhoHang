@@ -153,7 +153,6 @@ public class DetailsShelvesDialog extends javax.swing.JDialog {
         jButton7.setVerticalTextPosition(javax.swing.SwingConstants.BOTTOM);
         jToolBar2.add(jButton7);
 
-        tblProduct.setBackground(new java.awt.Color(255, 204, 153));
         tblProduct.setFont(new java.awt.Font("Tahoma", 0, 18)); // NOI18N
         tblProduct.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {

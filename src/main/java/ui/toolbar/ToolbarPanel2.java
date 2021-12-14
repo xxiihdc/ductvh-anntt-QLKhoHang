@@ -51,7 +51,6 @@ public class ToolbarPanel2 extends javax.swing.JPanel {
 
         jToolBar1.setRollover(true);
 
-        btnDesk.setBackground(new java.awt.Color(255, 204, 153));
         btnDesk.setFont(new java.awt.Font("Segoe UI", 3, 16)); // NOI18N
         btnDesk.setForeground(new java.awt.Color(255, 51, 0));
         btnDesk.setIcon(new javax.swing.ImageIcon(getClass().getResource("/icon/office_64px.png"))); // NOI18N
@@ -63,7 +62,6 @@ public class ToolbarPanel2 extends javax.swing.JPanel {
         jToolBar1.add(btnDesk);
         jToolBar1.add(jSeparator1);
 
-        btnCategory.setBackground(new java.awt.Color(255, 153, 102));
         btnCategory.setFont(new java.awt.Font("Segoe UI", 1, 16)); // NOI18N
         btnCategory.setForeground(new java.awt.Color(255, 51, 0));
         btnCategory.setIcon(new javax.swing.ImageIcon(getClass().getResource("/icon/menu_64px.png"))); // NOI18N
@@ -75,7 +73,6 @@ public class ToolbarPanel2 extends javax.swing.JPanel {
         jToolBar1.add(btnCategory);
         jToolBar1.add(jSeparator2);
 
-        btnProduct.setBackground(new java.awt.Color(255, 153, 102));
         btnProduct.setFont(new java.awt.Font("Segoe UI", 1, 16)); // NOI18N
         btnProduct.setForeground(new java.awt.Color(255, 51, 0));
         btnProduct.setIcon(new javax.swing.ImageIcon(getClass().getResource("/icon/product_64px.png"))); // NOI18N
@@ -87,7 +84,6 @@ public class ToolbarPanel2 extends javax.swing.JPanel {
         jToolBar1.add(btnProduct);
         jToolBar1.add(jSeparator3);
 
-        btnInvoice.setBackground(new java.awt.Color(255, 153, 102));
         btnInvoice.setFont(new java.awt.Font("Segoe UI", 1, 16)); // NOI18N
         btnInvoice.setForeground(new java.awt.Color(255, 51, 0));
         btnInvoice.setIcon(new javax.swing.ImageIcon(getClass().getResource("/icon/invoice_64px.png"))); // NOI18N
@@ -99,7 +95,6 @@ public class ToolbarPanel2 extends javax.swing.JPanel {
         jToolBar1.add(btnInvoice);
         jToolBar1.add(jSeparator4);
 
-        btnExport.setBackground(new java.awt.Color(255, 153, 102));
         btnExport.setFont(new java.awt.Font("Segoe UI", 1, 16)); // NOI18N
         btnExport.setForeground(new java.awt.Color(255, 51, 0));
         btnExport.setIcon(new javax.swing.ImageIcon(getClass().getResource("/icon/warehouse_64px.png"))); // NOI18N
@@ -111,7 +106,6 @@ public class ToolbarPanel2 extends javax.swing.JPanel {
         jToolBar1.add(btnExport);
         jToolBar1.add(jSeparator5);
 
-        btnReport.setBackground(new java.awt.Color(255, 153, 102));
         btnReport.setFont(new java.awt.Font("Segoe UI", 1, 16)); // NOI18N
         btnReport.setForeground(new java.awt.Color(255, 51, 0));
         btnReport.setIcon(new javax.swing.ImageIcon(getClass().getResource("/icon/Business Report_64px.png"))); // NOI18N

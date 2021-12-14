@@ -5,7 +5,6 @@
 package ui.main.category;
 
 import dao.VendorDAO;
-import entity.Supplier;
 import entity.Vendor;
 import java.util.List;
 import javax.swing.table.DefaultTableModel;
@@ -57,7 +56,6 @@ public class CategoryVendor extends javax.swing.JPanel {
 
         setBorder(javax.swing.BorderFactory.createTitledBorder(null, "Nhà Sản Xuất", javax.swing.border.TitledBorder.DEFAULT_JUSTIFICATION, javax.swing.border.TitledBorder.DEFAULT_POSITION, new java.awt.Font("Tahoma", 0, 18))); // NOI18N
 
-        tblVendor.setBackground(new java.awt.Color(255, 204, 153));
         tblVendor.setFont(new java.awt.Font("Tahoma", 0, 18)); // NOI18N
         tblVendor.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {

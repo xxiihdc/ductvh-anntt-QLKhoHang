@@ -8,6 +8,7 @@ import entity.ProductBatch;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 import utils.XJdbc;
 
@@ -147,5 +148,10 @@ public class ProductBatchDAO extends WarehouseDAO<ProductBatch, String> {
         } catch (SQLException ex) {
             throw new RuntimeException(ex);
         }
+    }
+
+    public List<ProductBatch> selectOutOfDate(Date date) {
+        String sql = "select * from product_batch where entered_date < ? and quantity > 0";
+        return selectBySql(sql, date);
     }
 }

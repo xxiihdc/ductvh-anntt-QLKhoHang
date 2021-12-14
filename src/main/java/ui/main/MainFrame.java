@@ -131,7 +131,6 @@ public class MainFrame extends javax.swing.JFrame {
 
         jToolBar1.setRollover(true);
 
-        jButton1.setBackground(new java.awt.Color(204, 204, 204));
         jButton1.setFont(new java.awt.Font("Tahoma", 1, 18)); // NOI18N
         jButton1.setIcon(new javax.swing.ImageIcon(getClass().getResource("/icon/geography_25px.png"))); // NOI18N
         jButton1.setText("Hệ Thống");
@@ -146,7 +145,6 @@ public class MainFrame extends javax.swing.JFrame {
         });
         jToolBar1.add(jButton1);
 
-        jButton2.setBackground(new java.awt.Color(204, 204, 204));
         jButton2.setFont(new java.awt.Font("Tahoma", 1, 18)); // NOI18N
         jButton2.setIcon(new javax.swing.ImageIcon(getClass().getResource("/icon/settings_25px.png"))); // NOI18N
         jButton2.setText("Chức Năng");
@@ -161,7 +159,6 @@ public class MainFrame extends javax.swing.JFrame {
         });
         jToolBar1.add(jButton2);
 
-        jButton3.setBackground(new java.awt.Color(204, 204, 204));
         jButton3.setFont(new java.awt.Font("Tahoma", 1, 18)); // NOI18N
         jButton3.setIcon(new javax.swing.ImageIcon(getClass().getResource("/icon/home_25px.png"))); // NOI18N
         jButton3.setText("Trợ Giúp");
@@ -362,7 +359,7 @@ public class MainFrame extends javax.swing.JFrame {
                     break;
                 case "setting":
                     if (Auth.isManager()) {
-                        new SettingDialog(null, true).setVisible(true);
+                        new SettingDialog(MainFrame.this, true).setVisible(true);
                     } else {
                         MsgBox.alert(null, "Bạn không có quyền thiết lập");
                     }

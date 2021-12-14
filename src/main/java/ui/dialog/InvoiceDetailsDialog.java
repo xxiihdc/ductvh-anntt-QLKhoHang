@@ -355,7 +355,7 @@ public class InvoiceDetailsDialog extends javax.swing.JDialog {
                 .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 378, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(jButton2, javax.swing.GroupLayout.PREFERRED_SIZE, 30, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(jButton2)
                     .addComponent(jButton8))
                 .addContainerGap())
         );
@@ -418,7 +418,6 @@ public class InvoiceDetailsDialog extends javax.swing.JDialog {
                 .addGap(26, 26, 26))
         );
 
-        tblDetails.setBackground(new java.awt.Color(255, 204, 153));
         tblDetails.setFont(new java.awt.Font("Tahoma", 0, 18)); // NOI18N
         tblDetails.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
@@ -678,7 +677,7 @@ public class InvoiceDetailsDialog extends javax.swing.JDialog {
                 maHD = dao.getLastID();
                 add = false;
                 update = cbxStatus.getSelectedIndex();
-              //  MsgBox.alert(null, "Thông tin hóa đơn đã được lưu");
+                //  MsgBox.alert(null, "Thông tin hóa đơn đã được lưu");
             }
             String sprice = txtSoTienTT.getText();
             if (sprice.length() == 0) {
@@ -719,10 +718,13 @@ public class InvoiceDetailsDialog extends javax.swing.JDialog {
 
     private void jButton8ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton8ActionPerformed
         // TODO add your handling code here:
-        DefaultListModel modelList = (DefaultListModel) jList1.getModel();
-        new ProductDialog(null, true).setVisible(true);
-        ProductDAO dao = new ProductDAO();
-        fillList();
+        if (add) {
+            DefaultListModel modelList = (DefaultListModel) jList1.getModel();
+            new ProductDialog(null, true).setVisible(true);
+            ProductDAO dao = new ProductDAO();
+            fillList();
+        }
+
     }//GEN-LAST:event_jButton8ActionPerformed
 
     private void txtSoTienTTKeyTyped(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_txtSoTienTTKeyTyped
@@ -758,6 +760,7 @@ public class InvoiceDetailsDialog extends javax.swing.JDialog {
         model.removeRow(tblDetails.getSelectedRow());
         model.fireTableDataChanged();
         fillDetails();
+        fillDetails2();
 
     }//GEN-LAST:event_jButton3ActionPerformed
 
@@ -1165,6 +1168,7 @@ public class InvoiceDetailsDialog extends javax.swing.JDialog {
         cbxStatus.setEnabled(true);
         cbxSupplier.setEnabled(true);
         cbxThanhToan.setEnabled(true);
+        cbxStatus.setSelectedIndex(0);
         txtID.setText("(Phiếu mới)");
         txtStaff.setText(Auth.user.getId());
         txtDate.setText(Xdate.toString(new Date(), "dd-MM-yyyy"));
@@ -1196,7 +1200,7 @@ public class InvoiceDetailsDialog extends javax.swing.JDialog {
             time = time.replaceAll(":", "");
             String path = "src\\main\\resources\\docs";
             String title = "hd" + time + ".docx";
-            FileOutputStream o = new FileOutputStream(new File(path,title));
+            FileOutputStream o = new FileOutputStream(new File(path, title));
 
             XWPFParagraph paragraph = document.createParagraph();
             paragraph.setAlignment(ParagraphAlignment.CENTER);
@@ -1290,7 +1294,7 @@ public class InvoiceDetailsDialog extends javax.swing.JDialog {
             paragraph3.setAlignment(ParagraphAlignment.RIGHT);
             document.write(o);
             o.close();
-            File file = new File(path,title);
+            File file = new File(path, title);
             Desktop.getDesktop().open(file);
         } catch (Exception e) {
             e.printStackTrace();
@@ -1348,7 +1352,7 @@ public class InvoiceDetailsDialog extends javax.swing.JDialog {
     }
 
     private void setStatus() {
-        if(!Auth.isManager()){
+        if (!Auth.isManager()) {
             cbxStatus.setSelectedIndex(0);
             cbxStatus.setEnabled(false);
         }

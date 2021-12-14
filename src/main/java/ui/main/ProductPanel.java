@@ -66,7 +66,6 @@ public class ProductPanel extends javax.swing.JPanel {
 
         setBorder(javax.swing.BorderFactory.createTitledBorder(null, "Quản Lý Sản Phẩm", javax.swing.border.TitledBorder.CENTER, javax.swing.border.TitledBorder.DEFAULT_POSITION, new java.awt.Font("Segoe UI", 1, 18))); // NOI18N
 
-        tblProduct.setBackground(new java.awt.Color(255, 204, 153));
         tblProduct.setFont(new java.awt.Font("Tahoma", 0, 18)); // NOI18N
         tblProduct.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {

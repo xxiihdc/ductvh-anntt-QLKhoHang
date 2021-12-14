@@ -5,6 +5,8 @@
  */
 package ui.dialog;
 
+import com.formdev.flatlaf.intellijthemes.FlatArcOrangeIJTheme;
+import com.formdev.flatlaf.intellijthemes.FlatNordIJTheme;
 import dao.StaffDAO;
 import dao.UserDAO;
 import entity.Staff;
@@ -12,14 +14,24 @@ import entity.User;
 import java.awt.Color;
 import java.awt.event.KeyEvent;
 import java.io.BufferedReader;
+import java.io.FileNotFoundException;
 import java.io.FileReader;
+import java.io.IOException;
+import java.util.Locale;
 import java.util.Properties;
+import java.util.ResourceBundle;
+import java.util.logging.Level;
+import java.util.logging.Logger;
+import javax.swing.SwingUtilities;
+import javax.swing.UIManager;
+import javax.swing.UnsupportedLookAndFeelException;
 import ui.main.AdminDashboard;
 import ui.main.MainFrame;
 import utils.Auth;
 import utils.MD5;
 import utils.MsgBox;
 import utils.SaveLogin;
+import utils.XLanguage;
 
 /**
  *
@@ -30,9 +42,12 @@ public class LoginJDialog extends javax.swing.JDialog {
     /**
      * Creates new form LoginJDialog
      */
+    String bundlePath;
+    ResourceBundle resourceBundle;
+    Properties properties = new Properties();
+
     public LoginJDialog(java.awt.Frame parent, boolean modal) {
         super(parent, modal);
-
         initComponents();
         init();
     }
@@ -42,7 +57,8 @@ public class LoginJDialog extends javax.swing.JDialog {
         txtPassword.setText("123");
         setTitle("Đăng nhập hệ thống");
         txtUserName.setForeground(new Color(58, 65, 65));
-
+        setLanguage();
+        setTheme();
     }
 
     /**
@@ -55,9 +71,9 @@ public class LoginJDialog extends javax.swing.JDialog {
     private void initComponents() {
 
         pnlForm = new javax.swing.JPanel();
-        jLabel1 = new javax.swing.JLabel();
+        lblUser = new javax.swing.JLabel();
         txtUserName = new javax.swing.JTextField();
-        jLabel2 = new javax.swing.JLabel();
+        lblPw = new javax.swing.JLabel();
         txtPassword = new javax.swing.JPasswordField();
         btnLogin = new javax.swing.JButton();
         btnExit = new javax.swing.JButton();
@@ -67,8 +83,8 @@ public class LoginJDialog extends javax.swing.JDialog {
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DO_NOTHING_ON_CLOSE);
 
-        jLabel1.setFont(new java.awt.Font("Segoe UI", 1, 18)); // NOI18N
-        jLabel1.setText("Tên đăng nhập:");
+        lblUser.setFont(new java.awt.Font("Segoe UI", 1, 18)); // NOI18N
+        lblUser.setText("Tên đăng nhập:");
 
         txtUserName.setText("Tên đăng nhập");
         txtUserName.addFocusListener(new java.awt.event.FocusAdapter() {
@@ -85,8 +101,8 @@ public class LoginJDialog extends javax.swing.JDialog {
             }
         });
 
-        jLabel2.setFont(new java.awt.Font("Segoe UI", 1, 18)); // NOI18N
-        jLabel2.setText("Mật khẩu:");
+        lblPw.setFont(new java.awt.Font("Segoe UI", 1, 18)); // NOI18N
+        lblPw.setText("Mật khẩu:");
 
         txtPassword.setText("123456");
         txtPassword.addActionListener(new java.awt.event.ActionListener() {
@@ -148,7 +164,7 @@ public class LoginJDialog extends javax.swing.JDialog {
                     .addGroup(pnlFormLayout.createSequentialGroup()
                         .addGap(40, 40, 40)
                         .addGroup(pnlFormLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(jLabel2)
+                            .addComponent(lblPw)
                             .addGroup(pnlFormLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
                                 .addGroup(pnlFormLayout.createSequentialGroup()
                                     .addComponent(cbSaveLogin, javax.swing.GroupLayout.PREFERRED_SIZE, 206, javax.swing.GroupLayout.PREFERRED_SIZE)
@@ -162,7 +178,7 @@ public class LoginJDialog extends javax.swing.JDialog {
                     .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, pnlFormLayout.createSequentialGroup()
                         .addContainerGap()
                         .addGroup(pnlFormLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(jLabel1)
+                            .addComponent(lblUser)
                             .addComponent(txtUserName, javax.swing.GroupLayout.PREFERRED_SIZE, 335, javax.swing.GroupLayout.PREFERRED_SIZE))))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(jLabel3, javax.swing.GroupLayout.PREFERRED_SIZE, 263, javax.swing.GroupLayout.PREFERRED_SIZE)
@@ -174,11 +190,11 @@ public class LoginJDialog extends javax.swing.JDialog {
                 .addGroup(pnlFormLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(pnlFormLayout.createSequentialGroup()
                         .addGap(39, 39, 39)
-                        .addComponent(jLabel1)
+                        .addComponent(lblUser)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                         .addComponent(txtUserName, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addGap(24, 24, 24)
-                        .addComponent(jLabel2)
+                        .addComponent(lblPw)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                         .addComponent(txtPassword, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addGap(18, 18, 18)
@@ -218,7 +234,8 @@ public class LoginJDialog extends javax.swing.JDialog {
 
     private void txtUserNameFocusGained(java.awt.event.FocusEvent evt) {//GEN-FIRST:event_txtUserNameFocusGained
         // TODO add your handling code here:
-        if (txtUserName.getText().equalsIgnoreCase("Tên đăng nhập")) {
+        if (txtUserName.getText().equalsIgnoreCase("Tên đăng nhập")
+                || txtUserName.getText().equalsIgnoreCase("User name")) {
             txtUserName.setText("");
             txtUserName.setForeground(Color.BLACK);
         }
@@ -263,8 +280,8 @@ public class LoginJDialog extends javax.swing.JDialog {
                 if (pw.equalsIgnoreCase(MD5.getMD5(pass))) {
                     this.dispose();
                     new AdminDashboard().setVisible(true);
-                }else{
-                    MsgBox.alert(null, "Mật khẩu admin không đúng");
+                } else {//sai mk admin
+                    MsgBox.alert(null, resourceBundle.getString("msg1"));
                 }
             } catch (Exception ex) {
             }
@@ -275,7 +292,7 @@ public class LoginJDialog extends javax.swing.JDialog {
      * @param args the command line arguments
      */
     public static void main(String args[]) {
-        
+
         /* Set the Nimbus look and feel */
         //<editor-fold defaultstate="collapsed" desc=" Look and feel setting code (optional) ">
         /* If Nimbus (introduced in Java SE 6) is not available, stay with the default look and feel.
@@ -309,8 +326,10 @@ public class LoginJDialog extends javax.swing.JDialog {
                         System.exit(0);
                     }
                 });
-               if(!dialog.openLogin()) dialog.setVisible(true);;
-                
+                if (!dialog.openLogin()) {
+                    dialog.setVisible(true);
+                };
+
             }
         });
     }
@@ -319,10 +338,10 @@ public class LoginJDialog extends javax.swing.JDialog {
     private javax.swing.JButton btnExit;
     private javax.swing.JButton btnLogin;
     private javax.swing.JCheckBox cbSaveLogin;
-    private javax.swing.JLabel jLabel1;
-    private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel3;
     private javax.swing.JLabel lblAdmin;
+    private javax.swing.JLabel lblPw;
+    private javax.swing.JLabel lblUser;
     private javax.swing.JPanel pnlForm;
     private javax.swing.JPasswordField txtPassword;
     private javax.swing.JTextField txtUserName;
@@ -334,17 +353,17 @@ public class LoginJDialog extends javax.swing.JDialog {
         String pass = new String(txtPassword.getPassword());
         UserDAO udao = new UserDAO();
         User u = udao.selectByID(txtUserName.getText());
-        if (u == null) {
-            MsgBox.alert(null, "Tên đăng nhập không đúng");
+        if (u == null) {//sai ten dn
+            MsgBox.alert(btnExit, XLanguage.toUtf(resourceBundle.getString("msg2")));
             return;
         }
-        if (!u.getPassword().equalsIgnoreCase(pass)) {
-            MsgBox.alert(null, "Mật khẩu không đúng");
+        if (!u.getPassword().equalsIgnoreCase(pass)) {//sai mk
+            MsgBox.alert(null, resourceBundle.getString("msg3"));
             return;
         }
         Staff s = dao.selectByID(u.getId());
-        if(!s.isStatus()) {
-            MsgBox.alert(null, "Bạn đã nghĩ việc");
+        if (!s.isStatus()) {//nghi viec
+            MsgBox.alert(null, resourceBundle.getString("msg4"));
             return;
         }
         this.dispose();
@@ -359,7 +378,7 @@ public class LoginJDialog extends javax.swing.JDialog {
         lblAdmin.setEnabled(false);
     }
 
-    private boolean openLogin() {
+    public boolean openLogin() {
         try {
             FileReader fr = new FileReader("src\\login.txt");
             BufferedReader br = new BufferedReader(fr);
@@ -382,5 +401,51 @@ public class LoginJDialog extends javax.swing.JDialog {
         } catch (Exception e) {
         }
         return false;
+    }
+
+    private void setLanguage() {
+        try {
+            FileReader reader = new FileReader("src\\main\\resources\\config\\config.properties");
+            properties.load(reader);
+            String lang = properties.getProperty("lang");
+            reader.close();
+            if (lang.equalsIgnoreCase("vi")) {
+                bundlePath = "config.login-vi";
+                resourceBundle = ResourceBundle.getBundle(bundlePath, new Locale("vi-VN"));
+                //MsgBox.alert(btnExit, XLanguage.toUtf(resourceBundle.getString("msg2")));
+            } else {
+                bundlePath = "config.login-en";
+                XLanguage.language = "en";
+                resourceBundle = ResourceBundle.getBundle(bundlePath, new Locale("en-EN"));
+                lblUser.setText(XLanguage.toUtf(resourceBundle.getString("username")));
+                txtUserName.setText(XLanguage.toUtf(resourceBundle.getString("usernameText")));
+                lblPw.setText(XLanguage.toUtf(resourceBundle.getString("pw")));
+                cbSaveLogin.setText(XLanguage.toUtf(resourceBundle.getString("saveLogin")));
+                lblAdmin.setText(XLanguage.toUtf(resourceBundle.getString("loginForAdmin")));
+                btnLogin.setText(XLanguage.toUtf(resourceBundle.getString("btnLogin")));
+                btnExit.setText(XLanguage.toUtf(resourceBundle.getString("btnExit")));
+                this.setTitle(XLanguage.toUtf(resourceBundle.getString("title")));
+            }
+
+        } catch (Exception ex) {
+            ex.printStackTrace();
+        }
+    }
+
+    private void setTheme() {
+        try {
+            String theme = properties.getProperty("theme");
+            if (theme.equalsIgnoreCase("dark")) {
+                UIManager.setLookAndFeel(new FlatNordIJTheme());
+                SwingUtilities.updateComponentTreeUI(this);
+                this.pack();
+            } else {
+                UIManager.setLookAndFeel(new FlatArcOrangeIJTheme());
+                SwingUtilities.updateComponentTreeUI(this);
+                this.pack();
+            }
+        } catch (Exception ex) {
+            ex.printStackTrace();
+        }
     }
 }

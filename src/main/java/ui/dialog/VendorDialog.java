@@ -84,7 +84,6 @@ public class VendorDialog extends javax.swing.JDialog {
             }
         });
 
-        jPanel1.setBackground(new java.awt.Color(255, 204, 153));
         jPanel1.setBorder(new javax.swing.border.SoftBevelBorder(javax.swing.border.BevelBorder.RAISED));
         jPanel1.setFont(new java.awt.Font("Tahoma", 0, 14)); // NOI18N
 

@@ -123,12 +123,7 @@ public class ProductBatchDialog extends javax.swing.JDialog {
         int rows []= tblProduct.getSelectedRows();
         for(int i = 0;i<rows.length;i++){
             int quantity = Integer.parseInt(tblProduct.getValueAt(rows[i], 3)+"");
-            int id = Integer.parseInt(tblProduct.getValueAt(rows[i], 0)+"");
-          //  ProductBatch b = new ProductBatch();
-          //  b.setId(id);
-           // b.setQuantity(quantity);
-           // dao.update(b);
-            
+            int id = Integer.parseInt(tblProduct.getValueAt(rows[i], 0)+"");          
             ShelvesDetails s = new ShelvesDetails();
             s.setShelvesID(shelves);
             int batchID = Integer.parseInt(tblProduct.getValueAt(rows[i], 0)+"");
@@ -148,7 +143,6 @@ public class ProductBatchDialog extends javax.swing.JDialog {
             }
         }
         fillTable();
-        
     }//GEN-LAST:event_jButton1ActionPerformed
 
 

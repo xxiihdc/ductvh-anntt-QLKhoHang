@@ -56,7 +56,6 @@ public class CategoryStaff extends javax.swing.JPanel {
 
         setBorder(javax.swing.BorderFactory.createTitledBorder(null, "Nhân Viên", javax.swing.border.TitledBorder.DEFAULT_JUSTIFICATION, javax.swing.border.TitledBorder.DEFAULT_POSITION, new java.awt.Font("Tahoma", 0, 18))); // NOI18N
 
-        tblStaff.setBackground(new java.awt.Color(255, 204, 153));
         tblStaff.setFont(new java.awt.Font("Tahoma", 0, 18)); // NOI18N
         tblStaff.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
@@ -252,8 +251,7 @@ public class CategoryStaff extends javax.swing.JPanel {
 
     private void jTextField1KeyReleased(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_jTextField1KeyReleased
         // TODO add your handling code here:
-        String text = jTextField1.getText();
-        System.out.println(text);
+        fillTable();
     }//GEN-LAST:event_jTextField1KeyReleased
 
     private void jButton8ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton8ActionPerformed

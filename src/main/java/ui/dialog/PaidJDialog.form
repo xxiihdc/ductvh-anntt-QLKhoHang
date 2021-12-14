@@ -86,6 +86,9 @@
   <SubComponents>
     <Component class="javax.swing.JButton" name="jButton1">
       <Properties>
+        <Property name="icon" type="javax.swing.Icon" editor="org.netbeans.modules.form.editors2.IconEditor">
+          <Image iconType="3" name="/icon/Done_30px.png"/>
+        </Property>
         <Property name="text" type="java.lang.String" value="X&#xe1;c nh&#xe2;n"/>
       </Properties>
       <Events>
@@ -94,6 +97,12 @@
     </Component>
     <Component class="javax.swing.JButton" name="jButton2">
       <Properties>
+        <Property name="background" type="java.awt.Color" editor="org.netbeans.beaninfo.editors.ColorEditor">
+          <Color blue="0" green="0" red="ff" type="rgb"/>
+        </Property>
+        <Property name="icon" type="javax.swing.Icon" editor="org.netbeans.modules.form.editors2.IconEditor">
+          <Image iconType="3" name="/icon/delete_30px.png"/>
+        </Property>
         <Property name="text" type="java.lang.String" value="Tho&#xe1;t"/>
       </Properties>
       <Events>

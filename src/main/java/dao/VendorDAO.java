@@ -43,7 +43,7 @@ public class VendorDAO extends WarehouseDAO<Vendor, String> {
     @Override
     public Vendor selectByID(String id) {
         List<Vendor> lst = selectBySql(SELECT_BY_ID, id);
-        if(lst.size()!=0){
+        if(!lst.isEmpty()){
             return lst.get(0);
         }else return null;
     }
@@ -59,7 +59,6 @@ public class VendorDAO extends WarehouseDAO<Vendor, String> {
                 s.setId(rs.getString(1));
                 s.setOrigin(rs.getString(3));
                 lst.add(s);
-
             }
             rs.getStatement().getConnection().close();
             return lst;

@@ -60,7 +60,6 @@ public class CategoryProductGroup extends javax.swing.JPanel {
 
         setBorder(javax.swing.BorderFactory.createTitledBorder(null, "Nhóm Sản Phẩm", javax.swing.border.TitledBorder.DEFAULT_JUSTIFICATION, javax.swing.border.TitledBorder.DEFAULT_POSITION, new java.awt.Font("Tahoma", 0, 18))); // NOI18N
 
-        tblProductGroup.setBackground(new java.awt.Color(255, 204, 153));
         tblProductGroup.setFont(new java.awt.Font("Tahoma", 0, 18)); // NOI18N
         tblProductGroup.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {

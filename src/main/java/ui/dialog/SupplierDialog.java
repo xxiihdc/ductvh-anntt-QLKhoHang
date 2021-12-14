@@ -84,7 +84,6 @@ public class SupplierDialog extends javax.swing.JDialog {
             }
         });
 
-        jPanel1.setBackground(new java.awt.Color(255, 204, 153));
         jPanel1.setBorder(new javax.swing.border.SoftBevelBorder(javax.swing.border.BevelBorder.RAISED));
 
         jLabel2.setFont(new java.awt.Font("Tahoma", 1, 18)); // NOI18N

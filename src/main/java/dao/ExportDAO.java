@@ -79,4 +79,9 @@ public class ExportDAO extends WarehouseDAO<Export, String> {
         return 1;
     }
 
+    public List<Export> selectByDate(String d1s, String d2s) {
+        String sql = "select * from export where date between ? and ?";
+        return selectBySql(sql, d1s,d2s);
+    }
+
 }

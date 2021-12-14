@@ -54,7 +54,6 @@ public class CategoryProductUnit extends javax.swing.JPanel {
 
         setBorder(javax.swing.BorderFactory.createTitledBorder(null, "Đơn Vị Tính", javax.swing.border.TitledBorder.DEFAULT_JUSTIFICATION, javax.swing.border.TitledBorder.DEFAULT_POSITION, new java.awt.Font("Tahoma", 0, 18))); // NOI18N
 
-        tblProductUnit.setBackground(new java.awt.Color(255, 204, 153));
         tblProductUnit.setFont(new java.awt.Font("Tahoma", 0, 18)); // NOI18N
         tblProductUnit.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {

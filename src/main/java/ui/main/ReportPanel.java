@@ -513,6 +513,7 @@ public class ReportPanel extends javax.swing.JPanel {
                 List<String[]> data = dao.getTonKho();
                 String[] head = {"Sản Phẩm", "Số lượng"};
                 model.setColumnIdentifiers(head);
+                model.setRowCount(0);
                 for (String[] s : data) {
                     Object[] row = {s[0], s[1]};
                     model.addRow(row);

@@ -58,7 +58,6 @@ public class CategoryProductType extends javax.swing.JPanel {
 
         setBorder(javax.swing.BorderFactory.createTitledBorder(null, "Loại Sản Phẩm", javax.swing.border.TitledBorder.DEFAULT_JUSTIFICATION, javax.swing.border.TitledBorder.DEFAULT_POSITION, new java.awt.Font("Tahoma", 0, 18))); // NOI18N
 
-        tblProductType.setBackground(new java.awt.Color(255, 204, 153));
         tblProductType.setFont(new java.awt.Font("Tahoma", 0, 18)); // NOI18N
         tblProductType.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {

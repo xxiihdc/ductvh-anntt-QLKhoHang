@@ -34,7 +34,6 @@ public class ToolbarPanel1 extends javax.swing.JPanel {
         btnSetting = new javax.swing.JButton();
         jSeparator3 = new javax.swing.JToolBar.Separator();
 
-        jToolBar1.setBackground(new java.awt.Color(255, 51, 204));
         jToolBar1.setRollover(true);
 
         btnLogOut.setFont(new java.awt.Font("Segoe UI", 1, 16)); // NOI18N

@@ -15,13 +15,14 @@ public class PaidJDialog extends javax.swing.JDialog {
     /**
      * Creates new form PaidJDialog
      */
-    public double paid =0,fprice;
-    public PaidJDialog(java.awt.Frame parent, boolean modal,double fprice) {
+    public double paid = 0, fprice;
+
+    public PaidJDialog(java.awt.Frame parent, boolean modal, double fprice) {
         super(parent, modal);
         initComponents();
         setLocationRelativeTo(null);
         jTextField1.setText(Currency.getCurrency(fprice));
-        this.fprice= fprice;
+        this.fprice = fprice;
     }
 
     /**
@@ -44,6 +45,7 @@ public class PaidJDialog extends javax.swing.JDialog {
         setDefaultCloseOperation(javax.swing.WindowConstants.DO_NOTHING_ON_CLOSE);
         setTitle("Thanh Toán Nợ");
 
+        jButton1.setIcon(new javax.swing.ImageIcon(getClass().getResource("/icon/Done_30px.png"))); // NOI18N
         jButton1.setText("Xác nhân");
         jButton1.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -51,6 +53,8 @@ public class PaidJDialog extends javax.swing.JDialog {
             }
         });
 
+        jButton2.setBackground(new java.awt.Color(255, 0, 0));
+        jButton2.setIcon(new javax.swing.ImageIcon(getClass().getResource("/icon/delete_30px.png"))); // NOI18N
         jButton2.setText("Thoát");
         jButton2.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -144,28 +148,30 @@ public class PaidJDialog extends javax.swing.JDialog {
 
     private void jTextField2KeyReleased(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_jTextField2KeyReleased
         // TODO add your handling code here:
-               String text;
+        String text;
         if (evt.getKeyCode() == 8) {
             text = jTextField2.getText();
             if (text.length() == 0) {
                 text = "0";
                 jTextField2.setText(text);
+                jTextField1.setText(Currency.getCurrency(fprice));
+              //  return;
             }
             double tt = Double.parseDouble(text);
-            double soTienTT = Currency.getDouble(jTextField1.getText());
+            double soTienTT = fprice;
             if (tt > soTienTT) {
-                jTextField2.setText(Currency.getString(fprice));
+                jTextField2.setText(Currency.getDouble(fprice + "") + "");
                 jTextField1.setText(Currency.getCurrency(0));
                 return;
             }
             jTextField1.setText(Currency.getCurrency(soTienTT - tt));
         }
-        
+
     }//GEN-LAST:event_jTextField2KeyReleased
 
     private void jTextField2KeyTyped(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_jTextField2KeyTyped
         // TODO add your handling code here:
-                String text;
+        String text;
         char k = evt.getKeyChar();
         if (!Character.isDigit(k)) {
             evt.consume();
@@ -174,9 +180,9 @@ public class PaidJDialog extends javax.swing.JDialog {
         text = jTextField2.getText() + evt.getKeyChar();
         double tt = Double.parseDouble(text);
         if (tt > fprice) {
-            jTextField2.setText(fprice+"");
-            evt.consume();
+            jTextField2.setText(Currency.getString(Currency.getCurrency(fprice)));
             jTextField1.setText(Currency.getCurrency(0));
+            evt.consume();
             return;
         }
         jTextField1.setText(Currency.getCurrency(fprice - tt));
@@ -186,7 +192,7 @@ public class PaidJDialog extends javax.swing.JDialog {
         // TODO add your handling code here:
         jTextField1.setText(Currency.getCurrency(0));
         jTextField2.setText(Currency.getString(fprice));
-        
+
     }//GEN-LAST:event_jButton3ActionPerformed
 
     /**

@@ -428,6 +428,7 @@ public class ProductDialog extends javax.swing.JDialog {
         if (valid()) {
             if (dao.hasID(txtID.getText())) {
                 update();
+                this.dispose();
             } else {
                 insert();
                 this.dispose();

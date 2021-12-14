@@ -11,9 +11,11 @@ import java.io.IOException;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 import java.util.Properties;
 import utils.XJdbc;
+import utils.Xdate;
 
 /**
  *
@@ -49,6 +51,7 @@ public class CongViecDAO {
             reader = new FileReader("src\\main\\resources\\config\\soLuong.properties");
             Properties properties = new Properties();
             properties.load(reader);
+            reader.close();
             String soLuong = properties.getProperty("number");
             sql = "select _name,sum(quantity) as 'sum' from product_batch "
                     + "inner join product on product.id = product_batch.product_id "
@@ -66,6 +69,19 @@ public class CongViecDAO {
                 lst.add(c);
             }
              rs.getStatement().getConnection().close();
+             reader = new FileReader("src\\main\\resources\\config\\date.properties");
+             properties.load(reader);
+             String date = properties.getProperty("date");
+             int d = 0 - Integer.parseInt(date);
+             Date ngayHetHan = Xdate.addDays(new Date(),d);
+             reader.close();
+             String sql2 = "select count(*) from product_batch where entered_date < ? and quantity > 0";
+             String spHetHan = XJdbc.value(sql2,ngayHetHan)+"";
+             CongViec cv2 = new CongViec();
+             cv2.setName("hetHan");
+             cv2.setTitle("Bạn có: " + spHetHan + " sản phẩm sắp hết hạn" );
+             cv2.setValue(date);
+             lst.add(cv2);
             return lst;
         } catch (FileNotFoundException ex) {
             throw new RuntimeException(ex);
