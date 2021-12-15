@@ -190,6 +190,7 @@ public class MainShelves extends javax.swing.JPanel {
                     Shelves s = dao.selectByID(i + "");
                     btn[r][c].setToolTipText(s.getNote());
                     btn[r][c].setBackground(s.getC());
+                    btn[r][c].setForeground(Color.BLACK);
                     btn[r][c].setEnabled(s.isStatus());
                     btn[r][c].addMouseListener(ml);
                 }
@@ -304,7 +305,7 @@ public class MainShelves extends javax.swing.JPanel {
                 .addContainerGap()
                 .addComponent(jLabel7)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                .addComponent(jScrollPane3, javax.swing.GroupLayout.DEFAULT_SIZE, 260, Short.MAX_VALUE))
+                .addComponent(jScrollPane3, javax.swing.GroupLayout.DEFAULT_SIZE, 272, Short.MAX_VALUE))
         );
 
         gBtnRefresh.setIcon(new javax.swing.ImageIcon(getClass().getResource("/icon/refresh_30px.png"))); // NOI18N
@@ -423,7 +424,7 @@ public class MainShelves extends javax.swing.JPanel {
             .addGroup(jPanel3Layout.createSequentialGroup()
                 .addGap(344, 344, 344)
                 .addComponent(jLabel6)
-                .addContainerGap(277, Short.MAX_VALUE))
+                .addContainerGap(220, Short.MAX_VALUE))
             .addComponent(jScrollPane2)
         );
         jPanel3Layout.setVerticalGroup(
@@ -432,7 +433,7 @@ public class MainShelves extends javax.swing.JPanel {
                 .addContainerGap()
                 .addComponent(jLabel6)
                 .addGap(18, 18, 18)
-                .addComponent(jScrollPane2, javax.swing.GroupLayout.DEFAULT_SIZE, 587, Short.MAX_VALUE))
+                .addComponent(jScrollPane2, javax.swing.GroupLayout.DEFAULT_SIZE, 599, Short.MAX_VALUE))
         );
 
         mainPanel.add(jPanel3, "card3");
@@ -445,7 +446,7 @@ public class MainShelves extends javax.swing.JPanel {
                 .addContainerGap()
                 .addComponent(jPanel2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(18, 18, 18)
-                .addComponent(mainPanel, javax.swing.GroupLayout.DEFAULT_SIZE, 822, Short.MAX_VALUE))
+                .addComponent(mainPanel, javax.swing.GroupLayout.DEFAULT_SIZE, 765, Short.MAX_VALUE))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)

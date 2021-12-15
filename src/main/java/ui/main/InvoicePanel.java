@@ -15,6 +15,7 @@ import javax.swing.DefaultComboBoxModel;
 import javax.swing.table.DefaultTableModel;
 import ui.dialog.InvoiceDetailsDialog;
 import utils.Currency;
+import utils.MsgBox;
 import utils.XLanguage;
 import utils.Xdate;
 
@@ -258,6 +259,11 @@ public class InvoicePanel extends javax.swing.JPanel {
         jButton9.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
         jButton9.setMargin(new java.awt.Insets(2, 20, 2, 0));
         jButton9.setVerticalTextPosition(javax.swing.SwingConstants.BOTTOM);
+        jButton9.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton9ActionPerformed(evt);
+            }
+        });
         jToolBar1.add(jButton9);
 
         btnSearch.setIcon(new javax.swing.ImageIcon(getClass().getResource("/icon/search_40px.png"))); // NOI18N
@@ -350,6 +356,11 @@ public class InvoicePanel extends javax.swing.JPanel {
         idd.setForm(i);
         idd.setVisible(true);
     }//GEN-LAST:event_jButton3ActionPerformed
+
+    private void jButton9ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton9ActionPerformed
+        // TODO add your handling code here:
+        MsgBox.alert(null, "Bạn không thể");
+    }//GEN-LAST:event_jButton9ActionPerformed
 
 
     // Variables declaration - do not modify//GEN-BEGIN:variables

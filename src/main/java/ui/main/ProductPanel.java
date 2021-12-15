@@ -12,6 +12,7 @@ import java.util.List;
 import javax.swing.ListSelectionModel;
 import javax.swing.table.DefaultTableModel;
 import ui.dialog.ProductDialog;
+import utils.Currency;
 
 /**
  *
@@ -69,16 +70,14 @@ public class ProductPanel extends javax.swing.JPanel {
         tblProduct.setFont(new java.awt.Font("Tahoma", 0, 18)); // NOI18N
         tblProduct.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
-                {null, null, null, null, null, null},
-                {null, null, null, null, null, null},
-                {null, null, null, null, null, null}
+
             },
             new String [] {
-                "Mã Sản Phẩm", "Tên Sản Phẩm", "Nhóm Sản Phẩm", "Loại Sản Phẩm", "Đơn Vị Tính", "Trạng Thái"
+                "Mã Sản Phẩm", "Tên Sản Phẩm", "Nhóm Sản Phẩm", "Loại Sản Phẩm", "Đơn Vị Tính", "Đơn Giá", "Trạng Thái"
             }
         ) {
             boolean[] canEdit = new boolean [] {
-                false, false, false, false, false, false
+                false, false, false, false, false, false, false
             };
 
             public boolean isCellEditable(int rowIndex, int columnIndex) {
@@ -425,6 +424,7 @@ public class ProductPanel extends javax.swing.JPanel {
         for (Product s : lst) {
             Object[] row = new Object[]{
                 s.getId(), s.getName(), s.getGroupName(), s.getProductTypeName(), s.getProductUnitID(),
+                Currency.getCurrency(s.getPrice()),
                 s.isStatus() ? "Đang KD" : "Ngừng KD"
             };
             model.addRow(row);
@@ -439,6 +439,7 @@ public class ProductPanel extends javax.swing.JPanel {
         for (Product s : lst) {
             Object[] row = new Object[]{
                 s.getId(), s.getName(), s.getGroupName(), s.getProductTypeName(), s.getProductUnitID(),
+                Currency.getCurrency(s.getPrice()),
                 s.isStatus() ? "Đang KD" : "Ngừng KD"
             };
             model.addRow(row);

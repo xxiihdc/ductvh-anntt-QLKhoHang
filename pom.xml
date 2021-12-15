@@ -91,7 +91,6 @@
                             <classpathPrefix>libs/</classpathPrefix>
                             <mainClass>ui.dialog.LoginJDialog</mainClass>
                         </manifest>
-                         
                     </archive>
                 </configuration>
             </plugin>

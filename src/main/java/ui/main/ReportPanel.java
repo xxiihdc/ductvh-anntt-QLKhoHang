@@ -148,6 +148,11 @@ public class ReportPanel extends javax.swing.JPanel {
         jscrInvoice.setViewportBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(0, 0, 0)));
 
         cbxYear.setFont(new java.awt.Font("Tahoma", 0, 18)); // NOI18N
+        cbxYear.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                cbxYearActionPerformed(evt);
+            }
+        });
 
         jLabel1.setFont(new java.awt.Font("Tahoma", 0, 18)); // NOI18N
         jLabel1.setText("CHỌN NĂM:");
@@ -186,10 +191,20 @@ public class ReportPanel extends javax.swing.JPanel {
         jLabel2.setText("Năm:");
 
         cbxYearExport.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Item 1", "Item 2", "Item 3", "Item 4" }));
+        cbxYearExport.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                cbxYearExportActionPerformed(evt);
+            }
+        });
 
         jLabel3.setText("Tháng:");
 
         cbxMonth.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Item 1", "Item 2", "Item 3", "Item 4" }));
+        cbxMonth.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                cbxMonthActionPerformed(evt);
+            }
+        });
 
         javax.swing.GroupLayout jPanel2Layout = new javax.swing.GroupLayout(jPanel2);
         jPanel2.setLayout(jPanel2Layout);
@@ -318,6 +333,21 @@ public class ReportPanel extends javax.swing.JPanel {
         // TODO add your handling code here:
         fillTable();
     }//GEN-LAST:event_cbxReportActionPerformed
+
+    private void cbxYearActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_cbxYearActionPerformed
+        // TODO add your handling code here:
+        makeChartInvoice();
+    }//GEN-LAST:event_cbxYearActionPerformed
+
+    private void cbxYearExportActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_cbxYearExportActionPerformed
+        // TODO add your handling code here:
+        fillCbxMonth();
+    }//GEN-LAST:event_cbxYearExportActionPerformed
+
+    private void cbxMonthActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_cbxMonthActionPerformed
+        // TODO add your handling code here:
+        makeChartExport();
+    }//GEN-LAST:event_cbxMonthActionPerformed
     void selectMainPanel(JPanel main, Component p) {
         main.removeAll();
         main.add(p);

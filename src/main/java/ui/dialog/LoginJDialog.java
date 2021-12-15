@@ -267,16 +267,17 @@ public class LoginJDialog extends javax.swing.JDialog {
         String pass = new String(txtPassword.getPassword());
         if (id.equals("admin")) {
             try {
-                FileReader reader = new FileReader("src\\main\\resources\\config\\config.properties");
-                Properties properties = new Properties();
-                properties.load(reader);
+//                FileReader reader = new 
+//        FileReader("src\\main\\resources\\config\\config.properties");
+                //Properties properties = new Properties();
+                //properties.load(reader);
                 String pw = properties.getProperty("pass");
-                reader.close();
+               // reader.close();
                 if (pw.equalsIgnoreCase(MD5.getMD5(pass))) {
                     this.dispose();
                     new AdminDashboard().setVisible(true);
                 } else {//sai mk admin
-                    MsgBox.alert(null, resourceBundle.getString("msg1"));
+                    MsgBox.alert(null,XLanguage.toUtf(resourceBundle.getString("msg1")));
                 }
             } catch (Exception ex) {
             }
@@ -353,12 +354,12 @@ public class LoginJDialog extends javax.swing.JDialog {
             return;
         }
         if (!u.getPassword().equalsIgnoreCase(pass)) {//sai mk
-            MsgBox.alert(null, resourceBundle.getString("msg3"));
+            MsgBox.alert(null, XLanguage.toUtf(resourceBundle.getString("msg3")));
             return;
         }
         Staff s = dao.selectByID(u.getId());
         if (!s.isStatus()) {//nghi viec
-            MsgBox.alert(null, resourceBundle.getString("msg4"));
+            MsgBox.alert(null,XLanguage.toUtf(resourceBundle.getString("msg4")));
             return;
         }
         this.dispose();
