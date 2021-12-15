@@ -19,7 +19,10 @@ import java.awt.event.MouseListener;
 import java.io.FileReader;
 import java.util.Date;
 import java.util.List;
+import java.util.Locale;
 import java.util.Properties;
+import java.util.ResourceBundle;
+import javax.swing.DefaultComboBoxModel;
 import javax.swing.DefaultListModel;
 import javax.swing.JButton;
 import javax.swing.table.DefaultTableModel;
@@ -27,6 +30,7 @@ import ui.dialog.SettingDialog;
 import utils.Auth;
 import utils.Currency;
 import utils.MsgBox;
+import utils.XLanguage;
 import utils.Xdate;
 
 /**
@@ -38,10 +42,12 @@ public class MainShelves extends javax.swing.JPanel {
     int row, num, cols;
     ShelvesDAO dao;
     MainDAO mdao;
+    String bundlePath;
+    ResourceBundle resourceBundle;
 
     private boolean readConfig() {
         try {
-            FileReader reader = new FileReader("src\\main\\resources\\config\\shelves.properties");
+            FileReader reader = new FileReader("src\\main\\resources\\config\\config.properties");
             Properties properties = new Properties();
             properties.load(reader);
             String scols = properties.getProperty("cols");
@@ -104,6 +110,37 @@ public class MainShelves extends javax.swing.JPanel {
         }
     }
 
+    private void setLanguage() {
+        String lang = XLanguage.language;
+        if (lang.equalsIgnoreCase("vi")) {
+            bundlePath = "config.main-shelves-vi";
+            resourceBundle = ResourceBundle.getBundle(bundlePath, new Locale("vi-VN"));
+            return;
+        }
+        bundlePath = "config.main-shelves-en";
+        resourceBundle = ResourceBundle.getBundle(bundlePath, new Locale("en-EN"));
+         setBorder(javax.swing.BorderFactory.createTitledBorder
+        (null, "Shelves Management", javax.swing.border.TitledBorder.DEFAULT_JUSTIFICATION,
+                javax.swing.border.TitledBorder.DEFAULT_POSITION, 
+                new java.awt.Font("Segoe UI", 1, 18))); // NOI18N
+         jLabel5.setText(resourceBundle.getString("jLabel5"));
+         jLabel1.setText(resourceBundle.getString("jLabel1"));
+         jLabel2.setText(resourceBundle.getString("jLabel2"));
+         jLabel3.setText(resourceBundle.getString("jLabel3"));
+         jLabel4.setText(resourceBundle.getString("jLabel4"));
+         jLabel6.setText(resourceBundle.getString("jLabel6"));
+         jLabel7.setText(resourceBundle.getString("jLabel7"));
+         gBtnRefresh.setText(resourceBundle.getString("gBtnRefresh"));
+         DefaultComboBoxModel model = (DefaultComboBoxModel) jComboBox1.getModel();
+         model.removeAllElements();
+         model.addElement(resourceBundle.getString("view1"));
+         model.addElement(resourceBundle.getString("view2"));
+         String [] head = {"Product","Quantity","Unit Price","Supplier","Entered Date"};
+         DefaultTableModel model1 = (DefaultTableModel) tblProduct.getModel();
+         model1.setColumnIdentifiers(head);
+         
+    }
+
     /**
      * Creates new form MainShelves
      */
@@ -116,15 +153,16 @@ public class MainShelves extends javax.swing.JPanel {
 
     public MainShelves() {
         initComponents();
+        setLanguage();
         if (readConfig()) {
             init();
         } else {
-            if (Auth.isManager()) {
-                MsgBox.alert(null, "Vui lòng thiết lập kệ hàng");
+            if (Auth.isManager()) {//chua thiet lap
+                MsgBox.alert(null, XLanguage.toUtf(resourceBundle.getString("msg1")));
                 new SettingDialog(null, true).setVisible(true);
                 init();
-            } else {
-                MsgBox.alert(null, "Đăng nhập bằng tài khoản quản lý và thiết lập kệ hàng");
+            } else {//dang nhap = account quan ly
+                MsgBox.alert(null,  XLanguage.toUtf(resourceBundle.getString("msg2")));
             }
 
         }
@@ -156,10 +194,8 @@ public class MainShelves extends javax.swing.JPanel {
                     btn[r][c].addMouseListener(ml);
                 }
                 i++;
-
             }
         }
-
     }
 
     /**
@@ -355,10 +391,10 @@ public class MainShelves extends javax.swing.JPanel {
 
         mainPanel.add(jScrollPane1, "card2");
 
+        jLabel6.setFont(new java.awt.Font("Tahoma", 1, 18)); // NOI18N
         jLabel6.setText("DANH MỤC SẢN PHẨM");
 
         tblProduct.setAutoCreateRowSorter(true);
-        tblProduct.setBackground(new java.awt.Color(255, 204, 153));
         tblProduct.setFont(new java.awt.Font("Tahoma", 0, 18)); // NOI18N
         tblProduct.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
@@ -387,7 +423,7 @@ public class MainShelves extends javax.swing.JPanel {
             .addGroup(jPanel3Layout.createSequentialGroup()
                 .addGap(344, 344, 344)
                 .addComponent(jLabel6)
-                .addContainerGap(305, Short.MAX_VALUE))
+                .addContainerGap(277, Short.MAX_VALUE))
             .addComponent(jScrollPane2)
         );
         jPanel3Layout.setVerticalGroup(
@@ -396,8 +432,7 @@ public class MainShelves extends javax.swing.JPanel {
                 .addContainerGap()
                 .addComponent(jLabel6)
                 .addGap(18, 18, 18)
-                .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 567, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(26, Short.MAX_VALUE))
+                .addComponent(jScrollPane2, javax.swing.GroupLayout.DEFAULT_SIZE, 587, Short.MAX_VALUE))
         );
 
         mainPanel.add(jPanel3, "card3");
@@ -410,7 +445,7 @@ public class MainShelves extends javax.swing.JPanel {
                 .addContainerGap()
                 .addComponent(jPanel2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(18, 18, 18)
-                .addComponent(mainPanel, javax.swing.GroupLayout.DEFAULT_SIZE, 776, Short.MAX_VALUE))
+                .addComponent(mainPanel, javax.swing.GroupLayout.DEFAULT_SIZE, 822, Short.MAX_VALUE))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)

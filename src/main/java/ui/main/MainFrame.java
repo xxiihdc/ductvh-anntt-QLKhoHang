@@ -17,6 +17,8 @@ import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
 import java.text.SimpleDateFormat;
 import java.util.Date;
+import java.util.Locale;
+import java.util.ResourceBundle;
 import javax.swing.JButton;
 import javax.swing.JList;
 import javax.swing.JPanel;
@@ -27,6 +29,7 @@ import utils.Auth;
 import utils.MsgBox;
 import utils.SaveLogin;
 import utils.XImage;
+import utils.XLanguage;
 
 /**
  *
@@ -37,6 +40,9 @@ public class MainFrame extends javax.swing.JFrame {
     /**
      * Creates new form MainFrame
      */
+    String bundlePath;
+    ResourceBundle resourceBundle;
+
     public MainFrame() {
         initComponents();
         init();
@@ -47,9 +53,9 @@ public class MainFrame extends javax.swing.JFrame {
         setIconImage(XImage.getAppIcon());
         setTitle("WAREHOUSE MANAGEMENT SYSTEM");
         ToolbarPanel1 t1 = new ToolbarPanel1();
-        t1.btnSetting.addMouseListener(ml);
-        t1.btnUser.addMouseListener(ml);
-        t1.btnLogOut.addMouseListener(ml);
+        t1.gBtnSetting.addMouseListener(ml);
+        t1.gBtnUser.addMouseListener(ml);
+        t1.gBtnLogout.addMouseListener(ml);
         selectToolBarPanel(t1);
         // openLogin();
         txtStaff.setText(Auth.user.getName());
@@ -62,6 +68,7 @@ public class MainFrame extends javax.swing.JFrame {
 
             }
         }).start();
+        setLanguage();
     }
 
     /**
@@ -81,9 +88,9 @@ public class MainFrame extends javax.swing.JFrame {
         jLabel3 = new javax.swing.JLabel();
         toolbarPanel = new javax.swing.JPanel();
         jToolBar1 = new javax.swing.JToolBar();
-        jButton1 = new javax.swing.JButton();
-        jButton2 = new javax.swing.JButton();
-        jButton3 = new javax.swing.JButton();
+        btnSystem = new javax.swing.JButton();
+        btnFunction = new javax.swing.JButton();
+        btnHelp = new javax.swing.JButton();
         jPanel2 = new javax.swing.JPanel();
         jLabel4 = new javax.swing.JLabel();
         txtStaff = new javax.swing.JLabel();
@@ -131,47 +138,47 @@ public class MainFrame extends javax.swing.JFrame {
 
         jToolBar1.setRollover(true);
 
-        jButton1.setFont(new java.awt.Font("Tahoma", 1, 18)); // NOI18N
-        jButton1.setIcon(new javax.swing.ImageIcon(getClass().getResource("/icon/geography_25px.png"))); // NOI18N
-        jButton1.setText("Hệ Thống");
-        jButton1.setFocusable(false);
-        jButton1.setHorizontalTextPosition(javax.swing.SwingConstants.RIGHT);
-        jButton1.setMargin(new java.awt.Insets(5, 0, 5, 20));
-        jButton1.setVerticalTextPosition(javax.swing.SwingConstants.BOTTOM);
-        jButton1.addActionListener(new java.awt.event.ActionListener() {
+        btnSystem.setFont(new java.awt.Font("Tahoma", 1, 18)); // NOI18N
+        btnSystem.setIcon(new javax.swing.ImageIcon(getClass().getResource("/icon/geography_25px.png"))); // NOI18N
+        btnSystem.setText("Hệ Thống");
+        btnSystem.setFocusable(false);
+        btnSystem.setHorizontalTextPosition(javax.swing.SwingConstants.RIGHT);
+        btnSystem.setMargin(new java.awt.Insets(5, 0, 5, 20));
+        btnSystem.setVerticalTextPosition(javax.swing.SwingConstants.BOTTOM);
+        btnSystem.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jButton1ActionPerformed(evt);
+                btnSystemActionPerformed(evt);
             }
         });
-        jToolBar1.add(jButton1);
+        jToolBar1.add(btnSystem);
 
-        jButton2.setFont(new java.awt.Font("Tahoma", 1, 18)); // NOI18N
-        jButton2.setIcon(new javax.swing.ImageIcon(getClass().getResource("/icon/settings_25px.png"))); // NOI18N
-        jButton2.setText("Chức Năng");
-        jButton2.setFocusable(false);
-        jButton2.setHorizontalTextPosition(javax.swing.SwingConstants.RIGHT);
-        jButton2.setMargin(new java.awt.Insets(5, 20, 5, 20));
-        jButton2.setVerticalTextPosition(javax.swing.SwingConstants.BOTTOM);
-        jButton2.addActionListener(new java.awt.event.ActionListener() {
+        btnFunction.setFont(new java.awt.Font("Tahoma", 1, 18)); // NOI18N
+        btnFunction.setIcon(new javax.swing.ImageIcon(getClass().getResource("/icon/settings_25px.png"))); // NOI18N
+        btnFunction.setText("Chức Năng");
+        btnFunction.setFocusable(false);
+        btnFunction.setHorizontalTextPosition(javax.swing.SwingConstants.RIGHT);
+        btnFunction.setMargin(new java.awt.Insets(5, 20, 5, 20));
+        btnFunction.setVerticalTextPosition(javax.swing.SwingConstants.BOTTOM);
+        btnFunction.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jButton2ActionPerformed(evt);
+                btnFunctionActionPerformed(evt);
             }
         });
-        jToolBar1.add(jButton2);
+        jToolBar1.add(btnFunction);
 
-        jButton3.setFont(new java.awt.Font("Tahoma", 1, 18)); // NOI18N
-        jButton3.setIcon(new javax.swing.ImageIcon(getClass().getResource("/icon/home_25px.png"))); // NOI18N
-        jButton3.setText("Trợ Giúp");
-        jButton3.setFocusable(false);
-        jButton3.setHorizontalTextPosition(javax.swing.SwingConstants.RIGHT);
-        jButton3.setMargin(new java.awt.Insets(5, 20, 5, 20));
-        jButton3.setVerticalTextPosition(javax.swing.SwingConstants.BOTTOM);
-        jButton3.addActionListener(new java.awt.event.ActionListener() {
+        btnHelp.setFont(new java.awt.Font("Tahoma", 1, 18)); // NOI18N
+        btnHelp.setIcon(new javax.swing.ImageIcon(getClass().getResource("/icon/home_25px.png"))); // NOI18N
+        btnHelp.setText("Trợ Giúp");
+        btnHelp.setFocusable(false);
+        btnHelp.setHorizontalTextPosition(javax.swing.SwingConstants.RIGHT);
+        btnHelp.setMargin(new java.awt.Insets(5, 20, 5, 20));
+        btnHelp.setVerticalTextPosition(javax.swing.SwingConstants.BOTTOM);
+        btnHelp.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jButton3ActionPerformed(evt);
+                btnHelpActionPerformed(evt);
             }
         });
-        jToolBar1.add(jButton3);
+        jToolBar1.add(btnHelp);
 
         jPanel2.setBorder(new javax.swing.border.SoftBevelBorder(javax.swing.border.BevelBorder.RAISED));
 
@@ -238,35 +245,35 @@ public class MainFrame extends javax.swing.JFrame {
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
-    private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
+    private void btnSystemActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnSystemActionPerformed
         // TODO add your handling code here:
         btnHeThongAction();
-    }//GEN-LAST:event_jButton1ActionPerformed
+    }//GEN-LAST:event_btnSystemActionPerformed
     void btnHeThongAction() {
         ToolbarPanel1 t1 = new ToolbarPanel1();
-        t1.btnSetting.addMouseListener(ml);
-        t1.btnLogOut.addMouseListener(ml);
-        t1.btnUser.addMouseListener(ml);
+        t1.gBtnSetting.addMouseListener(ml);
+        t1.gBtnLogout.addMouseListener(ml);
+        t1.gBtnUser.addMouseListener(ml);
         selectToolBarPanel(t1);
     }
-    private void jButton2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton2ActionPerformed
+    private void btnFunctionActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnFunctionActionPerformed
         // TODO add your handling code here:
         btnChucNangAction();
-    }//GEN-LAST:event_jButton2ActionPerformed
+    }//GEN-LAST:event_btnFunctionActionPerformed
     void btnChucNangAction() {
         ToolbarPanel2 t2 = new ToolbarPanel2();
-        t2.btnCategory.addMouseListener(ml);
-        t2.btnDesk.addMouseListener(ml);
-        t2.btnProduct.addMouseListener(ml);
-        t2.btnInvoice.addMouseListener(ml);
-        t2.btnExport.addMouseListener(ml);
-        t2.btnReport.addMouseListener(ml);
+        t2.gBtnCategory.addMouseListener(ml);
+        t2.gBtnDesk.addMouseListener(ml);
+        t2.gBtnProduct.addMouseListener(ml);
+        t2.gBtnInvoice.addMouseListener(ml);
+        t2.gBtnExport.addMouseListener(ml);
+        t2.gBtnReport.addMouseListener(ml);
         selectToolBarPanel(t2);
     }
-    private void jButton3ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton3ActionPerformed
+    private void btnHelpActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnHelpActionPerformed
         // TODO add your handling code here:
         btnTroGiupAction();
-    }//GEN-LAST:event_jButton3ActionPerformed
+    }//GEN-LAST:event_btnHelpActionPerformed
     void btnTroGiupAction() {
         ToolbarPanel3 t3 = new ToolbarPanel3();
         selectToolBarPanel(t3);
@@ -309,9 +316,9 @@ public class MainFrame extends javax.swing.JFrame {
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
-    private javax.swing.JButton jButton1;
-    private javax.swing.JButton jButton2;
-    private javax.swing.JButton jButton3;
+    private javax.swing.JButton btnFunction;
+    private javax.swing.JButton btnHelp;
+    private javax.swing.JButton btnSystem;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel3;
     private javax.swing.JLabel jLabel4;
@@ -458,4 +465,19 @@ public class MainFrame extends javax.swing.JFrame {
         public void mouseExited(MouseEvent e) {
         }
     };
+
+    private void setLanguage() {
+        String lang = XLanguage.language;
+        if (lang.equalsIgnoreCase("vi")) {
+            bundlePath = "config.main-vi";
+            resourceBundle = ResourceBundle.getBundle(bundlePath, new Locale("vi-VN"));
+            return;
+        }
+        bundlePath = "config.main-en";
+        resourceBundle = ResourceBundle.getBundle(bundlePath, new Locale("en-EN"));
+        jLabel4.setText(resourceBundle.getString("jLabel4"));
+        btnSystem.setText(resourceBundle.getString("btnSystem"));
+        btnFunction.setText(resourceBundle.getString("btnFunction"));
+        btnHelp.setText(resourceBundle.getString("btnHelp"));
+    }
 }

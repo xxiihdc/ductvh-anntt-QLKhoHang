@@ -433,23 +433,27 @@ public class ExportDialog extends javax.swing.JDialog {
                 String quantity = tblProduct.getValueAt(row, 2) + "";
                 if (quantity.length() == 0) {
                     tblProduct.setValueAt(1, row, 2);
+                    fillDetails();
                     return;
                 }
                 for (int i = 0; i < quantity.length(); i++) {
                     if (!Character.isDigit(quantity.charAt(i))) {
                         MsgBox.alert(null, "Nhập số");
                         tblProduct.setValueAt(1, row, 2);
+                        fillDetails();
                         return;
                     }
                 }
                 if (Integer.parseInt(quantity) <= 0) {
                     MsgBox.alert(null, ">0");
                     tblProduct.setValueAt(1, row, 2);
+                    fillDetails();
                     return;
                 }
                 int q = Integer.parseInt(quantity);
                 if (q > lst.get(row).getQuantity()) {
                     tblProduct.setValueAt(lst.get(row).getQuantity(), row, 2);
+                    fillDetails();
                     return;
                 }
                 fillDetails();
@@ -480,17 +484,18 @@ public class ExportDialog extends javax.swing.JDialog {
         if (!add) {
             return;
         }
-        int row = tblProduct.getRowCount();
+        int row = tblProduct.getSelectedRow();
         if (row == -1) {
             return;
         }
         if (lst.isEmpty()) {
             return;
         }
-        DefaultTableModel model = (DefaultTableModel) tblProduct.getModel();
+        lst.remove(row);
         model.removeRow(tblProduct.getSelectedRow());
         model.fireTableDataChanged();
-        lst.remove(row);
+        fillDetails();
+        
     }//GEN-LAST:event_jButton6ActionPerformed
 
     private void jButton3ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton3ActionPerformed

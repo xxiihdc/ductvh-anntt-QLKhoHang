@@ -112,6 +112,11 @@ public class ProductDialog extends javax.swing.JDialog {
         jLabel8.setText("Trạng thái:");
 
         txtID.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
+        txtID.addFocusListener(new java.awt.event.FocusAdapter() {
+            public void focusLost(java.awt.event.FocusEvent evt) {
+                txtIDFocusLost(evt);
+            }
+        });
 
         txtName.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
 
@@ -439,11 +444,13 @@ public class ProductDialog extends javax.swing.JDialog {
     private void txtPriceFocusGained(java.awt.event.FocusEvent evt) {//GEN-FIRST:event_txtPriceFocusGained
         // TODO add your handling code here:
         String price = txtPrice.getText();
-        if (price.endsWith("đ")) {
-            String price2 = price.substring(0, price.length() - 2);
-            price2 = price2.replaceAll("\\.", "");
-            txtPrice.setText(price2);
+        if (price.length() == 0) {
+            return;
         }
+        char c = price.charAt(price.length() - 1);
+        String price2 = price.substring(0, price.length() - 2);
+        price2 = price2.replaceAll("\\.", "");
+        txtPrice.setText(price2);
     }//GEN-LAST:event_txtPriceFocusGained
 
     private void txtPriceKeyTyped(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_txtPriceKeyTyped
@@ -453,6 +460,21 @@ public class ProductDialog extends javax.swing.JDialog {
             evt.consume();
         }
     }//GEN-LAST:event_txtPriceKeyTyped
+
+    private void txtIDFocusLost(java.awt.event.FocusEvent evt) {//GEN-FIRST:event_txtIDFocusLost
+        // TODO add your handling code here:
+        String id = txtID.getText();
+        Product p = new ProductDAO().selectByID(id);
+        if (p != null) {
+            boolean b = MsgBox.confirm(null, "San pham nay da co ban co muon chinh sua");
+            if (b) {
+                setForm(p);
+            } else {
+                txtID.setText("");
+                txtID.requestFocus();
+            }
+        }
+    }//GEN-LAST:event_txtIDFocusLost
 
     /**
      * @param args the command line arguments
@@ -613,7 +635,7 @@ public class ProductDialog extends javax.swing.JDialog {
         Product p = new Product();
         p.setImage(DEFAULT_IMG);
         setForm(p);
-        txtID.setEditable(true);
+        txtID.setEnabled(true);
     }
 
     private void insert() {
@@ -621,8 +643,8 @@ public class ProductDialog extends javax.swing.JDialog {
     }
 
     public void setForm(Product p) {
-        txtID.setEditable(false);
         txtID.setText(p.getId());
+        txtID.setEnabled(false);
         txtName.setText(p.getName());
         cbxProductGroup.setSelectedItem(new ProductGroupDAO().selectByID(p.getProductGroupID() + ""));
         cbxPT.setSelectedItem(new ProductTypeDAO().selectByID(p.getProductTypeID() + ""));

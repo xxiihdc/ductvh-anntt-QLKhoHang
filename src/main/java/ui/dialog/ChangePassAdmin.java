@@ -130,18 +130,17 @@ public class ChangePassAdmin extends javax.swing.JDialog {
         String newPw1 = new String(txtNewPw.getPassword());
         String newPw2 = new String(txtNewPw2.getPassword());
         try {
-            FileReader reader = new FileReader("src\\main\\resources\\config\\admin.properties");
+            FileReader reader = new FileReader("src\\main\\resources\\config\\config.properties");
             Properties properties = new Properties();
             properties.load(reader);
             String pw = properties.getProperty("pass");
             reader.close();
             if (pw.equalsIgnoreCase(MD5.getMD5(currentPw))) {
                 if (newPw1.equalsIgnoreCase(newPw2)) {
-                    Properties properties2 = new Properties();
-                    properties2.setProperty("pass", MD5.getMD5(newPw1));
+                    properties.setProperty("pass", MD5.getMD5(newPw1));
                     FileWriter fw = new FileWriter
-        ("src\\main\\resources\\config\\admin.properties");
-                    properties2.store(fw,"admin");
+        ("src\\main\\resources\\config\\config.properties");
+                    properties.store(fw,"config file--warning !!!--- do not delete");
                     fw.close();
                     this.dispose();
                 }else{

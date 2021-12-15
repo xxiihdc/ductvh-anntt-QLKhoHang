@@ -4,6 +4,10 @@
  */
 package ui.toolbar;
 
+import java.util.Locale;
+import java.util.ResourceBundle;
+import utils.XLanguage;
+
 /**
  *
  * @author ductr
@@ -13,17 +17,39 @@ public class ToolbarPanel2 extends javax.swing.JPanel {
     /**
      * Creates new form toolbarPanel2
      */
+    String bundlePath;
+    ResourceBundle resourceBundle;
+
     public ToolbarPanel2() {
         initComponents();
         init();
     }
-    void init(){
-        btnCategory.setName("category");
-        btnDesk.setName("desk");
-        btnProduct.setName("product");
-        btnInvoice.setName("invoice");
-        btnExport.setName("export");
-        btnReport.setName("report");
+
+    void init() {
+        gBtnCategory.setName("category");
+        gBtnDesk.setName("desk");
+        gBtnProduct.setName("product");
+        gBtnInvoice.setName("invoice");
+        gBtnExport.setName("export");
+        gBtnReport.setName("report");
+        setLanguage();
+    }
+
+    private void setLanguage() {
+        String lang = XLanguage.language;
+        if (lang.equalsIgnoreCase("vi")) {
+            bundlePath = "config.toolbar2-vi";
+            resourceBundle = ResourceBundle.getBundle(bundlePath, new Locale("vi-VN"));
+            return;
+        }
+        bundlePath = "config.toolbar2-en";
+        resourceBundle = ResourceBundle.getBundle(bundlePath, new Locale("en-EN"));
+        gBtnCategory.setText(resourceBundle.getString("gBtnCategory"));
+        gBtnDesk.setText(resourceBundle.getString("gBtnDesk"));
+        gBtnExport.setText(resourceBundle.getString("gBtnExport"));
+        gBtnProduct.setText(resourceBundle.getString("gBtnProduct"));
+        gBtnReport.setText(resourceBundle.getString("gBtnReport"));
+        gBtnInvoice.setText(resourceBundle.getString("gBtnInvoice"));
     }
 
     /**
@@ -36,85 +62,85 @@ public class ToolbarPanel2 extends javax.swing.JPanel {
     private void initComponents() {
 
         jToolBar1 = new javax.swing.JToolBar();
-        btnDesk = new javax.swing.JButton();
+        gBtnDesk = new javax.swing.JButton();
         jSeparator1 = new javax.swing.JToolBar.Separator();
-        btnCategory = new javax.swing.JButton();
+        gBtnCategory = new javax.swing.JButton();
         jSeparator2 = new javax.swing.JToolBar.Separator();
-        btnProduct = new javax.swing.JButton();
+        gBtnProduct = new javax.swing.JButton();
         jSeparator3 = new javax.swing.JToolBar.Separator();
-        btnInvoice = new javax.swing.JButton();
+        gBtnInvoice = new javax.swing.JButton();
         jSeparator4 = new javax.swing.JToolBar.Separator();
-        btnExport = new javax.swing.JButton();
+        gBtnExport = new javax.swing.JButton();
         jSeparator5 = new javax.swing.JToolBar.Separator();
-        btnReport = new javax.swing.JButton();
+        gBtnReport = new javax.swing.JButton();
         jSeparator6 = new javax.swing.JToolBar.Separator();
 
         jToolBar1.setRollover(true);
 
-        btnDesk.setFont(new java.awt.Font("Segoe UI", 3, 16)); // NOI18N
-        btnDesk.setForeground(new java.awt.Color(255, 51, 0));
-        btnDesk.setIcon(new javax.swing.ImageIcon(getClass().getResource("/icon/office_64px.png"))); // NOI18N
-        btnDesk.setText("Bàn Làm Việc");
-        btnDesk.setFocusable(false);
-        btnDesk.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
-        btnDesk.setMargin(new java.awt.Insets(5, 20, 5, 20));
-        btnDesk.setVerticalTextPosition(javax.swing.SwingConstants.BOTTOM);
-        jToolBar1.add(btnDesk);
+        gBtnDesk.setFont(new java.awt.Font("Segoe UI", 3, 16)); // NOI18N
+        gBtnDesk.setForeground(new java.awt.Color(255, 51, 0));
+        gBtnDesk.setIcon(new javax.swing.ImageIcon(getClass().getResource("/icon/office_64px.png"))); // NOI18N
+        gBtnDesk.setText("Bàn Làm Việc");
+        gBtnDesk.setFocusable(false);
+        gBtnDesk.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
+        gBtnDesk.setMargin(new java.awt.Insets(5, 20, 5, 20));
+        gBtnDesk.setVerticalTextPosition(javax.swing.SwingConstants.BOTTOM);
+        jToolBar1.add(gBtnDesk);
         jToolBar1.add(jSeparator1);
 
-        btnCategory.setFont(new java.awt.Font("Segoe UI", 1, 16)); // NOI18N
-        btnCategory.setForeground(new java.awt.Color(255, 51, 0));
-        btnCategory.setIcon(new javax.swing.ImageIcon(getClass().getResource("/icon/menu_64px.png"))); // NOI18N
-        btnCategory.setText("Danh Mục");
-        btnCategory.setFocusable(false);
-        btnCategory.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
-        btnCategory.setMargin(new java.awt.Insets(5, 20, 5, 20));
-        btnCategory.setVerticalTextPosition(javax.swing.SwingConstants.BOTTOM);
-        jToolBar1.add(btnCategory);
+        gBtnCategory.setFont(new java.awt.Font("Segoe UI", 1, 16)); // NOI18N
+        gBtnCategory.setForeground(new java.awt.Color(255, 51, 0));
+        gBtnCategory.setIcon(new javax.swing.ImageIcon(getClass().getResource("/icon/menu_64px.png"))); // NOI18N
+        gBtnCategory.setText("Danh Mục");
+        gBtnCategory.setFocusable(false);
+        gBtnCategory.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
+        gBtnCategory.setMargin(new java.awt.Insets(5, 20, 5, 20));
+        gBtnCategory.setVerticalTextPosition(javax.swing.SwingConstants.BOTTOM);
+        jToolBar1.add(gBtnCategory);
         jToolBar1.add(jSeparator2);
 
-        btnProduct.setFont(new java.awt.Font("Segoe UI", 1, 16)); // NOI18N
-        btnProduct.setForeground(new java.awt.Color(255, 51, 0));
-        btnProduct.setIcon(new javax.swing.ImageIcon(getClass().getResource("/icon/product_64px.png"))); // NOI18N
-        btnProduct.setText("Sản Phẩm");
-        btnProduct.setFocusable(false);
-        btnProduct.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
-        btnProduct.setMargin(new java.awt.Insets(5, 20, 5, 20));
-        btnProduct.setVerticalTextPosition(javax.swing.SwingConstants.BOTTOM);
-        jToolBar1.add(btnProduct);
+        gBtnProduct.setFont(new java.awt.Font("Segoe UI", 1, 16)); // NOI18N
+        gBtnProduct.setForeground(new java.awt.Color(255, 51, 0));
+        gBtnProduct.setIcon(new javax.swing.ImageIcon(getClass().getResource("/icon/product_64px.png"))); // NOI18N
+        gBtnProduct.setText("Sản Phẩm");
+        gBtnProduct.setFocusable(false);
+        gBtnProduct.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
+        gBtnProduct.setMargin(new java.awt.Insets(5, 20, 5, 20));
+        gBtnProduct.setVerticalTextPosition(javax.swing.SwingConstants.BOTTOM);
+        jToolBar1.add(gBtnProduct);
         jToolBar1.add(jSeparator3);
 
-        btnInvoice.setFont(new java.awt.Font("Segoe UI", 1, 16)); // NOI18N
-        btnInvoice.setForeground(new java.awt.Color(255, 51, 0));
-        btnInvoice.setIcon(new javax.swing.ImageIcon(getClass().getResource("/icon/invoice_64px.png"))); // NOI18N
-        btnInvoice.setText("Hóa Đơn");
-        btnInvoice.setFocusable(false);
-        btnInvoice.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
-        btnInvoice.setMargin(new java.awt.Insets(5, 20, 5, 20));
-        btnInvoice.setVerticalTextPosition(javax.swing.SwingConstants.BOTTOM);
-        jToolBar1.add(btnInvoice);
+        gBtnInvoice.setFont(new java.awt.Font("Segoe UI", 1, 16)); // NOI18N
+        gBtnInvoice.setForeground(new java.awt.Color(255, 51, 0));
+        gBtnInvoice.setIcon(new javax.swing.ImageIcon(getClass().getResource("/icon/invoice_64px.png"))); // NOI18N
+        gBtnInvoice.setText("Hóa Đơn");
+        gBtnInvoice.setFocusable(false);
+        gBtnInvoice.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
+        gBtnInvoice.setMargin(new java.awt.Insets(5, 20, 5, 20));
+        gBtnInvoice.setVerticalTextPosition(javax.swing.SwingConstants.BOTTOM);
+        jToolBar1.add(gBtnInvoice);
         jToolBar1.add(jSeparator4);
 
-        btnExport.setFont(new java.awt.Font("Segoe UI", 1, 16)); // NOI18N
-        btnExport.setForeground(new java.awt.Color(255, 51, 0));
-        btnExport.setIcon(new javax.swing.ImageIcon(getClass().getResource("/icon/warehouse_64px.png"))); // NOI18N
-        btnExport.setText("Xuất Kho");
-        btnExport.setFocusable(false);
-        btnExport.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
-        btnExport.setMargin(new java.awt.Insets(5, 20, 5, 20));
-        btnExport.setVerticalTextPosition(javax.swing.SwingConstants.BOTTOM);
-        jToolBar1.add(btnExport);
+        gBtnExport.setFont(new java.awt.Font("Segoe UI", 1, 16)); // NOI18N
+        gBtnExport.setForeground(new java.awt.Color(255, 51, 0));
+        gBtnExport.setIcon(new javax.swing.ImageIcon(getClass().getResource("/icon/warehouse_64px.png"))); // NOI18N
+        gBtnExport.setText("Xuất Kho");
+        gBtnExport.setFocusable(false);
+        gBtnExport.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
+        gBtnExport.setMargin(new java.awt.Insets(5, 20, 5, 20));
+        gBtnExport.setVerticalTextPosition(javax.swing.SwingConstants.BOTTOM);
+        jToolBar1.add(gBtnExport);
         jToolBar1.add(jSeparator5);
 
-        btnReport.setFont(new java.awt.Font("Segoe UI", 1, 16)); // NOI18N
-        btnReport.setForeground(new java.awt.Color(255, 51, 0));
-        btnReport.setIcon(new javax.swing.ImageIcon(getClass().getResource("/icon/Business Report_64px.png"))); // NOI18N
-        btnReport.setText("Thống Kê");
-        btnReport.setFocusable(false);
-        btnReport.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
-        btnReport.setMargin(new java.awt.Insets(5, 20, 5, 20));
-        btnReport.setVerticalTextPosition(javax.swing.SwingConstants.BOTTOM);
-        jToolBar1.add(btnReport);
+        gBtnReport.setFont(new java.awt.Font("Segoe UI", 1, 16)); // NOI18N
+        gBtnReport.setForeground(new java.awt.Color(255, 51, 0));
+        gBtnReport.setIcon(new javax.swing.ImageIcon(getClass().getResource("/icon/Business Report_64px.png"))); // NOI18N
+        gBtnReport.setText("Thống Kê");
+        gBtnReport.setFocusable(false);
+        gBtnReport.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
+        gBtnReport.setMargin(new java.awt.Insets(5, 20, 5, 20));
+        gBtnReport.setVerticalTextPosition(javax.swing.SwingConstants.BOTTOM);
+        jToolBar1.add(gBtnReport);
         jToolBar1.add(jSeparator6);
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(this);
@@ -131,12 +157,12 @@ public class ToolbarPanel2 extends javax.swing.JPanel {
 
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
-    public javax.swing.JButton btnCategory;
-    public javax.swing.JButton btnDesk;
-    public javax.swing.JButton btnExport;
-    public javax.swing.JButton btnInvoice;
-    public javax.swing.JButton btnProduct;
-    public javax.swing.JButton btnReport;
+    public javax.swing.JButton gBtnCategory;
+    public javax.swing.JButton gBtnDesk;
+    public javax.swing.JButton gBtnExport;
+    public javax.swing.JButton gBtnInvoice;
+    public javax.swing.JButton gBtnProduct;
+    public javax.swing.JButton gBtnReport;
     private javax.swing.JToolBar.Separator jSeparator1;
     private javax.swing.JToolBar.Separator jSeparator2;
     private javax.swing.JToolBar.Separator jSeparator3;

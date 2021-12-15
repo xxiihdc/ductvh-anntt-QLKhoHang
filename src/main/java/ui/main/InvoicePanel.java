@@ -39,8 +39,8 @@ public class InvoicePanel extends javax.swing.JPanel {
     void init() {
         txtDateFrom.setDateFormatString("dd-MM-yyyy");
         txtDateTo.setDateFormatString("dd-MM-yyyy");
-        fillTable();
         setLanguage();
+        fillTable();
     }
 
     /**
@@ -173,25 +173,23 @@ public class InvoicePanel extends javax.swing.JPanel {
         jPanel1Layout.setHorizontalGroup(
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel1Layout.createSequentialGroup()
+                .addContainerGap()
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                    .addGroup(jPanel1Layout.createSequentialGroup()
-                        .addContainerGap()
-                        .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 1172, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 1172, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addGroup(javax.swing.GroupLayout.Alignment.LEADING, jPanel1Layout.createSequentialGroup()
-                        .addGap(80, 80, 80)
                         .addComponent(jLabel1)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addGap(18, 18, 18)
                         .addComponent(txtDateFrom, javax.swing.GroupLayout.PREFERRED_SIZE, 174, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                        .addGap(18, 18, 18)
                         .addComponent(jLabel2)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                         .addComponent(txtDateTo, javax.swing.GroupLayout.PREFERRED_SIZE, 186, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                        .addGap(18, 18, 18)
                         .addComponent(jLabel3)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                        .addComponent(cbxStatus, javax.swing.GroupLayout.PREFERRED_SIZE, 280, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                        .addComponent(checkboxNo)))
+                        .addGap(18, 18, 18)
+                        .addComponent(cbxStatus, javax.swing.GroupLayout.PREFERRED_SIZE, 250, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(18, 18, 18)
+                        .addComponent(checkboxNo, javax.swing.GroupLayout.PREFERRED_SIZE, 205, javax.swing.GroupLayout.PREFERRED_SIZE)))
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
         jPanel1Layout.setVerticalGroup(
@@ -200,13 +198,14 @@ public class InvoicePanel extends javax.swing.JPanel {
                 .addContainerGap()
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addComponent(jLabel2)
-                    .addComponent(jLabel1)
                     .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                         .addComponent(cbxStatus, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addComponent(checkboxNo))
-                    .addComponent(txtDateFrom, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(txtDateTo, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(jLabel3))
+                    .addComponent(jLabel3)
+                    .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                        .addComponent(txtDateFrom, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addComponent(jLabel1)))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 15, Short.MAX_VALUE)
                 .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 465, javax.swing.GroupLayout.PREFERRED_SIZE))
         );
@@ -233,6 +232,11 @@ public class InvoicePanel extends javax.swing.JPanel {
         jButton3.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
         jButton3.setMargin(new java.awt.Insets(2, 20, 2, 20));
         jButton3.setVerticalTextPosition(javax.swing.SwingConstants.BOTTOM);
+        jButton3.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton3ActionPerformed(evt);
+            }
+        });
         jToolBar1.add(jButton3);
 
         jButton8.setIcon(new javax.swing.ImageIcon(getClass().getResource("/icon/refresh_30px.png"))); // NOI18N
@@ -302,12 +306,18 @@ public class InvoicePanel extends javax.swing.JPanel {
 
     private void tblInvoiceMousePressed(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_tblInvoiceMousePressed
         // TODO add your handling code here:
+        int row = tblInvoice.getSelectedRow();
+        if (row == - 1) {
+            return;
+        }
         if (evt.getClickCount() == 2) {
             String id = (tblInvoice.getValueAt(tblInvoice.getSelectedRow(), 0) + "");
             InvoiceDetailsDialog i = new InvoiceDetailsDialog(null, true);
             Invoice iv = dao.selectByID(id);
             i.setForm(iv);
             i.setVisible(true);
+        } else if (evt.getClickCount() == 1) {
+            lblRecord.setText((row + 1) + "/" + tblInvoice.getRowCount());
         }
     }//GEN-LAST:event_tblInvoiceMousePressed
 
@@ -327,6 +337,19 @@ public class InvoicePanel extends javax.swing.JPanel {
     private void checkboxNoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_checkboxNoActionPerformed
         // TODO add your handling code here:
     }//GEN-LAST:event_checkboxNoActionPerformed
+
+    private void jButton3ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton3ActionPerformed
+        // TODO add your handling code here:
+        int row = tblInvoice.getSelectedRow();
+        if (row == - 1) {
+            return;
+        }
+        String id = tblInvoice.getValueAt(row, 0) + "";
+        Invoice i = dao.selectByID(id);
+        InvoiceDetailsDialog idd = new InvoiceDetailsDialog(null, true);
+        idd.setForm(i);
+        idd.setVisible(true);
+    }//GEN-LAST:event_jButton3ActionPerformed
 
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
@@ -357,8 +380,8 @@ public class InvoicePanel extends javax.swing.JPanel {
 
     public void fillTable() {
         DefaultTableModel model = (DefaultTableModel) tblInvoice.getModel();
-        if(XLanguage.language.equalsIgnoreCase("en")){
-            String [] head ={"ID","Created date","Supplier","Discount","Amount","Debt","Status"};
+        if (XLanguage.language.equalsIgnoreCase("en")) {
+            String[] head = {"ID", "Created date", "Supplier", "Discount", "Amount", "Debt", "Status"};
             model.setColumnIdentifiers(head);
         }
         model.setRowCount(0);
@@ -389,13 +412,13 @@ public class InvoicePanel extends javax.swing.JPanel {
             String status;
             switch (s.getStatus()) {
                 case 0:
-                    status = "Chờ xác nhân";
+                    status = XLanguage.toUtf(resourceBundle.getString("status1"));
                     break;
                 case 1:
-                    status = "Đã xác nhận";
+                    status = XLanguage.toUtf(resourceBundle.getString("status2"));
                     break;
                 default:
-                    status = "Hủy";
+                    status = XLanguage.toUtf(resourceBundle.getString("status3"));
                     break;
             }
             String name = sdao.selectByID(id + "").getName();
@@ -441,6 +464,5 @@ public class InvoicePanel extends javax.swing.JPanel {
         model.addElement(resourceBundle.getString("status3"));
         btnSearch.setText(resourceBundle.getString("btnSearch"));
         checkboxNo.setText(resourceBundle.getString("cbx"));
-
     }
 }

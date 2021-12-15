@@ -82,6 +82,12 @@ public class UserJDialog extends javax.swing.JDialog {
             }
         });
 
+        txtUserName.addFocusListener(new java.awt.event.FocusAdapter() {
+            public void focusLost(java.awt.event.FocusEvent evt) {
+                txtUserNameFocusLost(evt);
+            }
+        });
+
         jLabel4.setFont(new java.awt.Font("Tahoma", 1, 18)); // NOI18N
         jLabel4.setText("QUẢN LÝ NGƯỜI DÙNG");
 
@@ -160,15 +166,16 @@ public class UserJDialog extends javax.swing.JDialog {
     private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
         // TODO add your handling code here:
         if (valid()) {
-            update = new UserDAO().hasUsername();
+            update = new UserDAO().hasUsername(txtUserName.getText());
             if (!update) {
-                new UserDAO().insert(getForm());
+                UserDAO dao = new UserDAO();
+                dao.insert(getForm());
                 MsgBox.alert(null, "Dữ liệu đã được cập nhật");
                 if(nv) this.dispose();
                 else clearForm();
             } else {
                 new UserDAO().update(getForm());
-                MsgBox.alert(null, "Dữ liệu đã được cập nhật");
+                MsgBox.alert(null, "Dữaaaaa liệu đã được cập nhật");
                 if(nv) this.dispose();
                 else clearForm();
             }
@@ -180,6 +187,17 @@ public class UserJDialog extends javax.swing.JDialog {
         // TODO add your handling code here:
         this.dispose();
     }//GEN-LAST:event_jButton2ActionPerformed
+
+    private void txtUserNameFocusLost(java.awt.event.FocusEvent evt) {//GEN-FIRST:event_txtUserNameFocusLost
+        // TODO add your handling code here:
+        UserDAO dao = new UserDAO();
+        User u = dao.selectByID(txtUserName.getText());
+        if(u!=null){
+            MsgBox.alert(null, "Ten dang nhap da ton tai");
+            txtUserName.setText("");
+            txtUserName.requestFocus();
+        }
+    }//GEN-LAST:event_txtUserNameFocusLost
 
     /**
      * @param args the command line arguments
@@ -287,7 +305,7 @@ public class UserJDialog extends javax.swing.JDialog {
     public void setForm(User u) {
         nv = true;
         txtUserName.setText(u.getUsername());
-        txtUserName.setEditable(false);
+        txtUserName.setEnabled(false);
         jPasswordField1.setText(u.getPassword());
         jPasswordField2.setText(u.getPassword());
         Staff s = new StaffDAO().selectByID(u.getId());
@@ -298,6 +316,7 @@ public class UserJDialog extends javax.swing.JDialog {
 
     private void clearForm() {
         txtUserName.setEditable(true);
+        txtUserName.setText("");
         jPasswordField1.setText("");
         jPasswordField2.setText("");
         fillCbx();

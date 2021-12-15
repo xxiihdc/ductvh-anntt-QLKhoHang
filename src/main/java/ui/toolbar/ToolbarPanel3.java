@@ -4,6 +4,10 @@
  */
 package ui.toolbar;
 
+import java.util.Locale;
+import java.util.ResourceBundle;
+import utils.XLanguage;
+
 /**
  *
  * @author ductr
@@ -13,8 +17,23 @@ public class ToolbarPanel3 extends javax.swing.JPanel {
     /**
      * Creates new form ToolbarPanel3
      */
+        String bundlePath;
+    ResourceBundle resourceBundle;
     public ToolbarPanel3() {
         initComponents();
+        setLanguage();
+    }
+        private void setLanguage() {
+        String lang = XLanguage.language;
+        if (lang.equalsIgnoreCase("vi")) {
+            bundlePath = "config.toolbar3-vi";
+            resourceBundle = ResourceBundle.getBundle(bundlePath, new Locale("vi-VN"));
+            return;
+        }
+        bundlePath = "config.toolbar3-en";
+        resourceBundle = ResourceBundle.getBundle(bundlePath, new Locale("en-EN"));
+        gBtnGioiThieu.setText(resourceBundle.getString("gBtnGioiThieu"));
+        gBtnHelp.setText(resourceBundle.getString("gBtnHelp"));
     }
 
     /**
@@ -27,38 +46,38 @@ public class ToolbarPanel3 extends javax.swing.JPanel {
     private void initComponents() {
 
         jToolBar1 = new javax.swing.JToolBar();
-        jButton1 = new javax.swing.JButton();
+        gBtnGioiThieu = new javax.swing.JButton();
         jSeparator1 = new javax.swing.JToolBar.Separator();
-        jButton2 = new javax.swing.JButton();
+        gBtnHelp = new javax.swing.JButton();
         jSeparator2 = new javax.swing.JToolBar.Separator();
 
         jToolBar1.setRollover(true);
 
-        jButton1.setFont(new java.awt.Font("Segoe UI", 1, 16)); // NOI18N
-        jButton1.setForeground(new java.awt.Color(255, 51, 0));
-        jButton1.setIcon(new javax.swing.ImageIcon(getClass().getResource("/icon/name_tag_64px.png"))); // NOI18N
-        jButton1.setText("Giới Thiệu");
-        jButton1.setFocusable(false);
-        jButton1.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
-        jButton1.setMargin(new java.awt.Insets(5, 20, 5, 20));
-        jButton1.setVerticalTextPosition(javax.swing.SwingConstants.BOTTOM);
-        jButton1.addActionListener(new java.awt.event.ActionListener() {
+        gBtnGioiThieu.setFont(new java.awt.Font("Segoe UI", 1, 16)); // NOI18N
+        gBtnGioiThieu.setForeground(new java.awt.Color(255, 51, 0));
+        gBtnGioiThieu.setIcon(new javax.swing.ImageIcon(getClass().getResource("/icon/name_tag_64px.png"))); // NOI18N
+        gBtnGioiThieu.setText("Giới Thiệu");
+        gBtnGioiThieu.setFocusable(false);
+        gBtnGioiThieu.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
+        gBtnGioiThieu.setMargin(new java.awt.Insets(5, 20, 5, 20));
+        gBtnGioiThieu.setVerticalTextPosition(javax.swing.SwingConstants.BOTTOM);
+        gBtnGioiThieu.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jButton1ActionPerformed(evt);
+                gBtnGioiThieuActionPerformed(evt);
             }
         });
-        jToolBar1.add(jButton1);
+        jToolBar1.add(gBtnGioiThieu);
         jToolBar1.add(jSeparator1);
 
-        jButton2.setFont(new java.awt.Font("Segoe UI", 1, 16)); // NOI18N
-        jButton2.setForeground(new java.awt.Color(255, 51, 0));
-        jButton2.setIcon(new javax.swing.ImageIcon(getClass().getResource("/icon/help_64px.png"))); // NOI18N
-        jButton2.setText("Trợ Giúp");
-        jButton2.setFocusable(false);
-        jButton2.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
-        jButton2.setMargin(new java.awt.Insets(5, 20, 5, 20));
-        jButton2.setVerticalTextPosition(javax.swing.SwingConstants.BOTTOM);
-        jToolBar1.add(jButton2);
+        gBtnHelp.setFont(new java.awt.Font("Segoe UI", 1, 16)); // NOI18N
+        gBtnHelp.setForeground(new java.awt.Color(255, 51, 0));
+        gBtnHelp.setIcon(new javax.swing.ImageIcon(getClass().getResource("/icon/help_64px.png"))); // NOI18N
+        gBtnHelp.setText("Trợ Giúp");
+        gBtnHelp.setFocusable(false);
+        gBtnHelp.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
+        gBtnHelp.setMargin(new java.awt.Insets(5, 20, 5, 20));
+        gBtnHelp.setVerticalTextPosition(javax.swing.SwingConstants.BOTTOM);
+        jToolBar1.add(gBtnHelp);
         jToolBar1.add(jSeparator2);
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(this);
@@ -73,14 +92,14 @@ public class ToolbarPanel3 extends javax.swing.JPanel {
         );
     }// </editor-fold>//GEN-END:initComponents
 
-    private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
+    private void gBtnGioiThieuActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_gBtnGioiThieuActionPerformed
         // TODO add your handling code here:
-    }//GEN-LAST:event_jButton1ActionPerformed
+    }//GEN-LAST:event_gBtnGioiThieuActionPerformed
 
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
-    private javax.swing.JButton jButton1;
-    private javax.swing.JButton jButton2;
+    private javax.swing.JButton gBtnGioiThieu;
+    private javax.swing.JButton gBtnHelp;
     private javax.swing.JToolBar.Separator jSeparator1;
     private javax.swing.JToolBar.Separator jSeparator2;
     private javax.swing.JToolBar jToolBar1;

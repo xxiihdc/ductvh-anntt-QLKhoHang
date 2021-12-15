@@ -9,6 +9,7 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
+import utils.MsgBox;
 import utils.XJdbc;
 
 /**
@@ -18,12 +19,18 @@ import utils.XJdbc;
 public class UserDAO extends WarehouseDAO<User, String>{
 
      final String SELECT_BY_ID = "select * from _user where username = ?";
-     final String INSERT = "INSERT INTO _user (username, password, id) VALUES (?,?,?)";
+     final String INSERT = "INSERT INTO _USER (username, password, id) VALUES (?,?,?)";
      final String UPDATE = "UPDATE _user SET password = ? where username = ?";
      final String SELECT_ALL = "SELECT * FROM _USER";
      @Override
     public void insert(User entity) {
-        XJdbc.update(INSERT, entity.getUsername(),entity.getPassword(),entity.getId());
+        try{
+           XJdbc.update(INSERT, entity.getUsername(),entity.getPassword(),entity.getId());
+         MsgBox.alert(null, "done"); 
+        }catch(Exception e){
+            e.printStackTrace();
+        }
+        
     }
 
     @Override
@@ -73,9 +80,9 @@ public class UserDAO extends WarehouseDAO<User, String>{
         }
     }
 
-    public boolean hasUsername() {
-        String sql = "select id from _user";
-        Object o = XJdbc.value(sql);
+    public boolean hasUsername(String username) {
+        String sql = "select id from _user where username = ?";
+        Object o = XJdbc.value(sql,username);
         return o!= null;
     }
     

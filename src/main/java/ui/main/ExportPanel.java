@@ -108,7 +108,6 @@ public class ExportPanel extends javax.swing.JPanel {
         jLabel2.setFont(new java.awt.Font("Tahoma", 0, 14)); // NOI18N
         jLabel2.setText("Đến ngày:");
 
-        tblExport.setBackground(new java.awt.Color(255, 204, 153));
         tblExport.setFont(new java.awt.Font("Tahoma", 0, 18)); // NOI18N
         tblExport.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {

@@ -14,17 +14,12 @@ import entity.User;
 import java.awt.Color;
 import java.awt.event.KeyEvent;
 import java.io.BufferedReader;
-import java.io.FileNotFoundException;
 import java.io.FileReader;
-import java.io.IOException;
 import java.util.Locale;
 import java.util.Properties;
 import java.util.ResourceBundle;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 import javax.swing.SwingUtilities;
 import javax.swing.UIManager;
-import javax.swing.UnsupportedLookAndFeelException;
 import ui.main.AdminDashboard;
 import ui.main.MainFrame;
 import utils.Auth;
@@ -272,7 +267,7 @@ public class LoginJDialog extends javax.swing.JDialog {
         String pass = new String(txtPassword.getPassword());
         if (id.equals("admin")) {
             try {
-                FileReader reader = new FileReader("src\\main\\resources\\config\\admin.properties");
+                FileReader reader = new FileReader("src\\main\\resources\\config\\config.properties");
                 Properties properties = new Properties();
                 properties.load(reader);
                 String pw = properties.getProperty("pass");
