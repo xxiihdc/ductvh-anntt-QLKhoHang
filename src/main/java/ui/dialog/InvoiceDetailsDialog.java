@@ -60,8 +60,8 @@ public class InvoiceDetailsDialog extends javax.swing.JDialog {
     boolean add;
     int maHD = -1;
     int update = -1;//0 cho xac nhan , 1 xac nhan, 2 da huy
-    String bundlePath;
-    ResourceBundle resourceBundle;
+//    String bundlePath;
+//    ResourceBundle resourceBundle;
 
     public InvoiceDetailsDialog(java.awt.Frame parent, boolean modal) {
         super(parent, modal);
@@ -87,7 +87,7 @@ public class InvoiceDetailsDialog extends javax.swing.JDialog {
         }
         txtStaff.setText(Auth.user.getId());
         setStatus();
-        setLanguage();
+       // setLanguage();
     }
 
     /**
@@ -622,7 +622,7 @@ public class InvoiceDetailsDialog extends javax.swing.JDialog {
                 }
                 for (int i = 0; i < quantity.length(); i++) {
                     if (!Character.isDigit(quantity.charAt(i))) {
-                        MsgBox.alert(null, XLanguage.toUtf(resourceBundle.getString("msg9")));
+                        MsgBox.alert(null,"Nhập số");
                         tblDetails.setValueAt(1, row, 2);
                         return;
                     }
@@ -636,12 +636,12 @@ public class InvoiceDetailsDialog extends javax.swing.JDialog {
                 try {
                     percen = Double.parseDouble(tblDetails.getValueAt(row, 5) + "");
                     if (percen >= 100) {//ck nho hon 100
-                        MsgBox.alert(null, XLanguage.toUtf(resourceBundle.getString("msg10")));
+                        MsgBox.alert(null,"Chiết khấu nhỏ hơn 100%");
                         tblDetails.setValueAt(0, row, 5);
                         return;
                     }
                 } catch (NumberFormatException e) {//nhap so
-                    MsgBox.alert(null, XLanguage.toUtf(resourceBundle.getString("msg9")));
+                    MsgBox.alert(null, "Nhập số");
                     tblDetails.setValueAt(0, row, 5);
                     return;
                 }
@@ -696,13 +696,13 @@ public class InvoiceDetailsDialog extends javax.swing.JDialog {
             new PaidDAO().insert(p);
         } else {//cap nhat
             if (status == 0) {//chon trang thai
-                MsgBox.alert(null, XLanguage.toUtf(resourceBundle.getString("msg8")));
+                MsgBox.alert(null, "Chọn trạng thái trước khi cập nhập đơn");
                 return;
             }
             updateInvoice();
         }
         //save invoice
-        MsgBox.alert(null, XLanguage.toUtf(resourceBundle.getString("msg7")));
+        MsgBox.alert(null,"Dữ liệu đã được lưu thành công");
         setForm(dao.selectByID(maHD + ""));
     }//GEN-LAST:event_btnSaveActionPerformed
 
@@ -787,7 +787,7 @@ public class InvoiceDetailsDialog extends javax.swing.JDialog {
         if (add) {
             int index = cbxStatus.getSelectedIndex();
             if (index == 2) {//toa hoa don moi k the huy
-                MsgBox.alert(null, XLanguage.toUtf(resourceBundle.getString("msg6")));
+                MsgBox.alert(null, "Tạo hóa đơn mới không thể chọn trạng thái hủy");
                 cbxStatus.setSelectedIndex(0);
             }
         }
@@ -819,11 +819,11 @@ public class InvoiceDetailsDialog extends javax.swing.JDialog {
             return;
         }
         if (update != 1) {//hoa don chua xn
-            MsgBox.alert(null,  XLanguage.toUtf(resourceBundle.getString("msg4")));
+            MsgBox.alert(null, "Hóa đơn này chưa được xác nhân");
             return;
         }
         if (Currency.getDouble(txtNo.getText()) == 0) {//hoa don tt het
-            MsgBox.alert(null, XLanguage.toUtf(resourceBundle.getString("msg5")));
+            MsgBox.alert(null, "Hóa đơn này đã được thanh toán hết");
             return;
         }
         PaidJDialog pj = new PaidJDialog(null, true, Currency.getDouble(txtNo.getText()));
@@ -1022,7 +1022,7 @@ public class InvoiceDetailsDialog extends javax.swing.JDialog {
 
     private void addProduct() {
         if (!add) {//khong the sua hoa don
-            MsgBox.alert(null, XLanguage.toUtf(resourceBundle.getString("msg3")));
+            MsgBox.alert(null,"Không thể chỉnh sửa hóa đơn này");
             return;
         }
         Product p = jList1.getSelectedValue();
@@ -1046,11 +1046,11 @@ public class InvoiceDetailsDialog extends javax.swing.JDialog {
     private boolean valid() {
         String msg = "";
         if (lst.isEmpty()) {//chua co sp
-            msg += XLanguage.toUtf(resourceBundle.getString("msg1"));
+            msg += XLanguage.toUtf("Chưa có sản phẩm nào được thêm vào");
         }
         int s = cbxThanhToan.getSelectedIndex();
         if (s == 0) {//chon phuong thuc thanh toan
-            msg += "\n" + XLanguage.toUtf(resourceBundle.getString("msg2"));
+            msg += "\n" +"Chọn phương thức thanh toán";
         }
         if (msg.length() == 0) {
             return true;
@@ -1350,7 +1350,7 @@ public class InvoiceDetailsDialog extends javax.swing.JDialog {
     }
 
     private void fillPaid(String invoiceID) {
-        lblList.setText(XLanguage.toUtf(resourceBundle.getString("lblList2")));
+        lblList.setText("LỊCH SỮ THANH TOÁN");
 
         PaidDAO pdao = new PaidDAO();
         List<Paid> list = pdao.selectByInvoice(invoiceID);
@@ -1370,49 +1370,49 @@ public class InvoiceDetailsDialog extends javax.swing.JDialog {
         }
     }
 
-    private void setLanguage() {
-        String lang = XLanguage.language;
-        if (lang.equalsIgnoreCase("vi")) {
-            bundlePath = "config.invoice-details-vi";
-            resourceBundle = ResourceBundle.getBundle(bundlePath, new Locale("vi-VN"));
-            return;
-        }
-        bundlePath = "config.invoice-details-en";
-        resourceBundle = ResourceBundle.getBundle(bundlePath, new Locale("en-EN"));
-        jLabel1.setText(resourceBundle.getString("jLabel1"));
-        jLabel10.setText(resourceBundle.getString("jLabel10"));
-        jLabel11.setText(resourceBundle.getString("jLabel11"));
-        jLabel12.setText(resourceBundle.getString("jLabel12"));
-        jLabel13.setText(resourceBundle.getString("jLabel13"));
-        jLabel2.setText(resourceBundle.getString("jLabel2"));
-        jLabel3.setText(resourceBundle.getString("jLabel3"));
-        jLabel4.setText(resourceBundle.getString("jLabel4"));
-        jLabel5.setText(resourceBundle.getString("jLabel5"));
-        jLabel6.setText(resourceBundle.getString("jLabel6"));
-        jLabel7.setText(resourceBundle.getString("jLabel7"));
-        jLabel8.setText(resourceBundle.getString("jLabel8"));
-        jLabel9.setText(resourceBundle.getString("jLabel9"));
-        lblList.setText(resourceBundle.getString("lblList"));
-        DefaultComboBoxModel model1 = (DefaultComboBoxModel) cbxThanhToan.getModel();
-        model1.removeAllElements();
-        model1.addElement(resourceBundle.getString("tt1"));
-        model1.addElement(resourceBundle.getString("tt2"));
-        model1.addElement(resourceBundle.getString("tt3"));
-        model1.addElement(resourceBundle.getString("tt4"));
-        model1 = (DefaultComboBoxModel) cbxStatus.getModel();
-        model1.removeAllElements();
-        model1.addElement(resourceBundle.getString("status1"));
-        model1.addElement(resourceBundle.getString("status2"));
-        model1.addElement(resourceBundle.getString("status3"));
-        String[] head = {"Product", "Unit", "Quantity", "Unit Price", "Amount", "Discount"};
-        model.setColumnIdentifiers(head);
-        jButton2.setText(resourceBundle.getString("jButton2"));
-        jButton3.setText(resourceBundle.getString("jButton3"));
-        jButton8.setText(resourceBundle.getString("jButton8"));
-        btnSave.setText(resourceBundle.getString("btnSave"));
-        jButton5.setText(resourceBundle.getString("jButton5"));
-        jButton6.setText(resourceBundle.getString("jButton6"));
-        jButton7.setText(resourceBundle.getString("jButton7"));
-
-    }
+//    private void setLanguage() {
+//        String lang = XLanguage.language;
+//        if (lang.equalsIgnoreCase("vi")) {
+//            bundlePath = "config.invoice-details-vi";
+//            resourceBundle = ResourceBundle.getBundle(bundlePath, new Locale("vi-VN"));
+//            return;
+//        }
+//        bundlePath = "config.invoice-details-en";
+//        resourceBundle = ResourceBundle.getBundle(bundlePath, new Locale("en-EN"));
+//        jLabel1.setText(resourceBundle.getString("jLabel1"));
+//        jLabel10.setText(resourceBundle.getString("jLabel10"));
+//        jLabel11.setText(resourceBundle.getString("jLabel11"));
+//        jLabel12.setText(resourceBundle.getString("jLabel12"));
+//        jLabel13.setText(resourceBundle.getString("jLabel13"));
+//        jLabel2.setText(resourceBundle.getString("jLabel2"));
+//        jLabel3.setText(resourceBundle.getString("jLabel3"));
+//        jLabel4.setText(resourceBundle.getString("jLabel4"));
+//        jLabel5.setText(resourceBundle.getString("jLabel5"));
+//        jLabel6.setText(resourceBundle.getString("jLabel6"));
+//        jLabel7.setText(resourceBundle.getString("jLabel7"));
+//        jLabel8.setText(resourceBundle.getString("jLabel8"));
+//        jLabel9.setText(resourceBundle.getString("jLabel9"));
+//        lblList.setText(resourceBundle.getString("lblList"));
+//        DefaultComboBoxModel model1 = (DefaultComboBoxModel) cbxThanhToan.getModel();
+//        model1.removeAllElements();
+//        model1.addElement(resourceBundle.getString("tt1"));
+//        model1.addElement(resourceBundle.getString("tt2"));
+//        model1.addElement(resourceBundle.getString("tt3"));
+//        model1.addElement(resourceBundle.getString("tt4"));
+//        model1 = (DefaultComboBoxModel) cbxStatus.getModel();
+//        model1.removeAllElements();
+//        model1.addElement(resourceBundle.getString("status1"));
+//        model1.addElement(resourceBundle.getString("status2"));
+//        model1.addElement(resourceBundle.getString("status3"));
+//        String[] head = {"Product", "Unit", "Quantity", "Unit Price", "Amount", "Discount"};
+//        model.setColumnIdentifiers(head);
+//        jButton2.setText(resourceBundle.getString("jButton2"));
+//        jButton3.setText(resourceBundle.getString("jButton3"));
+//        jButton8.setText(resourceBundle.getString("jButton8"));
+//        btnSave.setText(resourceBundle.getString("btnSave"));
+//        jButton5.setText(resourceBundle.getString("jButton5"));
+//        jButton6.setText(resourceBundle.getString("jButton6"));
+//        jButton7.setText(resourceBundle.getString("jButton7"));
+//
+//    }
 }
